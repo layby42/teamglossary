@@ -1,0 +1,4 @@
+- if (notice = flash[:notice])
+  .alert.alert-info.alert-dismissible{role: 'alert'}
+    %button.close{data: {dismiss: 'alert'}} &times;
+    = notice.html_safe

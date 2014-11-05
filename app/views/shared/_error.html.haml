@@ -1,0 +1,4 @@
+- if (notice = flash[:error])
+  .alert.alert-danger.alert-dismissible{role: 'alert'}
+    %button.close{data: {dismiss: 'alert'}} &times;
+    = h(notice)

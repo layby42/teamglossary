@@ -1,0 +1,28 @@
+%tr
+  %td
+    - if poposed_item?(language, item)
+      %i.pull-right.fa.fa-warning.text-warning{title: 'Proposed to main glossary'}
+    - if item.is_private
+      %i.pull-right.fa.fa-eye.text-info{title: 'Private'}
+
+    %i.fa{class: item.proper_name_type.fa_icon, title: item.proper_name_type.name}
+    &nbsp;
+    %strong= item.term
+    - if item.dates.present?
+      (#{item.dates})
+    - if item.explanation.present?
+      %br/
+      %br/
+      = item.explanation
+  - unless language.is_base_language?
+    %td
+      - translation = item.glossary_name_translations.select{|t| t.language_id == @language.id}.first
+      - if translation.present?
+        %strong= translation.term
+        %i= translation.alternative_as_string
+
+        - if translation.notes.present?
+          %br/
+          %br/
+          = translation.notes
+  %td

@@ -1,0 +1,66 @@
+!!!
+%head{:lang => 'en'}
+  %meta{:charset => 'utf-8'}
+
+  %title= page_title
+
+  %meta{:name => 'viewport', :content => 'width=device-width, initial-scale=1.0'}
+  %meta{:name => 'apple-mobile-web-app-capable', :content => 'yes'}
+  = csrf_meta_tags
+
+  :css
+    @import url("//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
+
+  = stylesheet_link_tag 'application', media: 'all'
+  = stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css'
+  = yield :css
+
+  = javascript_include_tag 'application'
+  = yield :js
+
+%body{class: controller_name}
+  .navbar.navbar-default.navbar-fixed-top
+    .container-fluid
+      .navbar-header
+        = link_to 'Team Glossary', root_path, class: 'navbar-brand'
+        %button.navbar-toggle{data: {target: '#navbar-main', toggle: 'collapse', type: 'button'}}
+          %span.icon-bar
+          %span.icon-bar
+          %span.icon-bar
+
+      - if current_user
+        #navbar-main.navbar-collapse.collapse
+          %ul.nav.navbar-nav
+            -# %li= link_to 'Clients', clients_path
+            -# %li= link_to 'Monitor Users', users_path
+            -# %li= link_to 'Settings', settings_path
+
+          %ul.nav.navbar-nav.navbar-right
+            %li.dropdown
+              = link_to('javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'}) do
+                = current_user.name
+                %b.caret
+              %ul.dropdown-menu
+                -# %li= link_to 'Profile'
+                %li= link_to 'Log Out', logout_path, :method => :delete
+
+  .container-fluid
+    %noscript
+      .alert.alert-danger
+        %h4.alert-heading Warning!
+        You don't have Javascript enabled. Please enable Javascript to use this site.
+
+    .container-fluid
+      .row
+        .col-sm-12
+          #container_script_enabled{:style => 'display:none;'}
+            = render 'shared/error'
+            = render 'shared/notice'
+            = yield :page_buttons
+            = yield :page_title
+            = yield
+
+:javascript
+  $(function(){
+    $('#container_script_enabled').show();
+  });

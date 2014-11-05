@@ -1,0 +1,16 @@
+%tr
+  %td
+    - if poposed_item?(language, item)
+      %i.pull-right.fa.fa-warning.text-warning{title: 'Proposed to main glossary'}
+    - if item.is_private
+      %i.pull-right.fa.fa-eye.text-info{title: 'Private'}
+
+    %strong= item.term
+
+
+  - unless language.is_base_language?
+    %td
+      - translation = item.glossary_term_translations.select{|t| t.language_id == @language.id}.first
+      - if translation.present?
+        %strong= translation.term
+  %td

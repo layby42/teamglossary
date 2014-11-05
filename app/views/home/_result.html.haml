@@ -1,0 +1,25 @@
+.row
+  .col-xs-12
+    %h2
+      Found
+      %span.badge #{@data.total_count}
+
+    %table.table.table-striped.table-hover.table-bordered
+      %thead
+        %tr
+          - if @language.is_base_language?
+            %td.col-xs-6 Term
+            %td.col-xs-6 Last Comment
+          - else
+            %td.col-xs-4 Term
+            %td.col-xs-4 Translation
+            %td.col-xs-4 Last Comment
+      %tbody
+        - @data.each do |item|
+          = render "term_#{@glossary_type.code.downcase}", item: item, language: @language
+
+        - if @data.empty?
+          %tr
+            %td.text-right{colspan: (@language.is_base_language? ? 2 : 3)}
+              no terms found
+    = render 'shared/paginator', objects: @data, remote: true
