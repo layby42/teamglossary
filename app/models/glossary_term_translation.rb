@@ -20,10 +20,4 @@ class GlossaryTermTranslation < ActiveRecord::Base
   belongs_to :language
   belongs_to :glossary_term
   belongs_to :integration_status
-
-  def self.ts_vector
-    [ :term, :alt_term1, :alt_term2, :alt_term2, :notes].collect do |column|
-      "coalesce(glossary_term_translations.#{column}, '')"
-    end.join(%q{ || ' ' || })
-  end
 end

@@ -39,36 +39,35 @@ class GlossaryTerm < ActiveRecord::Base
   scope :list_order, -> { order('lower(glossary_terms.term)') }
 
   def self.simple_search(language, query)
-    query = "%#{query}%"
+    search_columns = [:term, :tibetan, :sanskrit, :pali, :arabic,
+      :alternative_tibetan, :alternative_sanskrit, :additional_explanation]
 
     if language.is_base_language?
       GlossaryTerm.where(%Q{
         (glossary_terms.language_id = ? OR
          NOT glossary_terms.is_private)
-        AND
-        #{GlossaryTerm.ts_vector} ILIKE ?
-        }, language.id, query).list_order
+        }, language.id).list_order.select do |term|
+        search_columns.collect{|field| term[field].to_s}.join(' ').downcase.include?(query)
+      end
     else
+      search_transaction_columns = [:term, :alt_term1, :alt_term2, :alt_term2, :notes]
       GlossaryTerm.where(%Q{
         (glossary_terms.language_id = ? OR
           ( glossary_terms.language_id = ? AND
             NOT glossary_terms.is_private)
-          ) AND
-        (#{GlossaryTerm.ts_vector} ILIKE ?) OR
-        EXISTS(
-          SELECT glossary_term_translations.id
-          FROM glossary_term_translations
-          WHERE glossary_term_translations.language_id = glossary_terms.language_id
-            AND glossary_term_translations.glossary_term_id = glossary_terms.id
-            AND (#{GlossaryTermTranslation.ts_vector} ILIKE ?))
-        }, language.id, Language.base_language.id, query, query).list_order.includes([:glossary_term_translations])
+          )
+        }, language.id, Language.base_language.id).list_order.includes([:glossary_term_translations]).select do |term|
+
+          search_columns.collect{|field| term[field].to_s}.join(' ').downcase.include?(query) ||
+          (
+            (
+              transaction = term.glossary_term_translations.select{|t| t.language_id == language.id}.first) &&
+              search_transaction_columns.collect do |field|
+                transaction[field].to_s
+              end.join(' ').downcase.include?(query)
+            )
+      end
     end
   end
 
-  def self.ts_vector
-    [ :term, :tibetan, :sanskrit, :pali, :arabic,
-      :alternative_tibetan, :alternative_sanskrit, :additional_explanation].collect do |column|
-      "coalesce(glossary_terms.#{column}, '')"
-    end.join(%q{ || ' ' || })
-  end
 end

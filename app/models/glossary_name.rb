@@ -33,35 +33,33 @@ class GlossaryName < ActiveRecord::Base
   validates :term, :language_id, :proper_name_type_id, presence: true
 
   def self.simple_search(language, query)
-    query = "%#{query}%"
+    search_columns = [:term, :tibetan, :sanskrit, :explanation, :wade_giles, :dates]
 
     if language.is_base_language?
       GlossaryName.where(%Q{
         (glossary_names.language_id = ? OR
          NOT glossary_names.is_private)
-        AND
-        #{GlossaryName.ts_vector} ILIKE ?
-        }, language.id, query).list_order.includes([:proper_name_type])
+        }, language.id).list_order.includes([:proper_name_type]).select do |term|
+        search_columns.collect{|field| term[field].to_s}.join(' ').downcase.include?(query)
+      end
     else
+      search_transaction_columns = [:term, :alt_term1, :alt_term2, :alt_term3, :notes]
       GlossaryName.where(%Q{
         (glossary_names.language_id = ? OR
           ( glossary_names.language_id = ? AND
             NOT glossary_names.is_private)
-          ) AND
-        (#{GlossaryName.ts_vector} ILIKE ?) OR
-        EXISTS(
-          SELECT glossary_name_translations.id
-          FROM glossary_name_translations
-          WHERE glossary_name_translations.language_id = glossary_names.language_id
-            AND glossary_name_translations.glossary_name_id = glossary_names.id
-            AND (#{GlossaryNameTranslation.ts_vector} ILIKE ?))
-        }, language.id, Language.base_language.id, query, query).list_order.includes([:glossary_name_translations, :proper_name_type])
-    end
-  end
+          )
+        }, language.id, Language.base_language.id).list_order.includes([:glossary_name_translations, :proper_name_type]).select do |term|
 
-  def self.ts_vector
-    [:term, :tibetan, :sanskrit, :explanation, :wade_giles, :dates].collect do |column|
-      "coalesce(glossary_names.#{column}, '')"
-    end.join(%q{ || ' ' || })
+          search_columns.collect{|field| term[field].to_s}.join(' ').downcase.include?(query) ||
+          (
+            (
+              transaction = term.glossary_name_translations.select{|t| t.language_id == language.id}.first) &&
+              search_transaction_columns.collect do |field|
+                transaction[field].to_s
+              end.join(' ').downcase.include?(query)
+            )
+      end
+    end
   end
 end

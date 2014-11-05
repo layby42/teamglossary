@@ -27,9 +27,4 @@ class GlossaryNameTranslation < ActiveRecord::Base
     [alt_term1, alt_term2, alt_term3].compact.join(' / ')
   end
 
-  def self.ts_vector
-    [:term, :alt_term1, :alt_term2, :alt_term3, :notes].collect do |column|
-      "coalesce(glossary_name_translations.#{column}, '')"
-    end.join(%q{ || ' ' || })
-  end
 end

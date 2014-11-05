@@ -7,7 +7,7 @@ class HomeController < ApplicationController
 
   def index
     @query = params[:search].present? ? params[:search][:query] : nil
-    @data = @glossary_type.glossary_class.simple_search(@language, @query.to_s.strip).page(params[:page])
+    @data = Kaminari.paginate_array(@glossary_type.glossary_class.simple_search(@language, @query.to_s.strip.downcase)).page(params[:page])
   end
 
   private

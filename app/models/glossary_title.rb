@@ -37,40 +37,40 @@ class GlossaryTitle < ActiveRecord::Base
   validates :term, :language_id, :integration_status_id, presence: true
 
   def self.simple_search(language, query)
-    query = "%#{query}%"
+    search_columns = [ :term, :author, :author_translit,
+      :tibetan_full, :tibetan_short,
+      :sanskrit_full, :sanskrit_short,
+      :sanskrit_full_diacrit, :sanskrit_short_diacrit,
+      :explanation, :alt_term1, :alt_term2,
+      :popular_term, :pali]
 
     if language.is_base_language?
       GlossaryTitle.where(%Q{
         (glossary_titles.language_id = ? OR
          NOT glossary_titles.is_private)
-        AND
-        #{GlossaryTitle.ts_vector} ILIKE ?
-        }, language.id, query)
+        }, language.id).list_order.select do |term|
+        search_columns.collect{|field| term[field].to_s}.join(' ').downcase.include?(query)
+      end
     else
+      search_transaction_columns = [ :term, :author, :notes,
+        :alt_term1, :alt_term2, :alt_term3]
+
       GlossaryTitle.where(%Q{
         (glossary_titles.language_id = ? OR
           ( glossary_titles.language_id = ? AND
             NOT glossary_titles.is_private)
-          ) AND
-        (#{GlossaryTitle.ts_vector} ILIKE ?) OR
-        EXISTS(
-          SELECT glossary_title_translations.id
-          FROM glossary_title_translations
-          WHERE glossary_title_translations.language_id = glossary_titles.language_id
-            AND glossary_title_translations.glossary_title_id = glossary_titles.id
-            AND (#{GlossaryTitleTranslation.ts_vector} ILIKE ?))
-        }, language.id, Language.base_language.id, query, query).includes([:glossary_title_translations])
-    end
-  end
+          )
+        }, language.id, Language.base_language.id).list_order.includes([:glossary_title_translations]).select do |term|
 
-  def self.ts_vector
-    [ :term, :author, :author_translit,
-      :tibetan_full, :tibetan_short,
-      :sanskrit_full, :sanskrit_short,
-      :sanskrit_full_diacrit, :sanskrit_short_diacrit,
-      :explanation, :alt_term1, :alt_term2,
-      :popular_term, :pali].collect do |column|
-      "coalesce(glossary_titles.#{column}, '')"
-    end.join(%q{ || ' ' || })
+          search_columns.collect{|field| term[field].to_s}.join(' ').downcase.include?(query) ||
+          (
+            (
+              transaction = term.glossary_title_translations.select{|t| t.language_id == language.id}.first) &&
+              search_transaction_columns.collect do |field|
+                transaction[field].to_s
+              end.join(' ').downcase.include?(query)
+            )
+      end
+    end
   end
 end
