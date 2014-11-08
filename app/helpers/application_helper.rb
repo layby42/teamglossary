@@ -22,4 +22,14 @@ module ApplicationHelper
   def poposed_item?(language, item)
     language.is_base_language? ? (item.language_id != language.id) : (item.language_id == language.id && !item.is_private)
   end
+
+  def tab_for(tab_name, &block)
+    content_tag(:li, :id => "#{tab_name}_tab", :class => (tab_name == @tab ? 'active' : ''), &block)
+  end
+
+  def validation_message_for_field(item, field)
+    return nil unless item.try(:errors)
+    return nil unless item.errors[field]
+    item.errors[field].join('; ')
+  end
 end

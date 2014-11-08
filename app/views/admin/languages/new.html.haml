@@ -1,0 +1,11 @@
+%h2
+  = link_to admin_languages_path do
+    %i.fa.fa-angle-left
+    New Language Section
+
+%ul.nav.nav-tabs
+  = tab_for 'details' do
+    = link_to 'Details', new_admin_language_path
+
+#language_content.tab-content
+  = render "admin/languages/tabs/#{@tab}", language: @language

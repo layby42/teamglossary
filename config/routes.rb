@@ -60,5 +60,10 @@ Rails.application.routes.draw do
 
   resources :password_resets, :only => [:new, :create, :edit, :update]
 
+  namespace :admin do |admin|
+    resources :settings, :only => [:index]
+    resources :languages, only: [:index, :new, :create, :edit, :update, :show]
+  end
+
   root :to => 'home#index'
 end

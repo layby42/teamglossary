@@ -1,0 +1,23 @@
+= form_for [:admin, language], :html => {:class => 'form-vertical'} do |f|
+  = hidden_field_tag :tab, :details
+  %fieldset
+    .form-group.col-xs-12.col-sm-4
+      %label.control-label Code:
+      = f.text_field :iso_code, class: 'form-control', required: true, placeholder: 'Unique code as in cms', autocomplete: 'off', disabled: language.is_base_language?
+      %span.help-block.text-danger= validation_message_for_field(language, :iso_code)
+    .form-group.col-xs-12.col-sm-4
+      %label.control-label Name:
+      = f.text_field :name, class: 'form-control', required: true, placeholder: 'In section language', autocomplete: 'off'
+      %span.help-block.text-danger= validation_message_for_field(language, :name)
+    .form-group.col-xs-12.col-sm-4
+      %label.control-label English:
+      = f.text_field :english_name, class: 'form-control', required: true, placeholder: 'In English', autocomplete: 'off'
+      %span.help-block.text-danger= validation_message_for_field(language, :english_name)
+
+    .form-group.col-xs-12
+      %label.control-label Notes:
+      = f.text_area :notes, class: 'form-control', rows: 4, placeholder: 'Whatever additional info you\'d like to keep about the language section', autocomplete: 'off'
+      %span.help-block.text-danger= validation_message_for_field(language, :notes)
+
+    .form-group.col-xs-12.text-right
+      = f.submit 'Save Changes', :class => 'btn btn-primary', :data => {:submit => true}

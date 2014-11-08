@@ -1,0 +1,25 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
+    %title Team Glossary
+
+  %body{leftmargin: "0", marginheight: "0", marginwidth: "0", topmargin: "0", style: "#{EmailHelper.font_family_style} font-size: 14px; color: #FFFED8; background-color: #980000;"}
+
+    %table{border: "0", cellpadding: "0", cellspacing: "0", width: "100%"}
+      %tr
+        %td{bgcolor: "#980000", align: "center", cellpadding: "20"}
+          %p{style: "#{EmailHelper.title}"} Team Glossary
+      %tr
+        %td{bgcolor: "#980000"}
+          %table{cellpadding: "0", cellspacing: "0", width: "500", align: "center", style: "#{EmailHelper.font_family_style} font-size: 14px; color: #333333;"}
+            %tr
+              %td{bgcolor: "#FFFED8", cellspacing: "20", valign: "top", align: "center", style: 'padding: 20px 20px 20px 20px;'}
+                = yield
+
+      %tr
+        %td{bgcolor: "#980000", align: "center", cellpadding: "5", cellspacing: "0"}
+          %p{style: "#{EmailHelper.p_style} font-size:10px; color: #FFFED8;margin: 10px 0 20px 0;"}
+            \© #{Time.zone.now.year} by Berzin Archives. All rights reserved.
+            %br/
+            %br/

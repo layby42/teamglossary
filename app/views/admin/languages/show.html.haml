@@ -1,0 +1,11 @@
+%h2
+  = link_to admin_languages_path do
+    %i.fa.fa-angle-left
+    = @language.english_name
+
+.row
+  .col-xs-6
+    .col-xs-6.text-right Code
+    .col-xs-6= @language.iso_code
+
+  .col-xs-6

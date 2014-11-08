@@ -1,0 +1,15 @@
+%h2
+  = link_to admin_languages_path do
+    %i.fa.fa-angle-left
+    = @language.english_name
+
+%ul.nav.nav-tabs
+  = tab_for 'details' do
+    = link_to 'Details', edit_admin_language_path(@language, tab: :details)
+  = tab_for 'team' do
+    = link_to edit_admin_language_path(@language, tab: :team) do
+      Team
+      %span.badge= @language.users.count
+
+#language_content.tab-content
+  = render "admin/languages/tabs/#{@tab}", language: @language

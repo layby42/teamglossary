@@ -1,0 +1,25 @@
+%h2
+  Language Sections
+  %span.badge #{@languages.count}
+
+  .pull-right
+    = link_to new_admin_language_path, class: 'btn btn-primary btn-sm' do
+      %i.fa.fa-plus-circle
+      Add new
+
+%table.table.table-striped.table-hover.table-bordered
+  %thead
+    %tr
+      %th Code
+      %th Name
+      %th Name in English
+      %th Encoding
+      %th # Members
+  %tbody
+    - @languages.each do |language|
+      %tr{}
+        %td= language.iso_code
+        %td= language.name
+        %td= link_to language.english_name, admin_language_path(language)
+        %td= language.encoding
+        %td= language.users.count
