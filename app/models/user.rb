@@ -43,6 +43,8 @@ class User < ActiveRecord::Base
 
   validates :email, presence: true, uniqueness: {case_sensitive: false}
 
+  scope :list_order, -> { order('lower(users.first_name), lower(users.last_name)') }
+
   def name
     "#{first_name} #{last_name}"
   end

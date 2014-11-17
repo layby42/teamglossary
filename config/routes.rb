@@ -62,7 +62,13 @@ Rails.application.routes.draw do
 
   namespace :admin do |admin|
     resources :settings, :only => [:index]
-    resources :languages, only: [:index, :new, :create, :edit, :update, :show]
+    resources :languages, only: [:index, :new, :create, :edit, :update, :show] do
+      resources :teams, only: [:new, :create, :edit, :update, :destroy]
+    end
+
+    resources :users, only: [:index, :new, :create, :edit, :update, :show] do
+      resources :teams, only: [:new, :create, :destroy]
+    end
   end
 
   root :to => 'home#index'

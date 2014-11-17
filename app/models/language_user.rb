@@ -17,8 +17,9 @@ class LanguageUser < ActiveRecord::Base
 
   ROLES = [:manager, :editor, :user]
   validates :user_id, :role, presence: true
-  validates :language_id, presence: true, unless: :admin?
+  validates :language_id, presence: true
   validates :role, inclusion: { in: ROLES.map(&:to_s) }
+  validates :user_id, uniqueness: {case_sensitive: false, scope: [:language_id]}
 
   def glossary_owner?
     role == 'editor' && level == 4

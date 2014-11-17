@@ -1,9 +1,12 @@
 %h2 Settings
 
-%ul.list-group
-  %li.list-group-item
-    %span.badge= Language.count
-    = link_to 'Language Sections', admin_languages_path
-  %li.list-group-item
-    %span.badge= User.count
-    Users
+.row
+  .col-sm-6.col-xs-12
+    %ul.list-group
+      %li.list-group-item
+        %span.badge= Language.count
+        = link_to 'Language Sections', admin_languages_path
+      %li.list-group-item
+        %span.badge= User.count
+        = link_to 'Users', admin_users_path
+

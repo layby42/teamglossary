@@ -1,7 +1,9 @@
 module Admin::LanguagesHelper
 
-  def language_users_sorted(language)
-    language.language_users.includes([:user]).sort do |x, y|
+  def language_users_sorted(language, role=nil)
+    conditions = {}
+    conditions[:role] = role if role.present?
+    language.language_users.where(conditions).includes([:user]).sort do |x, y|
       x.user.name <=> y.user.name
     end
   end

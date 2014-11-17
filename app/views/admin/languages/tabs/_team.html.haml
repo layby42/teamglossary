@@ -1,47 +1,17 @@
 .row
-  .col-sm-6.col-xs-12
-    .well
-      %h4 Roles and Permissions
-      %ul
-        %li
-          %strong Manager
-          (or Language Section Administrator) has full access to Language Section: team management, glossaries management, etc.
-        %li
-          %strong Editor
-          (or Language Glossaries Owner) has full access to all Glossaries within Language Section.
-        %li
-          %strong User
-          (or Regular User) has readonly access to all Glossaries within Language Section, but can participate in Language Section discussions.
+  .col-xs-12
+    = render 'shared/roles_info'
 
-      %strong Note:
-      all users of all Language Sections has readonly access to all Glossaries
+.row
+  - LanguageUser::ROLES.each do |role|
+    .col-sm-4.col-xs-12
+      - users = language_users_sorted(language, role)
+      = link_to new_admin_language_team_path(language.id, role: role), class: 'pull-left btn btn-primary btn-xs', remote: true, title: "Add #{role}" do
+        %i.fa.fa-plus-circle
+      %h4{style: 'margin-top: 2px;'} &nbsp; #{role.to_s.pluralize.upcase}
 
-    %h4 Select User and Role
-    %fieldset
-      .form-group.col-xs-6
-        %label.control-label User
-        = select_tag 'user', options_for_select(User.all.collect{|u| [u.name, u.id]}), class: 'form-control'
-      .form-group.col-xs-6
-        %label.control-label Role
-        = select_tag 'role', roles_options_helper('user'), class: 'form-control'
-      .form-group.col-xs-12.text-right
-        = link_to 'Add User to Team >', '#', class: 'btn btn-success btn-sm'
-
-
-  .col-sm-6.col-xs-12
-    = form_for [:admin, language], :html => {:class => 'form-vertical'} do |f|
-      = hidden_field_tag :tab, :team
-      %fieldset
-        %legend.text-center #{language.english_name} Team
-        .form-group.clearfix
-          - users = language_users_sorted(language)
-          - users.each do |language_user|
-            .row{id: "team_#{language_user.user_id}"}
-              = hidden_field_tag 'language[language_user]', language_user.user_id
-              .col-xs-6.text-right{style: 'margin-top: 10px;'}
-                = language_user.user.name
-              .col-xs-6
-                = select_tag "language[language_user][#{language_user.user_id}][role]", roles_options_helper(language_user.role), class: 'form-control', autocomplete: 'off'
-
-        .form-group.col-xs-12.text-right
-          = f.submit 'Save Changes', :class => 'btn btn-primary', :data => {:submit => true}
+      - users.each_with_index do |language_user, idx|
+        %p
+          = link_to admin_language_team_path(language.id, language_user.id), method: :delete, class: 'btn btn-xs', data: {confirm: 'Are you sure?'} do
+            %i.fa.fa-times-circle.text-danger
+          = link_to language_user.user.name, admin_user_path(language_user.user_id)

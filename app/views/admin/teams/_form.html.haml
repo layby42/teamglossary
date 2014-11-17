@@ -1,0 +1,24 @@
+- url = admin_language_teams_path if params[:language_id]
+- url = admin_user_teams_path if params[:user_id]
+= form_for [:admin, language_user], url: url, :html => {:'data-validate' => 'parsley', class: 'modal-form form-horizontal', :'data-async' =>  ''}  do |f|
+  .modal-header
+    %button.close{'aria-hidden' => 'true', 'data-dismiss' => 'modal'} &times;
+    %h4.modal-title
+      = language_user.new_record? ? 'Add permission' : 'Edit permission'
+  .modal-body
+    .alert.alert-danger.hide
+    .row
+      .col-sm-4
+        %label.control-label Team
+        = f.select :language_id, language_options(language_user.language_id), {include_blank: true}, { class: 'form-control', style: 'width:100%', autocomplete: 'off'}
+
+      .col-sm-4
+        %label.control-label Person
+        = f.select :user_id, user_options(language_user.user_id), {include_blank: true}, { class: 'form-control', style: 'width:100%', autocomplete: 'off'}
+
+      .col-sm-4
+        %label.control-label Role
+        = f.select :role, role_options(language_user.role), {}, { class: 'form-control', style: 'width:100%', autocomplete: 'off'}
+  .modal-footer
+    %button.btn.btn-default{'data-dismiss' => 'modal'} Close
+    %button#submit.btn.btn-primary Save changes

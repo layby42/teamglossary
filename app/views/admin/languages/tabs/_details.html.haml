@@ -14,10 +14,19 @@
       = f.text_field :english_name, class: 'form-control', required: true, placeholder: 'In English', autocomplete: 'off'
       %span.help-block.text-danger= validation_message_for_field(language, :english_name)
 
+    .form-group.col-xs-12.col-sm-4
+      %label.control-label Encoding:
+      = f.text_field :encoding, class: 'form-control', required: true, placeholder: 'Encoding to for import/export', autocomplete: 'off', disabled: language.is_base_language?
+      %span.help-block.text-danger= validation_message_for_field(language, :encoding)
+
     .form-group.col-xs-12
       %label.control-label Notes:
       = f.text_area :notes, class: 'form-control', rows: 4, placeholder: 'Whatever additional info you\'d like to keep about the language section', autocomplete: 'off'
       %span.help-block.text-danger= validation_message_for_field(language, :notes)
+
+    .form-group.col-xs-12
+      = check_box_tag :is_active, 'checked', true, autocomplete: 'off'
+      = label_tag :is_active, 'Active'
 
     .form-group.col-xs-12.text-right
       = f.submit 'Save Changes', :class => 'btn btn-primary', :data => {:submit => true}

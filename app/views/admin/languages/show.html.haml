@@ -1,11 +1,42 @@
-%h2
-  = link_to admin_languages_path do
-    %i.fa.fa-angle-left
-    = @language.english_name
+.panel.panel-default
+  .panel-body
+    %h2
+      = link_to admin_languages_path do
+        %i.fa.fa-angle-left
+        = @language.english_name
+      = link_to edit_admin_language_path(@language), class: 'pull-right btn btn-primary btn-sm' do
+        %i.fa.fa-edit
+        Edit
+    %hr/
 
-.row
-  .col-xs-6
-    .col-xs-6.text-right Code
-    .col-xs-6= @language.iso_code
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Code
+          %th Name
+          %th English Name
+          %th Encoding
+          %th Active
+      %tbody
+        %tr
+          %td= @language.iso_code
+          %td= @language.name
+          %td= @language.english_name
+          %td= @language.encoding
+          %td= @language.is_active
 
-  .col-xs-6
+    .row
+      %h3.col-xs-12 Notes
+      %p.col-xs-12= @language.notes
+
+    .row
+      %h3.col-xs-12 Team
+      - LanguageUser::ROLES.each do |role|
+        .col-sm-4.col-xs-12
+          - users = language_users_sorted(@language, role)
+          %h4 #{role.to_s.pluralize.upcase}
+          - users.each_with_index do |language_user, idx|
+            %p
+              = link_to language_user.user.name, admin_user_path(language_user.user_id)
+          - if users.empty?
+            %p= '-'

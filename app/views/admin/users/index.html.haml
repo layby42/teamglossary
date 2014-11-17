@@ -1,0 +1,22 @@
+%h2
+  Users
+  %span.badge #{@users.count}
+
+  .pull-right
+    = render 'shared/add_new_button', url: new_admin_user_path
+
+%table.table.table-striped.table-hover.table-bordered
+  %thead
+    %tr
+      %th Name
+      %th Email
+      %th # Teams
+      %th Last log in
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= link_to user.name, admin_user_path(user)
+        %td= user.email
+        %td= user.languages.count
+        %td= user.last_login_at
+

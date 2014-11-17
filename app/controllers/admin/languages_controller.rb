@@ -54,6 +54,8 @@ class Admin::LanguagesController < ApplicationController
       :iso_code,
       :name,
       :english_name,
-      :notes)
+      :notes,
+      :encoding,
+      :is_active)
   end
 end

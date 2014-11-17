@@ -3,9 +3,7 @@
   %span.badge #{@languages.count}
 
   .pull-right
-    = link_to new_admin_language_path, class: 'btn btn-primary btn-sm' do
-      %i.fa.fa-plus-circle
-      Add new
+    = render 'shared/add_new_button', url: new_admin_language_path
 
 %table.table.table-striped.table-hover.table-bordered
   %thead
@@ -17,7 +15,7 @@
       %th # Members
   %tbody
     - @languages.each do |language|
-      %tr{}
+      %tr
         %td= language.iso_code
         %td= language.name
         %td= link_to language.english_name, admin_language_path(language)
