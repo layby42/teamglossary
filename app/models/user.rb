@@ -37,6 +37,7 @@ class User < ActiveRecord::Base
   end
 
   strip_attributes :only => [:email, :first_name, :last_name]
+  has_paper_trail :only => [:first_name, :last_name, :email, :admin, :about]
 
   has_many :language_users, dependent: :destroy
   has_and_belongs_to_many :languages, join_table: :language_users
@@ -45,7 +46,32 @@ class User < ActiveRecord::Base
 
   scope :list_order, -> { order('lower(users.first_name), lower(users.last_name)') }
 
+  def email=(value)
+    self[:email] = (value ? value.strip.downcase : value)
+  end
+
   def name
     "#{first_name} #{last_name}"
+  end
+
+  def manager?(language_id=nil)
+    conditions = {role: :manager}
+    conditions[:language_id] = language_id if language_id.present?
+    self.language_users.where(conditions).count > 0
+  end
+
+  def can_manage_user_team?(user)
+    return true if user.admin?
+    user_language_ids = user.language_users.pluck(:language_id)
+    return false if user_language_ids.empty?
+
+    self.language_users.where({
+      role: :manager,
+      language_id: user_language_ids
+      }).count > 0
+  end
+
+  def teams_count
+    language_users.count(:language_id)
   end
 end

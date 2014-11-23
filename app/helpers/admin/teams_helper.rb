@@ -1,6 +1,13 @@
 module Admin::TeamsHelper
   def language_options(selected=nil)
-    opts = Language.list_order.collect{|l| [l.english_name, l.id]}
+    if current_user.admin?
+      opts = Language.list_order.collect{|l| [l.full_name, l.id]}
+    elsif current_user.manager?
+      language_ids = current_user.language_users.where(role: :manager).pluck(:language_id)
+      opts = Language.where(id: language_ids).list_order.collect{|l| [l.full_name, l.id]}
+    else
+      opts = []
+    end
     options_for_select(opts, selected)
   end
 

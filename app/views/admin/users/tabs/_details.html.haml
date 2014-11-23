@@ -1,0 +1,28 @@
+= form_for [:admin, user], :html => {:class => 'form-vertical'} do |f|
+  = hidden_field_tag :tab, :details
+  - read_only = (user.login_count > 0) && !(current_user.admin? || current_user.id == user.id)
+  %fieldset
+    .form-group.col-xs-12.col-sm-4
+      %label.control-label First Name:
+      = f.text_field :first_name, class: 'form-control', required: true, autocomplete: 'off', disabled: read_only
+      %span.help-block.text-danger= validation_message_for_field(user, :first_name)
+    .form-group.col-xs-12.col-sm-4
+      %label.control-label Last Name:
+      = f.text_field :last_name, class: 'form-control', required: true, autocomplete: 'off', disabled: read_only
+      %span.help-block.text-danger= validation_message_for_field(user, :last_name)
+    .form-group.col-xs-12.col-sm-4
+      %label.control-label Email:
+      = f.email_field :email, class: 'form-control', required: true, autocomplete: 'off', disabled: read_only
+      %span.help-block.text-danger= validation_message_for_field(user, :email)
+    .form-group.col-xs-12
+      %label.control-label About:
+      = f.text_area :about, class: 'form-control', rows: 4, placeholder: 'Whatever you\'d like to tell about yourself', autocomplete: 'off', disabled: (current_user.id != user.id)
+      %span.help-block.text-danger= validation_message_for_field(user, :about)
+
+    .form-group.col-xs-12
+      = f.check_box :admin, autocomplete: 'off', disabled: !current_user.admin?
+      = label_tag :admin, 'Site Administrator'
+
+    - unless read_only
+      .form-group.col-xs-12.text-right
+        = f.submit 'Save Changes', :class => 'btn btn-primary', :data => {:submit => true}

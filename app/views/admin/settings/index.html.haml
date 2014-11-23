@@ -2,6 +2,7 @@
 
 .row
   .col-sm-6.col-xs-12
+    %h4 GENERAL
     %ul.list-group
       %li.list-group-item
         %span.badge= Language.count
@@ -10,3 +11,19 @@
         %span.badge= User.count
         = link_to 'Users', admin_users_path
 
+
+  .col-sm-6.col-xs-12
+    %h4 GLOSSARIES
+    %ul.list-group
+      %li.list-group-item
+        %span.badge= GeneralStatus.count
+        = link_to 'General Statuses', '#'
+      %li.list-group-item
+        %span.badge= ReferenceType.count
+        = link_to 'Reference Types', '#'
+      %li.list-group-item
+        %span.badge= IntegrationStatus.count
+        = link_to 'Integration Statuses', '#'
+      %li.list-group-item
+        %span.badge= ProperNameType.count
+        = link_to 'Proper Name Types', '#'

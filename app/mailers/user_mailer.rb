@@ -6,7 +6,7 @@ class UserMailer < ActionMailer::Base
 
   def password_reset_email(user, options = {})
     @user = user
-    @confirm_url = options[:confirm_url]
+    @password_reset_url = options[:password_reset_url]
 
     mail(
       :to => @user.email,
@@ -22,17 +22,10 @@ class UserMailer < ActionMailer::Base
     )
   end
 
-  def activation_email(user, options={})
+  def welcome_email(user, options = {})
     @user = user
-    @activation_url = options[:activation_url]
-    mail(
-      :to => @user.email,
-      :subject => 'Team Glossary account activation'
-    )
-  end
+    @password_reset_url = options[:password_reset_url]
 
-  def welcome_email(user)
-    @user = user
     mail(
       :to => @user.email,
       :subject => 'Welcome to Team Glossary'

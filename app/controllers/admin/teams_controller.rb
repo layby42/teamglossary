@@ -1,5 +1,5 @@
 class Admin::TeamsController < ApplicationController
-  before_action :require_admin
+  before_action :require_admin_or_manager
   before_action :find_language
   before_action :find_user
   before_action :find_language_user, only: [:destroy]
@@ -28,16 +28,25 @@ class Admin::TeamsController < ApplicationController
       @language_user.role = language_user_params[:role]
     end
 
-    if @language_user.save
-      flash_to notice: 'Changes saved!'
+    if current_user.admin? || current_user.manager?(@language_user.language_id)
+      if @language_user.save
+        flash_to notice: 'Changes saved!'
+      else
+        flash_to error: @language_user.errors.full_messages.first
+      end
     else
-      flash_to error: @language_user.errors.full_messages.first
+      flash_to error: 'Sorry, your access level does not permit this operation.'
     end
+
     do_proper_redirect
   end
 
   def destroy
-    @language_user.destroy
+    if current_user.admin? || current_user.manager?(@language_user.language_id)
+      @language_user.destroy
+    else
+      flash_to error: 'Sorry, your access level does not permit this operation.'
+    end
     do_proper_redirect
   end
 

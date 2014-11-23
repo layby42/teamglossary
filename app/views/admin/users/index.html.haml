@@ -15,8 +15,13 @@
   %tbody
     - @users.each do |user|
       %tr
-        %td= link_to user.name, admin_user_path(user)
+        %td
+          - if user.admin?
+            %i.fa.fa-graduation-cap{title: 'Site Administrator'}
+          = link_to user.name, admin_user_path(user)
         %td= user.email
-        %td= user.languages.count
-        %td= user.last_login_at
+        %td
+          = link_to user.teams_count, admin_user_path(user)
+        %td
+          = time_ago(user.last_login_at)
 

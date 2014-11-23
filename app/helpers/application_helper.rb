@@ -32,4 +32,17 @@ module ApplicationHelper
     return nil unless item.errors[field]
     item.errors[field].join('; ')
   end
+
+  def as_date(value, default='')
+    value ? value.in_time_zone.strftime('%m/%d/%Y') : default
+  end
+
+  def as_datetime(value, default='')
+    value ? value.in_time_zone.strftime('%m/%d/%Y %H:%M') : ''
+  end
+
+  def time_ago(datetime)
+    return '' unless datetime.present?
+    "#{time_ago_in_words(datetime)} ago"
+  end
 end

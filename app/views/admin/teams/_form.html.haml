@@ -20,5 +20,4 @@
         %label.control-label Role
         = f.select :role, role_options(language_user.role), {}, { class: 'form-control', style: 'width:100%', autocomplete: 'off'}
   .modal-footer
-    %button.btn.btn-default{'data-dismiss' => 'modal'} Close
     %button#submit.btn.btn-primary Save changes

@@ -1,0 +1,28 @@
+.modal-dialog
+  .modal-content
+    .modal-header
+      %button{:type => 'button', 'data-dismiss' => 'modal', :class => 'close', 'aria-hidden' => true}= '&times;'.html_safe
+      %h3 Changes report
+
+    .modal-body
+      %table.table.table-striped.table-hover.table-primary.table-condensed.changes_list.simple-responsive-table-xs
+        %thead
+          %tr
+            %th.col-sm-2 Who
+            %th What
+            %th.col-sm-3 When
+        %tbody
+          - changes.each do |change|
+            %tr
+              %td{:title => "Who"}
+                = formatted_change_user(change)
+              %td{:title => "What"}
+                .description= formatted_change_title(change)
+                .item= formatted_change_description(change)
+              %td{:title => "When"}
+                = as_datetime(change.created_at)
+
+          - if changes.empty?
+            %tr
+              %td{:colspan => 4}
+                No changes recorded yet.

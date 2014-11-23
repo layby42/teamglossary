@@ -1,14 +1,15 @@
+%h2
+  = link_to admin_languages_path do
+    %i.fa.fa-angle-left
+    = @language.full_name
+
+  - if current_user.admin? || current_user.manager?(@language.id)
+    = link_to edit_admin_language_path(@language), class: 'pull-right btn btn-primary btn-sm' do
+      %i.fa.fa-edit
+      Edit
+
 .panel.panel-default
   .panel-body
-    %h2
-      = link_to admin_languages_path do
-        %i.fa.fa-angle-left
-        = @language.english_name
-      = link_to edit_admin_language_path(@language), class: 'pull-right btn btn-primary btn-sm' do
-        %i.fa.fa-edit
-        Edit
-    %hr/
-
     %table.table.table-striped
       %thead
         %tr
@@ -23,11 +24,18 @@
           %td= @language.name
           %td= @language.english_name
           %td= @language.encoding
-          %td= @language.is_active
+          %td
+            - if @language.is_active?
+              %i.fa.fa-check
 
-    .row
-      %h3.col-xs-12 Notes
-      %p.col-xs-12= @language.notes
+            - if current_user.admin?
+              = link_to changes_admin_language_path(@language), remote: true, class: 'pull-right' do
+                %i.fa.fa-bars.text-muted
+
+    - if @language.notes.present?
+      .row
+        %h3.col-xs-12 Notes
+        %p.col-xs-12= @language.notes
 
     .row
       %h3.col-xs-12 Team

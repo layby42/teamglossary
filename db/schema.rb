@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141108205043) do
+ActiveRecord::Schema.define(version: 20141123154018) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -445,14 +445,14 @@ ActiveRecord::Schema.define(version: 20141108205043) do
   add_index "language_users", ["user_id"], name: "index_language_users_on_user_id", using: :btree
 
   create_table "languages", force: true do |t|
-    t.string   "iso_code",                                             null: false
-    t.string   "english_name",                                         null: false
-    t.string   "name",                                                 null: false
+    t.string   "iso_code",         limit: 10,                     null: false
+    t.string   "english_name",     limit: 100,                    null: false
+    t.string   "name",             limit: 100,                    null: false
     t.boolean  "is_base_language",              default: false
-    t.boolean  "is_active",                     default: true,         null: false
+    t.boolean  "is_active",                     default: true,    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "encoding",                      default: "ISO-8859-1", null: false
+    t.string   "encoding",         limit: 15,   default: "UTF-8", null: false
     t.string   "notes",            limit: 4000
   end
 
@@ -545,6 +545,18 @@ ActiveRecord::Schema.define(version: 20141108205043) do
   end
 
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
+
+  create_table "versions", force: true do |t|
+    t.string   "item_type",      null: false
+    t.integer  "item_id",        null: false
+    t.string   "event",          null: false
+    t.string   "whodunnit"
+    t.text     "object"
+    t.text     "object_changes"
+    t.datetime "created_at"
+  end
+
+  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
 
   create_table "wish_lists", force: true do |t|
     t.integer  "user_id"

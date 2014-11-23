@@ -1,0 +1,15 @@
+%h2
+  = link_to admin_user_path(@user) do
+    %i.fa.fa-angle-left
+    = @user.name
+
+%ul.nav.nav-tabs
+  = tab_for 'details' do
+    = link_to 'Details', edit_admin_user_path(@user, tab: :details)
+  = tab_for 'team' do
+    = link_to edit_admin_user_path(@user, tab: :team) do
+      Team
+      %span.badge= @user.teams_count
+
+#language_content.tab-content
+  = render "admin/users/tabs/#{@tab}", user: @user

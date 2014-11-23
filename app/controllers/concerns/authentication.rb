@@ -36,4 +36,10 @@ module Authentication
       redirect_to root_path
     end
   end
+
+  def require_admin_or_manager
+    unless current_user && (current_user.admin? || current_user.manager?)
+      redirect_to root_path
+    end
+  end
 end

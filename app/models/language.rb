@@ -3,14 +3,14 @@
 # Table name: languages
 #
 #  id               :integer          not null, primary key
-#  iso_code         :string(255)      not null
-#  english_name     :string(255)      not null
-#  name             :string(255)      not null
+#  iso_code         :string(10)       not null
+#  english_name     :string(100)      not null
+#  name             :string(100)      not null
 #  is_base_language :boolean          default(FALSE)
 #  is_active        :boolean          default(TRUE), not null
 #  created_at       :datetime
 #  updated_at       :datetime
-#  encoding         :string(255)      default("ISO-8859-1"), not null
+#  encoding         :string(15)       default("UTF-8"), not null
 #  notes            :string(4000)
 #
 
@@ -27,6 +27,9 @@ class Language < ActiveRecord::Base
 
   has_many :glossary_titles
   has_many :glossary_title_translations
+
+  strip_attributes :only => [:iso_code, :english_name, :name, :notes, :encoding]
+  has_paper_trail :ignore => [:created_at, :updated_at]
 
   scope :base, -> { where(is_base_language: true)}
   scope :active, -> { where(is_active: true)}

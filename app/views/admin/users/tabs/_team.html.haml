@@ -1,0 +1,29 @@
+.row
+  .col-xs-12
+    = render 'shared/roles_info'
+.row
+  - read_only = !(current_user.admin? || current_user.manager?)
+  - LanguageUser::ROLES.each do |role|
+    .col-sm-4.col-xs-12
+      - languages = user_languages_sorted(user, role)
+      - unless read_only
+        = link_to new_admin_user_team_path(user.id, role: role), class: 'pull-left btn btn-primary btn-xs', remote: true, title: "Add #{role}" do
+          %i.fa.fa-plus-circle
+      %h4{style: 'margin-top: 2px;'} &nbsp; #{role.to_s.upcase}
+
+      - languages.each_with_index do |language_user, idx|
+        %p
+          - if read_only
+            = language_user.language.full_name
+          - else
+            - if current_user.admin? || current_user.manager?(language_user.language_id)
+              = link_to admin_user_team_path(user.id, language_user.id), method: :delete, class: 'btn btn-xs', data: {confirm: 'Are you sure?'} do
+                %i.fa.fa-times-circle.text-danger
+              = link_to language_user.language.full_name, admin_language_path(language_user.language_id)
+            - else
+              = link_to language_user.language.full_name, admin_language_path(language_user.language_id), style: 'margin-left: 26px;'
+.row
+  .col-xs-12
+    %p.text-right
+      - if user.login_count == 0 && current_user.can_manage_user_team?(user)
+        = link_to 'Send Welcome Email', welcome_admin_user_path(user), method: :put, class: 'btn btn-success'

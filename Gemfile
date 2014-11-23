@@ -14,6 +14,8 @@ gem 'uglifier', '>= 1.3.0'
 gem 'bower-rails'
 gem 'jquery-rails'
 gem 'kaminari'
+gem 'paper_trail'
+gem 'exception_notification'
 
 group :development, :test do
   gem 'thin'

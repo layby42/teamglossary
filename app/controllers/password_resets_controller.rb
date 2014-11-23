@@ -12,7 +12,7 @@ class PasswordResetsController < ApplicationController
   def create
     @user = User.find_by_email(request_reset_params[:email])
     if @user
-      UserMailer.password_reset_email(@user, confirm_url: edit_password_reset_url(@user.perishable_token)).deliver
+      UserMailer.password_reset_email(@user, password_reset_url: edit_password_reset_url(@user.perishable_token)).deliver
       flash_to notice: 'Password reset instructions have been emailed to you. Please check your email (including SPAM folder).'
       redirect_to login_path
     else
