@@ -5,8 +5,6 @@
     - if item.is_private
       %i.pull-right.fa.fa-eye.text-info{title: 'Private'}
 
-    %i.fa{class: item.proper_name_type.fa_icon, title: item.proper_name_type.name}
-    &nbsp;
     %strong= item.term
     - if item.dates.present?
       (#{item.dates})

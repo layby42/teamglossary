@@ -1,0 +1,28 @@
+= form_for [:admin, proper_name_type], :html => {:'data-validate' => 'parsley', class: 'modal-form form-horizontal', :'data-async' =>  ''}  do |f|
+  .modal-header
+    %button{:type => 'button', 'data-dismiss' => 'modal', :class => 'close', 'aria-hidden' => true}= '&times;'.html_safe
+    %h3= proper_name_type.new_record? ? 'New Proper Name Type' : 'Edit Proper Name Type'
+
+  .modal-body
+    .alert.alert-danger.hide
+    .row
+      .col-sm-2
+        %label.control-label Code
+        = f.text_field :code, class: 'form-control', style: 'width:100%', autocomplete: 'off', maxlength: 3
+
+      .col-sm-10
+        %label.control-label Name
+        = f.text_field :name, class: 'form-control', style: 'width:100%', autocomplete: 'off', maxlength: 100
+
+    .row
+      .col-sm-12
+        %label.control-label Description
+        = f.text_area :description, class: 'form-control', style: 'width:100%', autocomplete: 'off', maxlength: 2000
+
+      .col-sm-12{style: 'margin-top: 20px;'}
+        = f.check_box :is_default, autocomplete: 'off'
+        = label_tag :is_default, 'Default'
+
+  .modal-footer
+    %button#submit.btn.btn-primary Save changes
+

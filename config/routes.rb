@@ -18,6 +18,10 @@ Rails.application.routes.draw do
       get :changes, on: :member
       resources :teams, only: [:new, :create, :destroy]
     end
+
+    resources :proper_name_types, only: [:index, :new, :create, :edit, :update] do
+      get :changes, on: :member
+    end
   end
 
   root :to => 'home#index'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141123154018) do
+ActiveRecord::Schema.define(version: 20141123224237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -473,13 +473,12 @@ ActiveRecord::Schema.define(version: 20141123154018) do
   add_index "online_statuses", ["is_default"], name: "index_online_statuses_on_is_default", using: :btree
 
   create_table "proper_name_types", force: true do |t|
-    t.string   "code",                                        null: false
-    t.string   "name",                                        null: false
-    t.text     "description"
-    t.boolean  "is_default",              default: false,     null: false
+    t.string   "code",        limit: 3,                    null: false
+    t.string   "name",        limit: 100,                  null: false
+    t.string   "description", limit: 2000
+    t.boolean  "is_default",               default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "fa_icon",     limit: 100, default: "fa-flag", null: false
   end
 
   add_index "proper_name_types", ["code"], name: "index_proper_name_types_on_code", unique: true, using: :btree

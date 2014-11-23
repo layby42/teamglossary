@@ -41,6 +41,7 @@ class Admin::LanguagesController < ApplicationController
 
   def changes
     @changes = Change.for_item(@language).sort {|a, b| b.created_at <=> a.created_at}
+    render template: 'admin/changes/changes'
   end
 
   private

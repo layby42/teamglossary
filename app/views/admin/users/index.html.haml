@@ -3,7 +3,7 @@
   %span.badge #{@users.count}
 
   .pull-right
-    = render 'shared/add_new_button', url: new_admin_user_path
+    = render 'shared/add_new_button', url: new_admin_user_path, remote: false
 
 %table.table.table-striped.table-hover.table-bordered
   %thead

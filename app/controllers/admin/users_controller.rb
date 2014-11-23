@@ -58,6 +58,7 @@ class Admin::UsersController < ApplicationController
 
   def changes
     @changes = Change.for_item(@user).sort {|a, b| b.created_at <=> a.created_at}
+    render template: 'admin/changes/changes'
   end
 
   private
