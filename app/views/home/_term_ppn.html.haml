@@ -22,11 +22,4 @@
           %br/
           = translation.notes
   %td
-    - last_comment = item.last_comment(language.id)
-    - if last_comment.present?
-
-      = last_comment.text
-      .text-right
-        %br/
-        %i #{last_comment.user.name} (#{last_comment.created_at})
-
+    = render 'shared/term_last_comment', language: language, term: item

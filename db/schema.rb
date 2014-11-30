@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141130192209) do
+ActiveRecord::Schema.define(version: 20141130221817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -173,6 +173,7 @@ ActiveRecord::Schema.define(version: 20141130192209) do
     t.string   "alt_term3"
     t.text     "notes"
     t.string   "term_gender"
+    t.text     "definition"
   end
 
   add_index "glossary_term_translations", ["glossary_term_id"], name: "index_glossary_term_translations_on_glossary_term_id", using: :btree
@@ -197,8 +198,10 @@ ActiveRecord::Schema.define(version: 20141130192209) do
     t.string   "alternative_tibetan"
     t.string   "alternative_sanskrit"
     t.text     "additional_explanation"
-    t.string   "sanscrit_gender"
+    t.string   "sanskrit_gender"
     t.string   "pali_gender"
+    t.text     "definition"
+    t.boolean  "is_definition_private",  default: false, null: false
   end
 
   add_index "glossary_terms", ["glossary_term_id", "id"], name: "index_glossary_terms_on_glossary_term_id_and_id", using: :btree

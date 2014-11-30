@@ -45,4 +45,15 @@ module ApplicationHelper
     return '' unless datetime.present?
     "#{time_ago_in_words(datetime)} ago"
   end
+
+  def gender_helper(gender_abbreviation)
+    case gender_abbreviation.to_s.upcase
+    when 'M'
+      content_tag('div', 'masculine', class: 'label label-default')
+    when 'F'
+      content_tag('div', 'feminine', class: 'label label-default')
+    else
+      ''
+    end
+  end
 end

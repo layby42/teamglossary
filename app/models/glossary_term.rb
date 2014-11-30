@@ -24,6 +24,8 @@
 #  additional_explanation :text
 #  sanscrit_gender        :string(255)
 #  pali_gender            :string(255)
+#  definition             :text
+#  is_definition_private  :boolean          default(FALSE), not null
 #
 
 class GlossaryTerm < ActiveRecord::Base
@@ -33,14 +35,14 @@ class GlossaryTerm < ActiveRecord::Base
   belongs_to :glossary_term
   belongs_to :sanskrit_status
 
-  has_many :glossary_term_definitions
   has_many :glossary_term_translations
+  has_many :comments, as: :commentable
 
   scope :list_order, -> { order('lower(glossary_terms.term)') }
 
   def self.simple_search(language, query)
     search_columns = [:term, :tibetan, :sanskrit, :pali, :arabic,
-      :alternative_tibetan, :alternative_sanskrit, :additional_explanation]
+      :alternative_tibetan, :alternative_sanskrit, :additional_explanation, :definition]
 
     if language.is_base_language?
       GlossaryTerm.where(%Q{
@@ -50,7 +52,7 @@ class GlossaryTerm < ActiveRecord::Base
         search_columns.collect{|field| term[field].to_s}.join(' ').downcase.include?(query)
       end
     else
-      search_transaction_columns = [:term, :alt_term1, :alt_term2, :alt_term2, :notes]
+      search_transaction_columns = [:term, :alt_term1, :alt_term2, :alt_term2, :notes, :definition]
       GlossaryTerm.where(%Q{
         (glossary_terms.language_id = ? OR
           ( glossary_terms.language_id = ? AND
@@ -70,4 +72,11 @@ class GlossaryTerm < ActiveRecord::Base
     end
   end
 
+  def last_comment(language_id=nil)
+    if language_id.present?
+      self.comments.by_language(language_id).list_order.limit(1).includes([:user]).first
+    else
+      self.comments.list_order.limit(1).includes([:user]).first
+    end
+  end
 end

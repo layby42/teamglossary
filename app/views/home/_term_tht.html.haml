@@ -2,12 +2,25 @@
   %td
     = render 'shared/term_marks', language: language, term: item
 
-    %strong= item.term
+    %strong
+      = link_to item.term, language_glossary_term_path(item.language, item), remote: true
+
+    - if item.definition.present?
+      %br/
+      %br/
+      = item.definition
 
 
   - unless language.is_base_language?
     %td
       - translation = item.glossary_term_translations.select{|t| t.language_id == @language.id}.first
       - if translation.present?
-        %strong= translation.term
+        %strong
+          = link_to translation.term, language_glossary_term_path(language, item), remote: true
+
+        - if translation.definition.present?
+          %br/
+          %br/
+          = translation.definition
   %td
+    = render 'shared/term_last_comment', language: language, term: item

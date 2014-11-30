@@ -1,0 +1,86 @@
+= render 'shared/term_alerts', language: language, term: item
+
+.col-sm-6.col-xs-12
+  %h5
+    TERM DETAILS
+  %table.table.table-striped.table-hover
+    %tbody
+      %tr
+        %th Term
+        %td
+          = link_to item.term, language_glossary_term_path(item.language, item), remote: request.xhr?
+      %tr
+        %th Tibetan
+        %td
+          = item.tibetan
+          - if item.alternative_tibetan.present?
+            %br/
+            Alternative: #{item.alternative_tibetan}
+      %tr
+        %th Sanskrit
+        %td
+          = item.sanskrit
+          .pull-right= gender_helper(item.sanskrit_gender)
+
+          - if item.alternative_sanskrit.present?
+            %br/
+            Alternative: #{item.alternative_sanskrit}
+      %tr
+        %th Pali
+        %td
+          = item.pali
+          .pull-right= gender_helper(item.pali_gender)
+      %tr
+        %th Arabic
+        %td= item.arabic
+      %tr
+        %th Definition
+        %td= item.definition
+      %tr
+        %th Explanation
+        %td= truncate(item.additional_explanation, length: 250, omission: ' ... (more)')
+
+.col-sm-6.col-xs-12
+  - unless language.is_base_language?
+    - translation = item.glossary_term_translations.by_language(language.id).first
+    - translation ||= GlossaryTermTranslation.new
+    %h5= "TRANSLATION (#{language.full_name})"
+    %table.table.table-striped.table-hover
+      %tbody
+        %tr
+          %th Translation
+          %td
+            = link_to translation.term, language_glossary_term_path(language, item), remote: request.xhr?
+            .pull-right= gender_helper(translation.term_gender)
+
+            - [:alt_term1, :alt_term2, :alt_term3].each do |field|
+              - next unless translation[field].present?
+              %br/
+              * #{translation[field]}
+        %tr
+          %th Definition
+          %td= translation.definition
+        %tr
+          %th Notes
+          %td= truncate(translation.notes, length: 250, omission: ' ... (more)')
+
+  - unless item.is_private?
+    - translations = item.glossary_term_translations.except_language(language.id).includes([:language]).sort{|x,y| x.language.iso_code <=> y.language.iso_code}
+    - unless translations.empty?
+      %h5= language.is_base_language? ? 'TRANSLATIONS' : 'OTHER TRANSLATIONS'
+      %table.table.table-striped.table-hover
+        %tbody
+          - translations.each do |translation|
+            %tr
+              %th= truncate(translation.language.english_name, length: 25)
+              %td= link_to translation.term, language_glossary_term_path(translation.language_id, item), remote: request.xhr?
+
+- if request.xhr?
+  .col-xs-12.text-right
+    = link_to 'More details...', language_glossary_term_path(language, item)
+- else
+  .col-xs-12
+    = render 'shared/term_comments', language: language, term: item
+
+
+

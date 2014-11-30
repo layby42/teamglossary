@@ -14,10 +14,15 @@
 #  alt_term3             :string(255)
 #  notes                 :text
 #  term_gender           :string(255)
+#  definition            :text
 #
 
 class GlossaryTermTranslation < ActiveRecord::Base
   belongs_to :language
   belongs_to :glossary_term
   belongs_to :integration_status
+
+  scope :by_language, -> (language_id) { where(language_id: language_id) }
+  scope :except_language, -> (language_id) { where('glossary_term_translations.language_id <> ?', language_id) }
+
 end

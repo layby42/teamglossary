@@ -1,2 +1,8 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
+$(function() {
+  $(document).on('change', '#search_glossary_type_id', function(){
+    $(this).parents('form').submit();
+  });
+  $(document).on('change', '#search_language_id', function(){
+    $(this).parents('form').submit();
+  });
+});
