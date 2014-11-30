@@ -14,10 +14,10 @@ class HomeController < ApplicationController
 
   def find_language
     if params[:search].present?
-      @language = current_user.languages.where(id: params[:search][:language_id]).first
-      @language = current_user.languages.first unless @language
+      @language = Language.active.where(id: params[:search][:language_id]).first
+      @language = Language.active.first unless @language
     else
-      @language = current_user.languages.first
+      @language = Language.active.first
     end
   end
 

@@ -1,11 +1,12 @@
 %tr
   %td
     - if poposed_item?(language, item)
-      %i.pull-right.fa.fa-warning.text-warning{title: 'Proposed to main glossary'}
-    - if item.is_private
+      %i.pull-right.fa.fa-warning.text-warning{title: "Proposed to the Main glossary by #{item.language.english_name} team"}
+    - if item.is_private?
       %i.pull-right.fa.fa-eye.text-info{title: 'Private'}
 
-    %strong= item.term
+    %strong
+      = link_to item.term, language_glossary_name_path(item.language, item), remote: true
     - if item.dates.present?
       (#{item.dates})
     - if item.explanation.present?
@@ -16,11 +17,19 @@
     %td
       - translation = item.glossary_name_translations.select{|t| t.language_id == @language.id}.first
       - if translation.present?
-        %strong= translation.term
+        %strong
+          = link_to translation.term, language_glossary_name_path(language, item), remote: true
         %i= translation.alternative_as_string
-
         - if translation.notes.present?
           %br/
           %br/
           = translation.notes
   %td
+    - last_comment = item.last_comment(language.id)
+    - if last_comment.present?
+
+      = last_comment.text
+      .text-right
+        %br/
+        %i #{last_comment.user.name} (#{last_comment.created_at})
+

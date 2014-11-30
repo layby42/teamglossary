@@ -11,23 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141123224237) do
+ActiveRecord::Schema.define(version: 20141130192209) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "discussions", force: true do |t|
-    t.integer  "discussible_id"
+  create_table "comments", force: true do |t|
+    t.integer  "commentable_id"
     t.integer  "language_id"
     t.integer  "user_id"
-    t.string   "discussible_type"
+    t.string   "commentable_type"
     t.text     "text"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "discussions", ["discussible_type", "language_id", "discussible_id", "user_id"], name: "discussions_discussible_type_language_discussible_user", using: :btree
-  add_index "discussions", ["user_id", "discussible_type", "language_id", "discussible_id"], name: "discussions_user_discussible_type_language_discussible", using: :btree
+  add_index "comments", ["commentable_type", "language_id", "commentable_id", "user_id"], name: "discussions_discussible_type_language_discussible_user", using: :btree
+  add_index "comments", ["user_id", "commentable_type", "language_id", "commentable_id"], name: "discussions_user_discussible_type_language_discussible", using: :btree
 
   create_table "general_menu_actions", force: true do |t|
     t.integer  "language_id"
@@ -568,8 +568,8 @@ ActiveRecord::Schema.define(version: 20141123224237) do
   add_index "wish_lists", ["subject"], name: "index_wish_lists_on_subject", unique: true, using: :btree
   add_index "wish_lists", ["user_id"], name: "index_wish_lists_on_user_id", using: :btree
 
-  add_foreign_key "discussions", "languages", name: "fk_discussions_languages", dependent: :restrict
-  add_foreign_key "discussions", "users", name: "fk_discussions_users", dependent: :restrict
+  add_foreign_key "comments", "languages", name: "fk_discussions_languages", dependent: :restrict
+  add_foreign_key "comments", "users", name: "fk_discussions_users", dependent: :restrict
 
   add_foreign_key "general_menu_actions", "general_menus", name: "fk_general_menu_actions_general_menus", dependent: :restrict
   add_foreign_key "general_menu_actions", "languages", name: "fk_general_menu_actions_languages", dependent: :restrict

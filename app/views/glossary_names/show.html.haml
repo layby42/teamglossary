@@ -1,0 +1,8 @@
+%h2
+  = link_to root_path do
+    %i.fa.fa-angle-left
+    = @glossary_name.term
+
+.panel.panel-default
+  .panel-body
+    = render 'show'

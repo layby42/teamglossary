@@ -27,6 +27,7 @@ class GlossaryName < ActiveRecord::Base
   belongs_to :integration_status
 
   has_many :glossary_name_translations
+  has_many :comments, as: :commentable
 
   scope :list_order, -> { order('lower(glossary_names.term)') }
 
@@ -60,6 +61,14 @@ class GlossaryName < ActiveRecord::Base
               end.join(' ').downcase.include?(query)
             )
       end
+    end
+  end
+
+  def last_comment(language_id=nil)
+    if language_id.present?
+      self.comments.by_language(language_id).list_order.limit(1).includes([:user]).first
+    else
+      self.comments.list_order.limit(1).includes([:user]).first
     end
   end
 end

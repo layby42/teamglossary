@@ -40,5 +40,11 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :languages, only: [:show] do
+    resources :glossary_names, only: [:new, :create, :show, :edit, :update] do
+      get :changes, on: :member
+    end
+  end
+
   root :to => 'home#index'
 end

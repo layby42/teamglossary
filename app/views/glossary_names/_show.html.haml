@@ -1,0 +1,95 @@
+- if poposed_item?(@language, @glossary_name)
+  .col-xs-12
+    .panel.panel-default
+      .panel-body
+        %i.fa.fa-warning.text-warning
+        Termin proposed to the Main glossary by #{@glossary_name.language.english_name} team
+- if @glossary_name.is_private?
+  .col-xs-12
+    .panel.panel-default
+      .panel-body
+        %i.fa.fa-eye.text-info
+        This is a private term. Used by #{@glossary_name.language.english_name} team only.
+
+.col-sm-6.col-xs-12
+  %h5
+    TERM DETAILS
+  %table.table.table-striped.table-hover
+    %tbody
+      %tr
+        %th Term
+        %td
+          = link_to @glossary_name.term, language_glossary_name_path(@glossary_name.language, @glossary_name), remote: request.xhr?
+      %tr
+        %th Type
+        %td= @glossary_name.proper_name_type.name
+      %tr
+        %th Dates
+        %td= @glossary_name.dates
+      %tr
+        %th Tibetan
+        %td= @glossary_name.tibetan
+      %tr
+        %th Sanskrit
+        %td= @glossary_name.sanskrit
+      %tr
+        %th Wage-Giles
+        %td= @glossary_name.wade_giles
+      %tr
+        %th Explanation
+        %td= @glossary_name.explanation
+
+.col-sm-6.col-xs-12
+  - unless @language.is_base_language?
+    - translation = @glossary_name.glossary_name_translations.by_language(@language.id).first
+    - translation ||= GlossaryNameTranslation.new
+    %h5= "TRANSLATION (#{@language.full_name})"
+    %table.table.table-striped.table-hover
+      %tbody
+        %tr
+          %th Translation
+          %td
+            = link_to translation.term, language_glossary_name_path(@language, @glossary_name), remote: request.xhr?
+            - [:alt_term1, :alt_term2, :alt_term3].each do |field|
+              - next unless translation[field].present?
+              %br/
+              = translation[field]
+        %tr
+          %th Notes
+          %td= translation.notes
+
+  - unless @glossary_name.is_private?
+    - translations = @glossary_name.glossary_name_translations.except_language(@language.id).includes([:language]).sort{|x,y| x.language.iso_code <=> y.language.iso_code}
+    - unless translations.empty?
+      %h5= @language.is_base_language? ? 'TRANSLATIONS' : 'OTHER TRANSLATIONS'
+      %table.table.table-striped.table-hover
+        %tbody
+          - translations.each do |translation|
+            %tr
+              %th= translation.language.full_name
+              %td= link_to translation.term, language_glossary_name_path(translation.language_id, @glossary_name), remote: request.xhr?
+
+- if request.xhr?
+  .col-xs-12.text-right
+    = link_to 'More details...', language_glossary_name_path(@language, @glossary_name)
+- else
+  .col-xs-12
+    %h5 COMMENTS
+    - comments = @glossary_name.comments.by_language(@language.id).includes([:user])
+    - if comments.empty?
+      no comments yet
+    - else
+      %table.table.table-striped.table-hover
+        %thead
+          %tr
+            %td Date
+            %td Comment
+            %td By
+        %tbody
+          - comments.each do |comment|
+            %tr
+              %td= comment.created_at
+              %td= comment.text
+              %td= comment.user.name
+
+

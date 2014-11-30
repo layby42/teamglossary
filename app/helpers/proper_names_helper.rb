@@ -1,0 +1,2 @@
+module ProperNamesHelper
+end
