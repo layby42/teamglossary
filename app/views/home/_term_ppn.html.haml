@@ -1,9 +1,6 @@
 %tr
   %td
-    - if poposed_item?(language, item)
-      %i.pull-right.fa.fa-warning.text-warning{title: "Proposed to the Main glossary by #{item.language.english_name} team"}
-    - if item.is_private?
-      %i.pull-right.fa.fa-eye.text-info{title: 'Private'}
+    = render 'shared/term_marks', language: language, term: item
 
     %strong
       = link_to item.term, language_glossary_name_path(item.language, item), remote: true
@@ -15,7 +12,7 @@
       = item.explanation
   - unless language.is_base_language?
     %td
-      - translation = item.glossary_name_translations.select{|t| t.language_id == @language.id}.first
+      - translation = item.glossary_name_translations.select{|t| t.language_id == language.id}.first
       - if translation.present?
         %strong
           = link_to translation.term, language_glossary_name_path(language, item), remote: true

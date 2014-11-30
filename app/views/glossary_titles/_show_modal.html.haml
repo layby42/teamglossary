@@ -1,6 +1,6 @@
 .modal-header
   %button{:type => 'button', 'data-dismiss' => 'modal', :class => 'close', 'aria-hidden' => true}= '&times;'.html_safe
   %h4
-    = @glossary_name.term
+    = @glossary_title.term
 .modal-body
-  .row= render 'show', language: @language, item: @glossary_name
+  .row= render 'show', language: @language, item: @glossary_title

@@ -1,9 +1,6 @@
 %tr
   %td
-    - if poposed_item?(language, item)
-      %i.pull-right.fa.fa-warning.text-warning{title: 'Proposed to main glossary'}
-    - if item.is_private
-      %i.pull-right.fa.fa-eye.text-info{title: 'Private'}
+    = render 'shared/term_marks', language: language, term: item
 
     %strong= item.term
 

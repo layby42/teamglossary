@@ -1,25 +1,28 @@
 %tr
   %td
-    - if poposed_item?(language, item)
-      %i.pull-right.fa.fa-warning.text-warning{title: 'Proposed to main glossary'}
-    - if item.is_private
-      %i.pull-right.fa.fa-eye.text-info{title: 'Private'}
+    = render 'shared/term_marks', language: language, term: item
+
+    %strong
+      = link_to item.term, language_glossary_title_path(item.language, item), remote: true
 
     - if item.author.present?
-      #{item.author} :
+      .text-left
+        %i -- #{item.author}
 
-    %strong= item.term
     - if item.explanation.present?
       %br/
       %br/
       = item.explanation
   - unless language.is_base_language?
     %td
-      - translation = item.glossary_title_translations.select{|t| t.language_id == @language.id}.first
+      - translation = item.glossary_title_translations.select{|t| t.language_id == language.id}.first
       - if translation.present?
+        %strong
+          = link_to translation.term, language_glossary_title_path(language, item), remote: true
         - if translation.author.present?
-          #{translation.author} :
-        %strong= translation.term
+          .text-left
+            %i -- #{translation.author}
+
         %br/
         %i= translation.alternative_as_string
 
@@ -28,3 +31,10 @@
           %br/
           = translation.notes
   %td
+    - last_comment = item.last_comment(language.id)
+    - if last_comment.present?
+
+      = last_comment.text
+      .text-right
+        %br/
+        %i #{last_comment.user.name} (#{last_comment.created_at})

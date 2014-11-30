@@ -21,6 +21,9 @@ class GlossaryTitleTranslation < ActiveRecord::Base
   belongs_to :glossary_title
   belongs_to :integration_status
 
+  scope :by_language, -> (language_id) { where(language_id: language_id) }
+  scope :except_language, -> (language_id) { where('glossary_title_translations.language_id <> ?', language_id) }
+
   validates :term, :language_id, :glossary_title_id, presence: true
   validates :glossary_title_id, uniqueness: {scope: :language_id, case_sensitive: false}
 

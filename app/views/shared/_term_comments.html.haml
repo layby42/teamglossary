@@ -1,0 +1,17 @@
+%h5 COMMENTS
+- comments = term.comments.by_language(language.id).includes([:user]).list_order
+- if comments.empty?
+  no comments yet
+- else
+  %table.table.table-striped.table-hover
+    %thead
+      %tr.active
+        %td Date
+        %td Comment
+        %td By
+    %tbody
+      - comments.each do |comment|
+        %tr
+          %td.col-xs-2= comment.created_at
+          %td= comment.text
+          %td.col-xs-2= comment.user.name

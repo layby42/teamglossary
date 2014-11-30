@@ -1,0 +1,12 @@
+- if poposed_item?(language, term)
+  .col-xs-12
+    .panel.panel-default
+      .panel-body
+        %i.fa.fa-warning.text-warning
+        Termin proposed to the Main glossary by #{term.language.english_name} team
+- if term.is_private?
+  .col-xs-12
+    .panel.panel-default
+      .panel-body
+        %i.fa.fa-eye.text-info
+        This is a private term. Used by #{term.language.english_name} team only.

@@ -44,6 +44,10 @@ Rails.application.routes.draw do
     resources :glossary_names, only: [:new, :create, :show, :edit, :update] do
       get :changes, on: :member
     end
+
+    resources :glossary_titles, only: [:new, :create, :show, :edit, :update] do
+      get :changes, on: :member
+    end
   end
 
   root :to => 'home#index'

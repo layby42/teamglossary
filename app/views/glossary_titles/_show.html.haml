@@ -1,0 +1,102 @@
+= render 'shared/term_alerts', language: language, term: item
+
+.col-sm-6.col-xs-12
+  %h5
+    TERM DETAILS
+  %table.table.table-striped.table-hover
+    %tbody
+      %tr
+        %th Term
+        %td
+          = link_to item.term, language_glossary_title_path(item.language, item), remote: request.xhr?
+
+          - if item.alt_term1.present? || item.alt_term2.present?
+            %br/
+            Alternatives:
+          - [:alt_term1, :alt_term2].each do |field|
+            - next unless item[field].present?
+            %br/
+            = item[field]
+
+          - if item.popular_term.present?
+            %br/
+            Popular: #{item.popular_term}
+
+      %tr
+        %th Author
+        %td
+          = item.author
+          - if item.author_translit.present?
+            %br/
+            Translit.: #{item.author_translit}
+      %tr
+        %th Tibetan
+        %td
+          - if item.tibetan_full.present? || item.tibetan_short.present?
+            Full: #{item.tibetan_full}
+            %br/
+            Short: #{item.tibetan_short}
+      %tr
+        %th Sanskrit
+        %td
+          - if item.sanskrit_full.present? || item.sanskrit_short.present?
+            Full: #{item.sanskrit_full}
+            %br/
+            Short: #{item.sanskrit_short}
+
+          - if item.sanskrit_full_diacrit.present? || item.sanskrit_short_diacrit.present?
+            %br/
+            with Diacritics:
+            %br/
+            Full: #{item.sanskrit_full_diacrit}
+            %br/
+            Short: #{item.sanskrit_short_diacrit}
+      %tr
+        %th Pali
+        %td= item.pali
+      %tr
+        %th Explanation
+        %td= item.explanation
+
+.col-sm-6.col-xs-12
+  - unless language.is_base_language?
+    - translation = item.glossary_title_translations.by_language(language.id).first
+    - translation ||= GlossarytitleTranslation.new
+    %h5= "TRANSLATION (#{language.full_name})"
+    %table.table.table-striped.table-hover
+      %tbody
+        %tr
+          %th Translation
+          %td
+            = link_to translation.term, language_glossary_title_path(language, item), remote: request.xhr?
+            - [:alt_term1, :alt_term2, :alt_term3].each do |field|
+              - next unless translation[field].present?
+              %br/
+              = translation[field]
+        %tr
+          %th Author
+          %td= translation.author
+        %tr
+          %th Notes
+          %td= translation.notes
+
+  - unless item.is_private?
+    - translations = item.glossary_title_translations.except_language(language.id).includes([:language]).sort{|x,y| x.language.iso_code <=> y.language.iso_code}
+    - unless translations.empty?
+      %h5= language.is_base_language? ? 'TRANSLATIONS' : 'OTHER TRANSLATIONS'
+      %table.table.table-striped.table-hover
+        %tbody
+          - translations.each do |translation|
+            %tr
+              %th= translation.language.english_name
+              %td= link_to translation.term, language_glossary_title_path(translation.language_id, item), remote: request.xhr?
+
+- if request.xhr?
+  .col-xs-12.text-right
+    = link_to 'More details...', language_glossary_title_path(language, item)
+- else
+  .col-xs-12
+    = render 'shared/term_comments', language: language, term: item
+
+
+
