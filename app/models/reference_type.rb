@@ -12,4 +12,19 @@
 #
 
 class ReferenceType < ActiveRecord::Base
+  strip_attributes :only => [:code, :name, :description]
+  has_paper_trail :ignore => [:created_at, :updated_at]
+
+  scope :list_order, -> { order('lower(reference_types.name)') }
+  scope :default, -> { where(is_default: true) }
+
+  validates :name, presence: true, length: {maximum: 100}
+  validates :code, presence: true, length: {maximum: 3}, uniqueness: {case_sensitive: false}
+
+  def fix_default!
+    ReferenceType.default.each do |item|
+      next if item.id == self.id
+      item.update_attributes!(is_default: false)
+    end
+  end
 end

@@ -27,7 +27,7 @@ class Admin::ProperNameTypesController < ApplicationController
   end
 
   def update
-    old_defaults = ProperNameType.where(is_default: true)
+    old_defaults = ProperNameType.default
     if @proper_name_type.update_attributes(proper_name_type_params)
       @proper_name_type.fix_default! if @proper_name_type.is_default?
       flash_to notice: 'Changes saved!'

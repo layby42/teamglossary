@@ -17,13 +17,16 @@
     %ul.list-group
       %li.list-group-item
         %span.badge= GeneralStatus.count
-        = link_to 'General Statuses', '#'
+        = link_to 'General Statuses', admin_general_statuses_path
       %li.list-group-item
         %span.badge= ReferenceType.count
-        = link_to 'Reference Types', '#'
+        = link_to 'Reference Types', admin_reference_types_path
+      %li.list-group-item
+        %span.badge= SanskritStatus.count
+        = link_to 'Skt/Tib Statuses', admin_sanskrit_statuses_path
       %li.list-group-item
         %span.badge= IntegrationStatus.count
-        = link_to 'Integration Statuses', '#'
+        = link_to 'Integration Statuses', admin_integration_statuses_path
       %li.list-group-item
         %span.badge= ProperNameType.count
         = link_to 'Proper Name Types', admin_proper_name_types_path

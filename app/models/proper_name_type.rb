@@ -23,9 +23,9 @@ class ProperNameType < ActiveRecord::Base
   validates :code, presence: true, length: {maximum: 3}, uniqueness: {case_sensitive: false}
 
   def fix_default!
-    ProperNameType.default.each do |pn|
-      next if pn.id == self.id
-      pn.update_attributes!(is_default: false)
+    ProperNameType.default.each do |item|
+      next if item.id == self.id
+      item.update_attributes!(is_default: false)
     end
   end
 end

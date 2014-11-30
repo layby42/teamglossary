@@ -22,6 +22,22 @@ Rails.application.routes.draw do
     resources :proper_name_types, only: [:index, :new, :create, :edit, :update] do
       get :changes, on: :member
     end
+
+    resources :reference_types, only: [:index, :new, :create, :edit, :update] do
+      get :changes, on: :member
+    end
+
+    resources :sanskrit_statuses, only: [:index, :new, :create, :edit, :update] do
+      get :changes, on: :member
+    end
+
+    resources :integration_statuses, only: [:index, :new, :create, :edit, :update] do
+      get :changes, on: :member
+    end
+
+    resources :general_statuses, only: [:index, :new, :create, :edit, :update] do
+      get :changes, on: :member
+    end
   end
 
   root :to => 'home#index'
