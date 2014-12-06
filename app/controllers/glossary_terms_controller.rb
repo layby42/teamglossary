@@ -1,8 +1,21 @@
 class GlossaryTermsController < LanguagesController
   before_filter :find_language
   before_filter :find_glossary_term, only: [:show, :edit, :update]
+  before_filter :require_xhr, :only => [:update]
 
   def show
+  end
+
+  def edit
+  end
+
+  def update
+    if @glossary_term.update_attributes!(glossary_term_params)
+      flash_to notice: 'Changes saved!'
+      redirect_to action: :show
+    else
+      render action: :show
+    end
   end
 
   private
@@ -19,5 +32,34 @@ class GlossaryTermsController < LanguagesController
   rescue
     flash_to error: 'Sorry, technical term not found'
     redirect_to root_path
+  end
+
+  def require_xhr
+    unless request.xhr?
+      language_glossary_term_path(@language, @glossary_term)
+    end
+  end
+
+  def glossary_term_params
+    params.require(:glossary_term).permit(
+      :term,
+      :is_private,
+      :reference_type_id,
+      :general_status_id,
+      :integration_status_id,
+      :sanskrit_status_id,
+      :glossary_term_id,
+      :tibetan,
+      :alternative_tibetan,
+      :sanskrit,
+      :alternative_sanskrit,
+      :sanscrit_gender,
+      :pali,
+      :pali_gender,
+      :arabic,
+      :definition,
+      :is_definition_private,
+      :additional_explanation
+      )
   end
 end

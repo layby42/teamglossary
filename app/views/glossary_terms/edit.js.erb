@@ -1,0 +1,7 @@
+var cancel_html = $("#term-container").html();
+$("#term-container").html('<%=j render "term_form", language: @language, glossary_term: @glossary_term %>');
+$('#edit_term_button').hide();
+$('#cancel_term_edit').on('click', function(){
+  $("#term-container").html(cancel_html);
+  $('#edit_term_button').show();
+});

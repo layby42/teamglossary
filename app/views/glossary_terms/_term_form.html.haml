@@ -1,0 +1,72 @@
+= form_for [language, glossary_term], html: {class: 'form-horizontal well'} do |f|
+  .form-group
+    %h4 TERM
+    .col-sm-9.col-sm-offset-3
+      = f.text_field :term, class: 'form-control', autocomplete: 'off'
+      = f.check_box :is_private, autocomplete: 'off'
+      = label_tag :is_private, "private"
+
+  .form-group
+    %h4 TIBETAN
+    %label.col-sm-3.control-label Main
+    .col-sm-9
+      = f.text_field :tibetan, class: 'form-control', autocomplete: 'off', placeholder: 'Tibetan'
+    %label.col-sm-3.control-label Alternative
+    .col-sm-9
+      = f.text_field :alternative_tibetan, class: 'form-control', autocomplete: 'off', placeholder: 'Alternative Tibetan'
+
+  .form-group
+    %h4 SANSKRIT
+    %label.col-sm-3.control-label Main
+    .col-sm-9
+      = f.text_field :sanskrit, class: 'form-control', autocomplete: 'off', placeholder: 'Sanskrit'
+    %label.col-sm-3.control-label Alternative
+    .col-sm-9
+      = f.text_field :alternative_sanskrit, class: 'form-control', autocomplete: 'off', placeholder: 'Alternative Sanskrit'
+    %label.col-sm-3.control-label Gender
+    .col-sm-9
+      = f.select :sanskrit_gender, gender_options(glossary_term.sanskrit_gender), {include_blank: true}, {class: 'form-control', autocomplete: 'off'}
+
+  .form-group
+    %h4 PALI
+    %label.col-sm-3.control-label Main
+    .col-sm-9
+      = f.text_field :pali, class: 'form-control', autocomplete: 'off', placeholder: 'Pali'
+    %label.col-sm-3.control-label Gender
+    .col-sm-9
+      = f.select :pali_gender, gender_options(glossary_term.sanskrit_gender), {include_blank: true}, {class: 'form-control', autocomplete: 'off'}
+
+  .form-group
+    %h4 ARABIC
+    %label.col-sm-3.control-label Main
+    .col-sm-9
+      = f.text_field :pali, class: 'form-control', autocomplete: 'off', placeholder: 'Arabic'
+
+  .form-group
+    %h4 DEFINITION
+    .col-sm-12
+      = f.text_area :definition, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Definition'
+      = f.check_box :is_definition_private, autocomplete: 'off'
+      = label_tag :is_definition_private, "private: for #{glossary_term.language.name} glossary only"
+
+  .form-group
+    %h4 ADITIONAL EXPLANATION
+    .col-sm-12
+      = f.text_area :additional_explanation, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Additional Explanation'
+
+  .form-group
+    %h4 STATUS
+    %label.col-sm-3.control-label General
+    .col-sm-9
+      = f.select :general_status_id, model_to_select(GeneralStatus, glossary_term.general_status_id), {}, {class: 'form-control', autocomplete: 'off'}
+    %label.col-sm-3.control-label Integration
+    .col-sm-9
+      = f.select :integration_status_id, model_to_select(IntegrationStatus, glossary_term.integration_status_id), {}, {class: 'form-control', autocomplete: 'off'}
+    %label.col-sm-3.control-label Skt./Tib.
+    .col-sm-9
+      = f.select :sanskrit_status_id, model_to_select(SanskritStatus, glossary_term.sanskrit_status_id), {}, {class: 'form-control', autocomplete: 'off'}
+
+  .form-group
+    .col-sm-12.text-right
+      = link_to_empty 'Cancel', {class: 'btn btn-default', id: :cancel_term_edit}
+      = f.submit 'Save Changes', class: 'btn btn-primary'

@@ -32,11 +32,13 @@ class GlossaryTerm < ActiveRecord::Base
   belongs_to :language
   belongs_to :reference_type
   belongs_to :integration_status
+  belongs_to :general_status
   belongs_to :glossary_term
   belongs_to :sanskrit_status
 
   has_many :glossary_term_translations
   has_many :comments, as: :commentable
+  has_many :glossary_terms
 
   scope :list_order, -> { order('lower(glossary_terms.term)') }
 

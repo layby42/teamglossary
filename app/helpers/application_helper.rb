@@ -52,8 +52,20 @@ module ApplicationHelper
       content_tag('div', 'masculine', class: 'label label-default')
     when 'F'
       content_tag('div', 'feminine', class: 'label label-default')
+    when 'N'
+      content_tag('div', 'neutral', class: 'label label-default')
     else
       ''
     end
+  end
+
+  def gender_options(selected=nil)
+    opts = [['Masculine', 'm'], ['Feminine', 'f'], ['Neutral', 'n']]
+    options_for_select(opts, selected)
+  end
+
+  def model_to_select(model, selected=nil)
+    opts = model.all.collect{|m| [m.name, m.id]}
+    options_for_select(opts, selected)
   end
 end

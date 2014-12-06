@@ -1,0 +1,73 @@
+%table.table.table-striped
+  %tbody
+    %tr
+      %th Term
+      %td
+        = link_to item.term, language_glossary_term_path(item.language, item), remote: request.xhr?
+        - if item.glossary_term_id.present?
+          %br/
+          %br/
+          - glossary_term = item.glossary_term
+          See:
+          = link_to glossary_term.term, language_glossary_term_path(glossary_term.language, glossary_term), remote: request.xhr?
+
+        - glossary_terms = item.glossary_terms
+        - unless glossary_terms.empty?
+          %br/
+          %br/
+          Referenced by:
+          - glossary_terms.each do |glossary_term|
+            %br/
+            = link_to glossary_term.term, language_glossary_term_path(glossary_term.language_id, glossary_term), remote: request.xhr?
+            %small (#{glossary_term.reference_type.name})
+    %tr
+      %th Tibetan
+      %td
+        = item.tibetan
+        - if item.alternative_tibetan.present?
+          %br/
+          Alternative: #{item.alternative_tibetan}
+    %tr
+      %th Sanskrit
+      %td
+        = item.sanskrit
+        .pull-right= gender_helper(item.sanskrit_gender)
+
+        - if item.alternative_sanskrit.present?
+          %br/
+          Alternative: #{item.alternative_sanskrit}
+    %tr
+      %th Pali
+      %td
+        = item.pali
+        .pull-right= gender_helper(item.pali_gender)
+    %tr
+      %th Arabic
+      %td= item.arabic
+    %tr
+      %th Definition
+      %td= item.definition
+    %tr
+      %th Explanation
+      %td= truncate(item.additional_explanation, length: 250, omission: ' ... (more)')
+
+%h5
+  STATUS
+%table.table.table-striped
+  %tbody
+    %tr
+      %th General
+      %td
+        = item.general_status.name
+    %tr
+      %th Integration
+      %td
+        = item.integration_status.name
+    %tr
+      %th Reference
+      %td
+        = item.reference_type.name
+    %tr
+      %th Sanskrit / Tibetan
+      %td
+        = item.sanskrit_status.name
