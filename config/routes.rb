@@ -51,6 +51,10 @@ Rails.application.routes.draw do
 
     resources :glossary_terms, only: [:new, :create, :show, :edit, :update] do
       get :changes, on: :member
+
+      resources :glossary_term_translations, only: [:new, :create, :show, :edit, :update] do
+        get :changes, on: :member
+      end
     end
   end
 

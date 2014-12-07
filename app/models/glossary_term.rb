@@ -22,7 +22,7 @@
 #  alternative_tibetan    :string(255)
 #  alternative_sanskrit   :string(255)
 #  additional_explanation :text
-#  sanscrit_gender        :string(255)
+#  sanskrit_gender        :string(255)
 #  pali_gender            :string(255)
 #  definition             :text
 #  is_definition_private  :boolean          default(FALSE), not null

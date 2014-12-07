@@ -1,0 +1,2 @@
+module GlossaryTermTranslationsHelper
+end

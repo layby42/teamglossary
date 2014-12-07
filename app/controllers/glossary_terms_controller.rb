@@ -1,7 +1,10 @@
 class GlossaryTermsController < LanguagesController
   before_filter :find_language
   before_filter :find_glossary_term, only: [:show, :edit, :update]
-  before_filter :require_xhr, :only => [:update]
+
+  before_filter :require_xhr, :only => [:edit]
+
+  before_filter :require_language_manager_or_editor, only: [:new, :create, :edit, :update]
 
   def show
   end
@@ -28,7 +31,7 @@ class GlossaryTermsController < LanguagesController
   end
 
   def find_glossary_term
-    @glossary_term = GlossaryTerm.find(params[:id])
+    @glossary_term = GlossaryTerm.find(params[:glossary_term_id].presence || params[:id])
   rescue
     flash_to error: 'Sorry, technical term not found'
     redirect_to root_path
@@ -36,7 +39,13 @@ class GlossaryTermsController < LanguagesController
 
   def require_xhr
     unless request.xhr?
-      language_glossary_term_path(@language, @glossary_term)
+      redirect_to language_glossary_term_path(@language, @glossary_term)
+    end
+  end
+
+  def require_language_manager_or_editor
+    unless current_user.manager_or_editor?(@glossary_term.language_id)
+      redirect_to language_glossary_term_path(@language, @glossary_term)
     end
   end
 

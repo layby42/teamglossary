@@ -13,6 +13,8 @@
 #
 
 class Comment < ActiveRecord::Base
+  strip_attributes :only => [:text]
+
   belongs_to :commentable, :polymorphic => true
   belongs_to :language
   belongs_to :user

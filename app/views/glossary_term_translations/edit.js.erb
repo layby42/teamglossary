@@ -1,0 +1,16 @@
+var cancel_html = $("#term-translation-container").html();
+$("#term-translation-container").html('<%=j render "form", language: @language, glossary_term: @glossary_term, glossary_term_translation: @glossary_term_translation %>');
+$('#edit_term_translation_button').hide();
+$('#cancel_term_translation_button').show();
+
+$('#cancel_term_translation_edit').on('click', function(){
+  $("#term-translation-container").html(cancel_html);
+  $('#edit_term_translation_button').show();
+  $('#cancel_term_translation_button').hide();
+});
+
+$('#cancel_term_translation_button').on('click', function(){
+  $("#term-translation-container").html(cancel_html);
+  $('#edit_term_translation_button').show();
+  $('#cancel_term_translation_button').hide();
+});

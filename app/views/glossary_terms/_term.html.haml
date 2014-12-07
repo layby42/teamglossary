@@ -51,23 +51,24 @@
       %th Explanation
       %td= truncate(item.additional_explanation, length: 250, omission: ' ... (more)')
 
-%h5
-  STATUS
-%table.table.table-striped
-  %tbody
-    %tr
-      %th General
-      %td
-        = item.general_status.name
-    %tr
-      %th Integration
-      %td
-        = item.integration_status.name
-    %tr
-      %th Reference
-      %td
-        = item.reference_type.name
-    %tr
-      %th Sanskrit / Tibetan
-      %td
-        = item.sanskrit_status.name
+- if current_user.manager_or_editor?(item.language_id)
+  %h5
+    STATUS
+  %table.table.table-striped
+    %tbody
+      %tr
+        %th General
+        %td
+          = item.general_status.name
+      %tr
+        %th Integration
+        %td
+          = item.integration_status.name
+      %tr
+        %th Reference
+        %td
+          = item.reference_type.name
+      %tr
+        %th Sanskrit / Tibetan
+        %td
+          = item.sanskrit_status.name

@@ -13,7 +13,6 @@
 #  about               :text
 #  created_at          :datetime
 #  updated_at          :datetime
-#  remember_hash       :string(255)
 #  persistence_token   :string(255)      not null
 #  single_access_token :string(255)      not null
 #  perishable_token    :string(255)      not null
@@ -36,11 +35,13 @@ class User < ActiveRecord::Base
     config.merge_validates_length_of_password_field_options :within => 6..50
   end
 
-  strip_attributes :only => [:email, :first_name, :last_name]
+  strip_attributes :only => [:email, :first_name, :last_name, :about]
   has_paper_trail :only => [:first_name, :last_name, :email, :admin, :about]
 
   has_many :language_users, dependent: :destroy
   has_and_belongs_to_many :languages, join_table: :language_users
+
+  has_many :settings, :as => :configurable, :dependent => :destroy
 
   validates :email, presence: true, uniqueness: {case_sensitive: false}
 
@@ -60,6 +61,18 @@ class User < ActiveRecord::Base
     self.language_users.where(conditions).count > 0
   end
 
+  def editor?(language_id=nil)
+    conditions = {role: :editor}
+    conditions[:language_id] = language_id if language_id.present?
+    self.language_users.where(conditions).count > 0
+  end
+
+  def manager_or_editor?(language_id=nil)
+    conditions = {role: [:editor, :manager]}
+    conditions[:language_id] = language_id if language_id.present?
+    self.language_users.where(conditions).count > 0
+  end
+
   def can_manage_user_team?(user)
     return true if user.admin?
     user_language_ids = user.language_users.pluck(:language_id)
@@ -73,5 +86,10 @@ class User < ActiveRecord::Base
 
   def teams_count
     language_users.count(:language_id)
+  end
+
+  def get_setting_value(setting_name)
+    setting = self.settings.by_name(setting_name).first
+    setting ? setting.value : nil
   end
 end

@@ -2,8 +2,6 @@
   = link_to root_path do
     %i.fa.fa-angle-left
     = @glossary_term.term
-  .pull-right
-    = render 'shared/edit_button', url: edit_language_glossary_term_path(@language, @glossary_term), remote: false
 
 .panel.panel-default
   .panel-body

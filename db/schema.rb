@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141130221817) do
+ActiveRecord::Schema.define(version: 20141207202237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -512,11 +512,10 @@ ActiveRecord::Schema.define(version: 20141130221817) do
   add_index "sanskrit_statuses", ["is_default"], name: "index_sanskrit_statuses_on_is_default", using: :btree
 
   create_table "settings", force: true do |t|
-    t.integer "configurable_id"
-    t.string  "configurable_type"
-    t.string  "name",              limit: 40, null: false
-    t.string  "value"
-    t.string  "value_type"
+    t.integer "configurable_id",               null: false
+    t.string  "configurable_type",             null: false
+    t.string  "name",              limit: 250, null: false
+    t.text    "value"
   end
 
   add_index "settings", ["configurable_id", "configurable_type", "name"], name: "configurable_index", unique: true, using: :btree
@@ -532,7 +531,6 @@ ActiveRecord::Schema.define(version: 20141130221817) do
     t.text     "about"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "remember_hash"
     t.string   "persistence_token",                   null: false
     t.string   "single_access_token",                 null: false
     t.string   "perishable_token",                    null: false
