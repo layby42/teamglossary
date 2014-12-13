@@ -6,3 +6,6 @@
 .panel.panel-default
   .panel-body
     = render 'show', language: @language, item: @glossary_title
+
+.col-xs-12
+  = render 'shared/term_comments', language: @language, term: @glossary_title

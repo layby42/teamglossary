@@ -1,0 +1,16 @@
+var cancel_html = $("#title-container").html();
+$("#title-container").html('<%=j render "form", language: @language, glossary_title: @glossary_title %>');
+$('#edit_title_button').hide();
+$('#cancel_title_button').show();
+
+$('#cancel_title_edit').on('click', function(){
+  $("#title-container").html(cancel_html);
+  $('#edit_title_button').show();
+  $('#cancel_title_button').hide();
+});
+
+$('#cancel_title_button').on('click', function(){
+  $("#title-container").html(cancel_html);
+  $('#edit_title_button').show();
+  $('#cancel_title_button').hide();
+});

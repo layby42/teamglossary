@@ -1,4 +1,4 @@
-= form_for [language, glossary_name, glossary_name_translation], html: {class: 'form-horizontal well'} do |f|
+= form_for [language, glossary_title, glossary_title_translation], html: {class: 'form-horizontal well'} do |f|
   .form-group
     %h4 TERM TRANSLATION
     .col-sm-9.col-sm-offset-3
@@ -14,6 +14,11 @@
       = f.text_field :alt_term3, class: 'form-control', autocomplete: 'off', placeholder: 'Alternative Translation'
 
   .form-group
+    %h4 AUTHOR
+    .col-sm-12
+      = f.text_field :author, class: 'form-control', autocomplete: 'off', placeholder: 'Author'
+
+  .form-group
     %h4 NOTES
     .col-sm-12
       = f.text_area :notes, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Notes'
@@ -23,9 +28,9 @@
     %h4 STATUS
     %label.col-sm-3.control-label Integration
     .col-sm-9
-      = f.select :integration_status_id, model_to_select(IntegrationStatus, glossary_name_translation.integration_status_id), {}, {class: 'form-control', autocomplete: 'off'}
+      = f.select :integration_status_id, model_to_select(IntegrationStatus, glossary_title_translation.integration_status_id), {}, {class: 'form-control', autocomplete: 'off'}
 
   .form-group
     .col-sm-12.text-right
-      = link_to_empty 'Cancel', {class: 'btn btn-default', id: :cancel_name_translation_edit}
+      = link_to_empty 'Cancel', {class: 'btn btn-default', id: :cancel_title_translation_edit}
       = f.submit 'Save Changes', class: 'btn btn-primary'

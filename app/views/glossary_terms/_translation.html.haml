@@ -16,3 +16,13 @@
     %tr
       %th Notes
       %td= truncate(translation.notes, length: 250, omission: ' ... (more)')
+
+- if current_user.manager_or_editor?(translation.language_id)
+  %h5
+    STATUS
+  %table.table.table-striped
+    %tbody
+      %tr
+        %th Integration
+        %td
+          = translation.integration_status.name

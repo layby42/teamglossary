@@ -27,6 +27,23 @@
 #
 
 class GlossaryTitle < ActiveRecord::Base
+  strip_attributes :only => [
+      :term,
+      :alt_term1,
+      :alt_term2,
+      :popular_term,
+      :author,
+      :author_translit,
+      :tibetan_full,
+      :tibetan_short,
+      :sanskrit_full,
+      :sanskrit_short,
+      :sanskrit_full_diacrit,
+      :sanskrit_short_diacrit,
+      :pali,
+      :explanation]
+  has_paper_trail :ignore => [:created_at, :updated_at]
+
   belongs_to :language
   belongs_to :integration_status
 

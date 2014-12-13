@@ -51,7 +51,7 @@ class GlossaryTermTranslationsController < GlossaryTermsController
   end
 
   def find_glossary_term_translation
-    @glossary_term_translation = GlossaryTermTranslation.find(params[:id])
+    @glossary_term_translation = @language.glossary_term_translations.where(glossary_term_id: @glossary_term.id).find(params[:id])
   rescue
     flash_to error: 'Sorry, technical term translation not found'
     redirect_to language_glossary_term_path(@language, @glossary_term)

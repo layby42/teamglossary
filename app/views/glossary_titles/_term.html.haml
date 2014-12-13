@@ -1,0 +1,64 @@
+%table.table.table-striped.table-hover
+  %tbody
+    %tr
+      %th Term
+      %td
+        = link_to item.term, language_glossary_title_path(item.language, item), remote: request.xhr?
+
+        - if item.alt_term1.present? || item.alt_term2.present?
+          %br/
+          Alternatives:
+        - [:alt_term1, :alt_term2].each do |field|
+          - next unless item[field].present?
+          %br/
+          = item[field]
+
+        - if item.popular_term.present?
+          %br/
+          Popular: #{item.popular_term}
+
+    %tr
+      %th Author
+      %td
+        = item.author
+        - if item.author_translit.present?
+          %br/
+          Translit.: #{item.author_translit}
+    %tr
+      %th Tibetan
+      %td
+        - if item.tibetan_full.present? || item.tibetan_short.present?
+          Full: #{item.tibetan_full}
+          %br/
+          Short: #{item.tibetan_short}
+    %tr
+      %th Sanskrit
+      %td
+        - if item.sanskrit_full.present? || item.sanskrit_short.present?
+          Full: #{item.sanskrit_full}
+          %br/
+          Short: #{item.sanskrit_short}
+
+        - if item.sanskrit_full_diacrit.present? || item.sanskrit_short_diacrit.present?
+          %br/
+          with Diacritics:
+          %br/
+          Full: #{item.sanskrit_full_diacrit}
+          %br/
+          Short: #{item.sanskrit_short_diacrit}
+    %tr
+      %th Pali
+      %td= item.pali
+    %tr
+      %th Explanation
+      %td= item.explanation
+
+- if current_user.manager_or_editor?(item.language_id)
+  %h5
+    STATUS
+  %table.table.table-striped
+    %tbody
+      %tr
+        %th Integration
+        %td
+          = item.integration_status.name

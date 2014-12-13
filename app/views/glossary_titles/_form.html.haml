@@ -1,0 +1,72 @@
+= form_for [language, glossary_title], html: {class: 'form-horizontal well'} do |f|
+  .form-group
+    %h4 TERM
+    .col-sm-9.col-sm-offset-3
+      = f.text_field :term, class: 'form-control', autocomplete: 'off'
+      = f.check_box :is_private, autocomplete: 'off'
+      = label_tag :is_private, "private"
+    %label.col-sm-3.control-label Alternative
+    .col-sm-9
+      = f.text_field :alt_term1, class: 'form-control', autocomplete: 'off', placeholder: 'Alternative Translation'
+    %label.col-sm-3.control-label Alternative
+    .col-sm-9
+      = f.text_field :alt_term2, class: 'form-control', autocomplete: 'off', placeholder: 'Alternative Translation'
+    %label.col-sm-3.control-label Popular
+    .col-sm-9
+      = f.text_field :popular_term, class: 'form-control', autocomplete: 'off', placeholder: 'Popular Translation'
+
+  .form-group
+    %h4 AUTHOR
+    .col-sm-9.col-sm-offset-3
+      = f.text_field :author, class: 'form-control', autocomplete: 'off'
+    %label.col-sm-3.control-label Translit.
+    .col-sm-9
+      = f.text_field :author_translit, class: 'form-control', autocomplete: 'off', placeholder: 'Transliteration'
+
+  .form-group
+    %h4 TIBETAN
+    %label.col-sm-3.control-label Full
+    .col-sm-9
+      = f.text_field :tibetan_full, class: 'form-control', autocomplete: 'off', placeholder: 'Full Tibetan'
+    %label.col-sm-3.control-label Short
+    .col-sm-9
+      = f.text_field :tibetan_short, class: 'form-control', autocomplete: 'off', placeholder: 'Short Tibetan'
+
+  .form-group
+    %h4 SANSKRIT
+    %label.col-sm-3.control-label Full
+    .col-sm-9
+      = f.text_field :sanskrit_full, class: 'form-control', autocomplete: 'off', placeholder: 'Full Sanskrit'
+    %label.col-sm-3.control-label Short
+    .col-sm-9
+      = f.text_field :sanskrit_short, class: 'form-control', autocomplete: 'off', placeholder: 'Short Sanskrit'
+
+  .form-group
+    %h4 SANSKRIT DIACRIT.
+    %label.col-sm-3.control-label Full
+    .col-sm-9
+      = f.text_field :sanskrit_full_diacrit, class: 'form-control', autocomplete: 'off', placeholder: 'Full Sanskrit'
+    %label.col-sm-3.control-label Short
+    .col-sm-9
+      = f.text_field :sanskrit_short_diacrit, class: 'form-control', autocomplete: 'off', placeholder: 'Short Sanskrit'
+
+  .form-group
+    %h4 PALI
+    .col-sm-12
+      = f.text_field :pali, class: 'form-control', autocomplete: 'off', placeholder: 'Pali'
+
+  .form-group
+    %h4 EXPLANATION
+    .col-sm-12
+      = f.text_area :explanation, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Explanation'
+
+  .form-group
+    %h4 STATUS
+    %label.col-sm-3.control-label Integration
+    .col-sm-9
+      = f.select :integration_status_id, model_to_select(IntegrationStatus, glossary_title.integration_status_id), {}, {class: 'form-control', autocomplete: 'off'}
+
+  .form-group
+    .col-sm-12.text-right
+      = link_to_empty 'Cancel', {class: 'btn btn-default', id: :cancel_title_edit}
+      = f.submit 'Save Changes', class: 'btn btn-primary'

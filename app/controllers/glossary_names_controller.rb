@@ -36,7 +36,7 @@ class GlossaryNamesController < LanguagesController
   end
 
   def find_glossary_name
-    @glossary_name = GlossaryName.find(params[:id])
+    @glossary_name = GlossaryName.find(params[:glossary_name_id].presence || params[:id])
   rescue
     flash_to error: 'Sorry, proper name not found'
     redirect_to root_path
