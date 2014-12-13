@@ -29,6 +29,9 @@
 #
 
 class GlossaryTerm < ActiveRecord::Base
+  strip_attributes :only => [:term, :tibetan, :sanskrit, :pali, :arabic, :alternative_tibetan, :alternative_sanskrit, :additional_explanation, :sanskrit_gender, :pali_gender, :definition]
+  has_paper_trail :ignore => [:created_at, :updated_at]
+
   belongs_to :language
   belongs_to :reference_type
   belongs_to :integration_status
@@ -40,10 +43,9 @@ class GlossaryTerm < ActiveRecord::Base
   has_many :comments, as: :commentable
   has_many :glossary_terms
 
-  strip_attributes :only => [:term, :tibetan, :sanskrit, :pali, :arabic, :alternative_tibetan, :alternative_sanskrit, :additional_explanation, :sanskrit_gender, :pali_gender, :definition]
-  has_paper_trail :ignore => [:created_at, :updated_at]
-
   scope :list_order, -> { order('lower(glossary_terms.term)') }
+
+  validates :term, :language_id, presence: true
 
   def self.simple_search(language, query)
     search_columns = [:term, :tibetan, :sanskrit, :pali, :arabic,

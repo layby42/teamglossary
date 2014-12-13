@@ -1,0 +1,34 @@
+%table.table.table-striped.table-hover
+  %tbody
+    %tr
+      %th Term
+      %td
+        = link_to item.term, language_glossary_name_path(item.language, item), remote: request.xhr?
+    %tr
+      %th Type
+      %td= item.proper_name_type.name
+    %tr
+      %th Dates
+      %td= item.dates
+    %tr
+      %th Tibetan
+      %td= item.tibetan
+    %tr
+      %th Sanskrit
+      %td= item.sanskrit
+    %tr
+      %th Wage-Giles
+      %td= item.wade_giles
+    %tr
+      %th Explanation
+      %td= item.explanation
+
+- if current_user.manager_or_editor?(item.language_id)
+  %h5
+    STATUS
+  %table.table.table-striped
+    %tbody
+      %tr
+        %th Integration
+        %td
+          = item.integration_status.name

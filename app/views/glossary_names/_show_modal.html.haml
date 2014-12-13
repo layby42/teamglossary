@@ -3,4 +3,8 @@
   %h4
     = @glossary_name.term
 .modal-body
-  .row= render 'show', language: @language, item: @glossary_name
+  .row
+    = render 'show', language: @language, item: @glossary_name
+    .col-xs-12.text-right
+      = link_to 'More details...', language_glossary_name_path(@language, @glossary_name)
+

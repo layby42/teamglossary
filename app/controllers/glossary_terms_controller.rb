@@ -4,7 +4,7 @@ class GlossaryTermsController < LanguagesController
 
   before_filter :require_xhr, :only => [:edit, :changes]
 
-  before_filter :require_language_manager_or_editor, only: [:new, :create, :edit, :update]
+  before_filter :require_language_manager_or_editor, only: [:new, :create, :edit, :update, :changes]
 
   def show
   end

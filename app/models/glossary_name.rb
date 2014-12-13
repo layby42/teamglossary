@@ -21,6 +21,7 @@
 
 class GlossaryName < ActiveRecord::Base
   strip_attributes :only => [:term, :tibetan, :sanskrit, :explanation, :wade_giles, :dates]
+  has_paper_trail :ignore => [:created_at, :updated_at]
 
   belongs_to :language
   belongs_to :proper_name_type

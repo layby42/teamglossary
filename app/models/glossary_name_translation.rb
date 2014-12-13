@@ -16,6 +16,9 @@
 #
 
 class GlossaryNameTranslation < ActiveRecord::Base
+  strip_attributes :only => [:term, :alt_term1, :alt_term2, :alt_term3, :notes]
+  has_paper_trail :ignore => [:created_at, :updated_at]
+
   belongs_to :language
   belongs_to :glossary_name
   belongs_to :integration_status

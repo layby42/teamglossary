@@ -1,69 +1,47 @@
 = render 'shared/term_alerts', language: language, term: item
 
-.col-sm-6.col-xs-12
-  %h5
-    TERM DETAILS
-  %table.table.table-striped.table-hover
-    %tbody
-      %tr
-        %th Term
-        %td
-          = link_to item.term, language_glossary_name_path(item.language, item), remote: request.xhr?
-      %tr
-        %th Type
-        %td= item.proper_name_type.name
-      %tr
-        %th Dates
-        %td= item.dates
-      %tr
-        %th Tibetan
-        %td= item.tibetan
-      %tr
-        %th Sanskrit
-        %td= item.sanskrit
-      %tr
-        %th Wage-Giles
-        %td= item.wade_giles
-      %tr
-        %th Explanation
-        %td= item.explanation
+.row-fluid
+  .col-sm-6.col-xs-12
+    - if !request.xhr? && current_user.manager_or_editor?(item.language_id)
+      = link_to edit_language_glossary_name_path(language, item), class: 'pull-left btn btn-primary btn-xs', id: :edit_name_button, remote: true, title: "Edit term" do
+        %i.fa.fa-edit
+      = link_to 'javascript:void(0);', {class: 'pull-left btn btn-default btn-xs', id: :cancel_name_button, style: 'display: none;'} do
+        %i.fa.fa-times
 
-.col-sm-6.col-xs-12
-  - unless language.is_base_language?
-    - translation = item.glossary_name_translations.by_language(language.id).first
-    - translation ||= GlossaryNameTranslation.new
-    %h5= "TRANSLATION (#{language.full_name})"
-    %table.table.table-striped.table-hover
-      %tbody
-        %tr
-          %th Translation
-          %td
-            = link_to translation.term, language_glossary_name_path(language, item), remote: request.xhr?
-            - [:alt_term1, :alt_term2, :alt_term3].each do |field|
-              - next unless translation[field].present?
-              %br/
-              * #{translation[field]}
+      = link_to changes_language_glossary_name_path(language, item), remote: true, class: 'pull-right' do
+        %i.fa.fa-bars.text-muted
 
-        %tr
-          %th Notes
-          %td= translation.notes
+    %h4{style: 'margin-top: 2px;'} &nbsp; TERM DETAILS
+    #name-container.clearfix
+      = render 'term', language: language, item: item
 
-  - unless item.is_private?
-    - translations = item.glossary_name_translations.except_language(language.id).includes([:language]).sort{|x,y| x.language.iso_code <=> y.language.iso_code}
-    - unless translations.empty?
-      %h5= language.is_base_language? ? 'TRANSLATIONS' : 'OTHER TRANSLATIONS'
-      %table.table.table-striped.table-hover
-        %tbody
-          - translations.each do |translation|
-            %tr
-              %th= translation.language.english_name
-              %td= link_to translation.term, language_glossary_name_path(translation.language_id, item), remote: request.xhr?
+  .col-sm-6.col-xs-12
+    - unless language.is_base_language?
+      - translation = item.glossary_name_translations.by_language(language.id).first
+      - translation ||= GlossaryNameTranslation.new
 
-- if request.xhr?
-  .col-xs-12.text-right
-    = link_to 'More details...', language_glossary_name_path(language, item)
-- else
-  .col-xs-12
-    = render 'shared/term_comments', language: language, term: item
+      - if !request.xhr? && current_user.manager_or_editor?(language.id)
+        - url = translation.new_record? ? new_language_glossary_name_glossary_name_translation_path(language, item) : edit_language_glossary_name_glossary_name_translation_path(language, item, translation)
+        = link_to url, class: 'pull-left btn btn-primary btn-xs', id: :edit_name_translation_button, remote: true, title: "Edit translation" do
+          %i.fa.fa-edit
+        = link_to 'javascript:void(0);', {class: 'pull-left btn btn-default btn-xs', id: :cancel_name_translation_button, style: 'display: none;'} do
+          %i.fa.fa-times
 
+      = link_to changes_language_glossary_name_glossary_name_translation_path(language, item, translation), remote: true, class: 'pull-right' do
+        %i.fa.fa-bars.text-muted
 
+      %h4{style: 'margin-top: 2px;'} &nbsp; TRANSLATION (#{language.full_name})
+
+      #name-translation-container.clearfix
+        = render 'translation', language: language, item: item, translation: translation
+
+    - unless item.is_private?
+      - translations = item.glossary_name_translations.except_language(language.id).includes([:language]).sort{|x,y| x.language.iso_code <=> y.language.iso_code}
+      - unless translations.empty?
+        %h5= language.is_base_language? ? 'TRANSLATIONS' : 'OTHER TRANSLATIONS'
+        %table.table.table-striped.table-hover
+          %tbody
+            - translations.each do |translation|
+              %tr
+                %th= translation.language.english_name
+                %td= link_to translation.term, language_glossary_name_path(translation.language_id, item), remote: request.xhr?

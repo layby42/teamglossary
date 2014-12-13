@@ -1,0 +1,16 @@
+var cancel_translation_html = $("#name-translation-container").html();
+$("#name-translation-container").html('<%=j render "form", language: @language, glossary_name: @glossary_name, glossary_name_translation: @glossary_name_translation %>');
+$('#edit_name_translation_button').hide();
+$('#cancel_name_translation_button').show();
+
+$('#cancel_name_translation_edit').on('click', function(){
+  $("#name-translation-container").html(cancel_translation_html);
+  $('#edit_name_translation_button').show();
+  $('#cancel_name_translation_button').hide();
+});
+
+$('#cancel_name_translation_button').on('click', function(){
+  $("#name-translation-container").html(cancel_translation_html);
+  $('#edit_name_translation_button').show();
+  $('#cancel_name_translation_button').hide();
+});

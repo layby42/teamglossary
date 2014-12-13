@@ -1,0 +1,40 @@
+= form_for [language, glossary_name], html: {class: 'form-horizontal well'} do |f|
+  .form-group
+    %h4 TERM
+    .col-sm-12
+      = f.text_field :term, class: 'form-control', autocomplete: 'off'
+      = f.check_box :is_private, autocomplete: 'off'
+      = label_tag :is_private, "private"
+      = f.select :proper_name_type_id, model_to_select(ProperNameType, glossary_name.proper_name_type_id), {}, {class: 'form-control', autocomplete: 'off'}
+      = f.text_field :dates, class: 'form-control', autocomplete: 'off', placeholder: 'Dates'
+
+  .form-group
+    %h4 TIBETAN
+    .col-sm-12
+      = f.text_field :tibetan, class: 'form-control', autocomplete: 'off', placeholder: 'Tibetan'
+
+  .form-group
+    %h4 SANSKRIT
+    .col-sm-12
+      = f.text_field :sanskrit, class: 'form-control', autocomplete: 'off', placeholder: 'Sanskrit'
+
+  .form-group
+    %h4 WADE–GILES
+    .col-sm-12
+      = f.text_field :wade_giles , class: 'form-control', autocomplete: 'off', placeholder: 'Wade-Giles'
+
+  .form-group
+    %h4 EXPLANATION
+    .col-sm-12
+      = f.text_area :explanation, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Explanation'
+
+  .form-group
+    %h4 STATUS
+    %label.col-sm-3.control-label Integration
+    .col-sm-9
+      = f.select :integration_status_id, model_to_select(IntegrationStatus, glossary_name.integration_status_id), {}, {class: 'form-control', autocomplete: 'off'}
+
+  .form-group
+    .col-sm-12.text-right
+      = link_to_empty 'Cancel', {class: 'btn btn-default', id: :cancel_name_edit}
+      = f.submit 'Save Changes', class: 'btn btn-primary'

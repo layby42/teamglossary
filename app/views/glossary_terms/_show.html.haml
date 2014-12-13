@@ -28,8 +28,8 @@
         = link_to 'javascript:void(0);', {class: 'pull-left btn btn-default btn-xs', id: :cancel_term_translation_button, style: 'display: none;'} do
           %i.fa.fa-times
 
-      = link_to changes_language_glossary_term_glossary_term_translation_path(language, item, translation), remote: true, class: 'pull-right' do
-        %i.fa.fa-bars.text-muted
+        = link_to changes_language_glossary_term_glossary_term_translation_path(language, item, translation), remote: true, class: 'pull-right' do
+          %i.fa.fa-bars.text-muted
 
       %h4{style: 'margin-top: 2px;'} &nbsp; TRANSLATION (#{language.full_name})
 
@@ -46,9 +46,3 @@
               %tr
                 %th= truncate(translation.language.english_name, length: 25)
                 %td= link_to translation.term, language_glossary_term_path(translation.language_id, item), remote: request.xhr?
-
-  - if request.xhr?
-    .col-xs-12.text-right
-      = link_to 'More details...', language_glossary_term_path(language, item)
-
-
