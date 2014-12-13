@@ -1,4 +1,6 @@
 class GlossaryTitleTranslationsController < GlossaryTitlesController
+  before_filter :find_language
+  before_filter :find_glossary_title
   before_filter :find_glossary_title_translation, only: [:show, :edit, :update, :changes]
 
   before_filter :require_xhr, :only => [:edit, :changes]
@@ -7,14 +9,13 @@ class GlossaryTitleTranslationsController < GlossaryTitlesController
 
   def create
     glossary_title_translation = GlossaryTitleTranslation.new(glossary_title_translation_params)
-    glossary_title_translation.language = @language
-    glossary_title_translation.glossary_term = @glossary_title
+    glossary_title_translation.language_id = @language.id
+    glossary_title_translation.glossary_title_id = @glossary_title.id
     if glossary_title_translation.save
       flash_to notice: 'Changes saved!'
-      redirect_to action: :show
-    else
-      render action: :show
     end
+  ensure
+    redirect_to language_glossary_title_path(@language, @glossary_title)
   end
 
   def edit

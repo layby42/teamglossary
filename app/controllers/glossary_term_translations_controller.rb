@@ -1,20 +1,21 @@
 class GlossaryTermTranslationsController < GlossaryTermsController
+  before_filter :find_language
+  before_filter :find_glossary_term
   before_filter :find_glossary_term_translation, only: [:show, :edit, :update, :changes]
 
   before_filter :require_xhr, :only => [:edit, :changes]
 
-  before_filter :require_language_manager_or_editor, only: [:create, :edit, :update, :changes]
+  before_filter :require_language_manager_or_editor
 
   def create
     glossary_term_translation = GlossaryTermTranslation.new(glossary_term_translation_params)
-    glossary_term_translation.language = @language
-    glossary_term_translation.glossary_term = @glossary_term
+    glossary_term_translation.language_id = @language.id
+    glossary_term_translation.glossary_term_id = @glossary_term.id
     if glossary_term_translation.save
       flash_to notice: 'Changes saved!'
-      redirect_to action: :show
-    else
-      render action: :show
     end
+  ensure
+    redirect_to language_glossary_term_path(@language, @glossary_term)
   end
 
   def edit

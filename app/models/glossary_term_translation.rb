@@ -28,4 +28,9 @@ class GlossaryTermTranslation < ActiveRecord::Base
   scope :by_language, -> (language_id) { where(language_id: language_id) }
   scope :except_language, -> (language_id) { where('glossary_term_translations.language_id <> ?', language_id) }
 
+  def self.new_with_defaults
+    GlossaryTermTranslation.new(
+      integration_status: IntegrationStatus.default.first
+    )
+  end
 end

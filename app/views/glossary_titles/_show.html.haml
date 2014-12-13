@@ -19,9 +19,9 @@
   .col-sm-6.col-xs-12
     - unless language.is_base_language?
       - translation = item.glossary_title_translations.by_language(language.id).first
-      - translation ||= GlossaryTitleTranslation.new
+      - translation ||= GlossaryTitleTranslation.new_with_defaults
 
-      - if !request.xhr? && current_user.manager_or_editor?(language.id)
+      - if !translation.new_record? && !request.xhr? && current_user.manager_or_editor?(language.id)
         - url = translation.new_record? ? new_language_glossary_title_glossary_title_translation_path(language, item) : edit_language_glossary_title_glossary_title_translation_path(language, item, translation)
         = link_to url, class: 'pull-left btn btn-primary btn-xs', id: :edit_title_translation_button, remote: true, title: "Edit translation" do
           %i.fa.fa-edit
@@ -33,7 +33,16 @@
 
       %h4{style: 'margin-top: 2px;'} &nbsp; TRANSLATION (#{language.full_name})
       #title-translation-container.clearfix
-        = render 'translation', language: language, item: item, translation: translation
+        -if translation.new_record?
+          - if current_user.manager_or_editor?(language.id)
+            = render 'glossary_title_translations/form', language: language, glossary_title: item, glossary_title_translation: translation
+          - else
+            .col-xs-12
+              Term not yet translated.
+              %br/
+              If you'd like to propose translation, please use Comments section below.
+        - else
+          = render 'translation', language: language, item: item, translation: translation
 
     - unless item.is_private?
       - translations = item.glossary_title_translations.except_language(language.id).includes([:language]).sort{|x,y| x.language.iso_code <=> y.language.iso_code}

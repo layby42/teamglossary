@@ -34,4 +34,9 @@ class GlossaryTitleTranslation < ActiveRecord::Base
     [alt_term1, alt_term2, alt_term3].compact.join(' / ')
   end
 
+  def self.new_with_defaults
+    GlossaryTitleTranslation.new(
+      integration_status: IntegrationStatus.default.first
+    )
+  end
 end

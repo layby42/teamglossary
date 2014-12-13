@@ -30,5 +30,10 @@
           %br/
           %br/
           = translation.notes
+      - elsif can_edit
+        .text-right
+          = link_to language_glossary_title_path(language, item), class: 'text-muted' do
+            %i.fa.fa-plus-circle
+            add translation
   %td
     = render 'shared/term_last_comment', language: language, term: item

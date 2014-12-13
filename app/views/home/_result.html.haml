@@ -4,7 +4,7 @@
       Found
       %span.badge #{@data.total_count}
 
-    %table.table.table-striped.table-hover.table-bordered
+    %table.table.table-striped.table-bordered
       %thead
         %tr
           - if @language.is_base_language?
@@ -16,7 +16,7 @@
             %td.col-xs-4 Last Comment
       %tbody
         - @data.each do |item|
-          = render "term_#{@glossary_type.code.downcase}", item: item, language: @language
+          = render "term_#{@glossary_type.code.downcase}", item: item, language: @language, can_edit: current_user.manager_or_editor?(@language.id)
 
         - if @data.empty?
           %tr
