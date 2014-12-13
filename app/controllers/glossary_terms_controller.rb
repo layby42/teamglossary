@@ -1,8 +1,8 @@
 class GlossaryTermsController < LanguagesController
   before_filter :find_language
-  before_filter :find_glossary_term, only: [:show, :edit, :update]
+  before_filter :find_glossary_term, only: [:show, :edit, :update, :changes]
 
-  before_filter :require_xhr, :only => [:edit]
+  before_filter :require_xhr, :only => [:edit, :changes]
 
   before_filter :require_language_manager_or_editor, only: [:new, :create, :edit, :update]
 
@@ -19,6 +19,11 @@ class GlossaryTermsController < LanguagesController
     else
       render action: :show
     end
+  end
+
+  def changes
+    @changes = Change.for_item(@glossary_term).sort {|a, b| b.created_at <=> a.created_at}
+    render template: 'admin/changes/changes'
   end
 
   private

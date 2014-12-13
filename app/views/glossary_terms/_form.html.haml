@@ -5,6 +5,10 @@
       = f.text_field :term, class: 'form-control', autocomplete: 'off'
       = f.check_box :is_private, autocomplete: 'off'
       = label_tag :is_private, "private"
+    .col-sm-9.col-sm-offset-3
+      = f.select :reference_type_id, model_to_select(ReferenceType, glossary_term.reference_type_id), {}, {class: 'form-control', autocomplete: 'off'}
+      = f.select :glossary_term_id, glossary_terms_options(glossary_term.language, glossary_term.glossary_term_id), {include_blank: true}, {class: 'form-control', autocomplete: 'off'}
+
 
   .form-group
     %h4 TIBETAN
@@ -47,7 +51,7 @@
     .col-sm-12
       = f.text_area :definition, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Definition'
       = f.check_box :is_definition_private, autocomplete: 'off'
-      = label_tag :is_definition_private, "private: for #{glossary_term.language.name} glossary only"
+      = label_tag :is_definition_private, "private"
 
   .form-group
     %h4 ADITIONAL EXPLANATION

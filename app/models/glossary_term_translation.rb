@@ -22,6 +22,9 @@ class GlossaryTermTranslation < ActiveRecord::Base
   belongs_to :glossary_term
   belongs_to :integration_status
 
+  strip_attributes :only => [:term, :alt_term1, :alt_term2, :alt_term3, :notes, :term_gender, :definition]
+  has_paper_trail :ignore => [:created_at, :updated_at]
+
   scope :by_language, -> (language_id) { where(language_id: language_id) }
   scope :except_language, -> (language_id) { where('glossary_term_translations.language_id <> ?', language_id) }
 

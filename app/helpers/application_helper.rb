@@ -65,7 +65,7 @@ module ApplicationHelper
   end
 
   def model_to_select(model, selected=nil)
-    opts = model.all.collect{|m| [m.name, m.id]}
+    opts = model.all.collect{|m| ["#{m.code} - #{m.name}", m.id, {data: {code: m.code}}]}
     options_for_select(opts, selected)
   end
 end

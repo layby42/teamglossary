@@ -8,6 +8,9 @@
       = link_to 'javascript:void(0);', {class: 'pull-left btn btn-default btn-xs', id: :cancel_term_button, style: 'display: none;'} do
         %i.fa.fa-times
 
+      = link_to changes_language_glossary_term_path(language, item), remote: true, class: 'pull-right' do
+        %i.fa.fa-bars.text-muted
+
     %h4{style: 'margin-top: 2px;'} &nbsp;  TERM DETAILS
 
     #term-container.clearfix
@@ -24,6 +27,10 @@
           %i.fa.fa-edit
         = link_to 'javascript:void(0);', {class: 'pull-left btn btn-default btn-xs', id: :cancel_term_translation_button, style: 'display: none;'} do
           %i.fa.fa-times
+
+      = link_to changes_language_glossary_term_glossary_term_translation_path(language, item, translation), remote: true, class: 'pull-right' do
+        %i.fa.fa-bars.text-muted
+
       %h4{style: 'margin-top: 2px;'} &nbsp; TRANSLATION (#{language.full_name})
 
       #term-translation-container.clearfix

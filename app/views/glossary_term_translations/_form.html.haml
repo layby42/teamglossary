@@ -12,6 +12,9 @@
     %label.col-sm-3.control-label Alternative
     .col-sm-9
       = f.text_field :alt_term3, class: 'form-control', autocomplete: 'off', placeholder: 'Alternative Translation'
+    %label.col-sm-3.control-label Gender
+    .col-sm-9
+      = f.select :term_gender, gender_options(glossary_term_translation.term_gender), {include_blank: true}, {class: 'form-control', autocomplete: 'off'}
 
   .form-group
     %h4 DEFINITION
