@@ -7,6 +7,20 @@ class GlossaryTermsController < LanguagesController
   before_filter :require_language_manager_or_editor, only: [:new, :create, :edit, :update, :changes]
 
   def new
+    @glossary_term = GlossaryTerm.new_with_defaults
+    @glossary_term.language = @language
+  end
+
+  def create
+    @glossary_term = GlossaryTerm.new(glossary_term_params)
+    @glossary_term.language_id = @language.id
+    if @glossary_term.save
+      flash_to notice: 'Changes saved!'
+      redirect_to edit_language_glossary_term_path(@language, @glossary_term)
+    else
+      flash_to error: @glossary_term.errors.full_messages.first
+      render action: :new
+    end
   end
 
   def show
@@ -20,6 +34,7 @@ class GlossaryTermsController < LanguagesController
       flash_to notice: 'Changes saved!'
       redirect_to action: :show
     else
+      flash_to error: @glossary_term.errors.full_messages.first
       render action: :show
     end
   end
@@ -52,7 +67,7 @@ class GlossaryTermsController < LanguagesController
   end
 
   def require_language_manager_or_editor
-    unless current_user.manager_or_editor?(@glossary_term.language_id)
+    unless current_user.manager_or_editor?(@glossary_term ? @glossary_term.language_id : @language.id)
       redirect_to language_glossary_term_path(@language, @glossary_term)
     end
   end

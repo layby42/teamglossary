@@ -8,6 +8,7 @@ class GlossaryTitlesController < LanguagesController
 
   def new
     @glossary_title = GlossaryTitle.new_with_defaults
+    @glossary_title.language = @language
   end
 
   def create
@@ -17,7 +18,7 @@ class GlossaryTitlesController < LanguagesController
       flash_to notice: 'Changes saved!'
       redirect_to edit_language_glossary_title_path(@language, @glossary_title)
     else
-      flash_to error: 'TODO: display error'
+      flash_to error: @glossary_title.errors.full_messages.first
       render action: :new
     end
   end
@@ -33,6 +34,7 @@ class GlossaryTitlesController < LanguagesController
       flash_to notice: 'Changes saved!'
       redirect_to action: :show
     else
+      flash_to error: @glossary_title.errors.full_messages.first
       render action: :show
     end
   end

@@ -86,4 +86,13 @@ class GlossaryTerm < ActiveRecord::Base
       self.comments.list_order.limit(1).includes([:user]).first
     end
   end
+
+  def self.new_with_defaults
+    GlossaryTerm.new(
+      integration_status: IntegrationStatus.default.first,
+      reference_type: ReferenceType.default.first,
+      general_status: GeneralStatus.default.first,
+      sanskrit_status: SanskritStatus.default.first
+    )
+  end
 end

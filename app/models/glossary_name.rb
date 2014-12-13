@@ -72,4 +72,11 @@ class GlossaryName < ActiveRecord::Base
       self.comments.list_order.limit(1).includes([:user]).first
     end
   end
+
+  def self.new_with_defaults
+    GlossaryName.new(
+      integration_status: IntegrationStatus.default.first,
+      proper_name_type: ProperNameType.default.first
+    )
+  end
 end

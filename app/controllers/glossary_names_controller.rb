@@ -7,6 +7,20 @@ class GlossaryNamesController < LanguagesController
   before_filter :require_language_manager_or_editor, only: [:new, :create, :edit, :update, :changes]
 
   def new
+    @glossary_name = GlossaryName.new_with_defaults
+    @glossary_name.language = @language
+  end
+
+  def create
+    @glossary_name = GlossaryName.new(glossary_name_params)
+    @glossary_name.language_id = @language.id
+    if @glossary_name.save
+      flash_to notice: 'Changes saved!'
+      redirect_to edit_language_glossary_name_path(@language, @glossary_name)
+    else
+      flash_to error: @glossary_name.errors.full_messages.first
+      render action: :new
+    end
   end
 
   def show
@@ -20,6 +34,7 @@ class GlossaryNamesController < LanguagesController
       flash_to notice: 'Changes saved!'
       redirect_to action: :show
     else
+      flash_to error: @glossary_name.errors.full_messages.first
       render action: :show
     end
   end
@@ -52,7 +67,7 @@ class GlossaryNamesController < LanguagesController
   end
 
   def require_language_manager_or_editor
-    unless current_user.manager_or_editor?(@glossary_name.language_id)
+    unless current_user.manager_or_editor?(@glossary_name ? @glossary_name.language_id : @language.id)
       redirect_to language_glossary_name_path(@language, @glossary_name)
     end
   end
@@ -62,6 +77,7 @@ class GlossaryNamesController < LanguagesController
       :term,
       :is_private,
       :integration_status_id,
+      :proper_name_type_id,
       :tibetan,
       :sanskrit,
       :explanation,
