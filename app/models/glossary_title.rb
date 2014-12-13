@@ -99,4 +99,10 @@ class GlossaryTitle < ActiveRecord::Base
       self.comments.list_order.limit(1).includes([:user]).first
     end
   end
+
+  def self.new_with_defaults
+    GlossaryTitle.new(
+      integration_status: IntegrationStatus.default.first
+    )
+  end
 end

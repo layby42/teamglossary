@@ -1,6 +1,11 @@
+- can_edit_glossary = current_user.manager_or_editor?(@language.id)
 .row
   .col-xs-12
     %h2
+      - if can_edit_glossary
+        .pull-right.inline
+          = render 'shared/add_new_button', url: new_glossary_item_url_helper(@glossary_type, @language), remote: false
+
       Found
       %span.badge #{@data.total_count}
 
@@ -16,7 +21,7 @@
             %td.col-xs-4 Last Comment
       %tbody
         - @data.each do |item|
-          = render "term_#{@glossary_type.code.downcase}", item: item, language: @language, can_edit: current_user.manager_or_editor?(@language.id)
+          = render "term_#{@glossary_type.code.downcase}", item: item, language: @language, can_edit: can_edit_glossary
 
         - if @data.empty?
           %tr

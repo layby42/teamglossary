@@ -6,6 +6,9 @@ class GlossaryTermsController < LanguagesController
 
   before_filter :require_language_manager_or_editor, only: [:new, :create, :edit, :update, :changes]
 
+  def new
+  end
+
   def show
   end
 

@@ -1,0 +1,12 @@
+%h2
+  = link_to root_path do
+    %i.fa.fa-angle-left
+    New Text Title for #{@language.full_name}
+
+.panel.panel-default
+  .panel-body
+    .row-fluid
+      .col-sm-6.col-xs-12
+        = render 'form', language: @language, glossary_title: @glossary_title
+      .col-sm-6.col-xs-12
+        TODO: add help

@@ -6,6 +6,22 @@ class GlossaryTitlesController < LanguagesController
 
   before_filter :require_language_manager_or_editor, only: [:new, :create, :edit, :update, :changes]
 
+  def new
+    @glossary_title = GlossaryTitle.new_with_defaults
+  end
+
+  def create
+    @glossary_title = GlossaryTitle.new(glossary_title_params)
+    @glossary_title.language_id = @language.id
+    if @glossary_title.save
+      flash_to notice: 'Changes saved!'
+      redirect_to edit_language_glossary_title_path(@language, @glossary_title)
+    else
+      flash_to error: 'TODO: display error'
+      render action: :new
+    end
+  end
+
   def show
   end
 
@@ -49,7 +65,7 @@ class GlossaryTitlesController < LanguagesController
   end
 
   def require_language_manager_or_editor
-    unless current_user.manager_or_editor?(@glossary_title.language_id)
+    unless current_user.manager_or_editor?(@glossary_title ? @glossary_title.language_id : @language.id)
       redirect_to language_glossary_title_path(@language, @glossary_title)
     end
   end
