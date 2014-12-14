@@ -46,11 +46,12 @@ class GlossaryTitlesController < LanguagesController
   end
 
   def approve
-    @glossary_name.approve!
+    @glossary_title.approve!
+    flash_to notice: 'Term approved!'
   rescue Exception => ex
     flash_to error: ex.message
   ensure
-    redirect_to language_glossary_name_path(@language, @glossary_name)
+    redirect_to language_glossary_title_path(@language, @glossary_title)
   end
 
   def reject
@@ -87,7 +88,7 @@ class GlossaryTitlesController < LanguagesController
   end
 
   def require_base_language_manager_or_editor
-    unless current_user.manager_or_editor?(base_language.language_id)
+    unless current_user.manager_or_editor?(base_language.id)
       flash_to error: 'Sorry, you must have manager or editor access level to Main glossary'
       redirect_to language_glossary_title_path(@language, @glossary_title)
     end

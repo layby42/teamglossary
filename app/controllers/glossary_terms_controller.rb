@@ -46,11 +46,12 @@ class GlossaryTermsController < LanguagesController
   end
 
   def approve
-    @glossary_name.approve!
+    @glossary_title.approve!
+    flash_to notice: 'Term approved!'
   rescue Exception => ex
     flash_to error: ex.message
   ensure
-    redirect_to language_glossary_name_path(@language, @glossary_name)
+    redirect_to language_glossary_title_path(@language, @glossary_title)
   end
 
   def reject

@@ -47,6 +47,7 @@ class GlossaryNamesController < LanguagesController
 
   def approve
     @glossary_name.approve!
+    flash_to notice: 'Term approved!'
   rescue Exception => ex
     flash_to error: ex.message
   ensure
