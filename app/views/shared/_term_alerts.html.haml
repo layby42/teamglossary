@@ -4,6 +4,17 @@
       .panel-body
         %i.fa.fa-warning.text-warning
         Termin proposed to the Main glossary by #{term.language.english_name} team
+
+        - if !request.xhr? && current_user.manager_or_editor?(base_language.id)
+
+          = link_to reject_glossary_item_url_helper(language, term), class: 'pull-right btn btn-danger btn-xs', style: 'margin-left: 10px;', data: {confirm: "Are you sure? This term will became private to #{term.language.english_name} glossary and all others that did translation for the term. Check Other Translations section below."} do
+            %i.fa.fa-times
+            Reject
+
+          = link_to approve_glossary_item_url_helper(language, term), class: 'pull-right btn btn-success btn-xs', data: {confirm: "Are you sure? This term will became part of the #{base_language.english_name} glossary."} do
+            %i.fa.fa-check
+            Approve
+
 - if term.is_private?
   .col-xs-12
     .panel.panel-default

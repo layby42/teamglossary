@@ -20,6 +20,8 @@
 #
 
 class GlossaryName < ActiveRecord::Base
+  include Approval
+
   strip_attributes :only => [:term, :tibetan, :sanskrit, :explanation, :wade_giles, :dates]
   has_paper_trail :ignore => [:created_at, :updated_at]
 
@@ -33,6 +35,7 @@ class GlossaryName < ActiveRecord::Base
   scope :list_order, -> { order('lower(glossary_names.term)') }
 
   validates :term, :language_id, :proper_name_type_id, presence: true
+  validates :term, uniqueness: {case_sensitive: false, scope: :language_id}
 
   def self.simple_search(language, query)
     search_columns = [:term, :tibetan, :sanskrit, :explanation, :wade_giles, :dates]
@@ -79,4 +82,5 @@ class GlossaryName < ActiveRecord::Base
       proper_name_type: ProperNameType.default.first
     )
   end
+
 end

@@ -1,10 +1,11 @@
 class GlossaryNamesController < LanguagesController
   before_filter :find_language
-  before_filter :find_glossary_name, only: [:show, :edit, :update, :changes]
+  before_filter :find_glossary_name, only: [:show, :edit, :update, :changes, :approve, :reject]
 
   before_filter :require_xhr, :only => [:edit, :changes]
 
   before_filter :require_language_manager_or_editor, only: [:new, :create, :edit, :update, :changes]
+  before_filter :require_base_language_manager_or_editor, only: [:approve, :reject]
 
   def new
     @glossary_name = GlossaryName.new_with_defaults
@@ -44,6 +45,17 @@ class GlossaryNamesController < LanguagesController
     render template: 'admin/changes/changes'
   end
 
+  def approve
+    @glossary_name.approve!
+  rescue Exception => ex
+    flash_to error: ex.message
+  ensure
+    redirect_to language_glossary_name_path(@language, @glossary_name)
+  end
+
+  def reject
+  end
+
   private
 
   def find_language
@@ -67,7 +79,16 @@ class GlossaryNamesController < LanguagesController
   end
 
   def require_language_manager_or_editor
-    unless current_user.manager_or_editor?(@glossary_name ? @glossary_name.language_id : @language.id)
+    language = @glossary_name ? @glossary_name.language : @language
+    unless current_user.manager_or_editor?(language.id)
+      flash_to error: "Sorry, you must have manager or editor access level to #{language.english_name} glossary"
+      redirect_to language_glossary_name_path(@language, @glossary_name)
+    end
+  end
+
+  def require_base_language_manager_or_editor
+    unless current_user.manager_or_editor?(base_language.language_id)
+      flash_to error: 'Sorry, you must have manager or editor access level to Main glossary'
       redirect_to language_glossary_name_path(@language, @glossary_name)
     end
   end

@@ -27,21 +27,9 @@
 #
 
 class GlossaryTitle < ActiveRecord::Base
-  strip_attributes :only => [
-      :term,
-      :alt_term1,
-      :alt_term2,
-      :popular_term,
-      :author,
-      :author_translit,
-      :tibetan_full,
-      :tibetan_short,
-      :sanskrit_full,
-      :sanskrit_short,
-      :sanskrit_full_diacrit,
-      :sanskrit_short_diacrit,
-      :pali,
-      :explanation]
+  include Approval
+
+  strip_attributes :only => [:term, :alt_term1, :alt_term2, :popular_term, :author, :author_translit, :tibetan_full, :tibetan_short, :sanskrit_full, :sanskrit_short, :sanskrit_full_diacrit, :sanskrit_short_diacrit, :pali, :explanation]
   has_paper_trail :ignore => [:created_at, :updated_at]
 
   belongs_to :language
@@ -53,6 +41,7 @@ class GlossaryTitle < ActiveRecord::Base
   scope :list_order, -> { order('lower(glossary_titles.term)') }
 
   validates :term, :language_id, :integration_status_id, presence: true
+  validates :term, uniqueness: {case_sensitive: false, scope: :language_id}
 
   def self.simple_search(language, query)
     search_columns = [ :term, :author, :author_translit,

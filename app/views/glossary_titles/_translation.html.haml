@@ -1,4 +1,4 @@
-%table.table.table-striped.table-hover
+%table.table.table-striped.table-bordered
   %tbody
     %tr
       %th Translation
@@ -18,7 +18,7 @@
 - if current_user.manager_or_editor?(translation.language_id)
   %h5
     STATUS
-  %table.table.table-striped
+  %table.table.table-striped.table-bordered
     %tbody
       %tr
         %th Integration

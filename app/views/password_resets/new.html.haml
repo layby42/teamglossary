@@ -1,12 +1,13 @@
 %h2 Forgot your Password?
 %p Enter your email and we'll send you instructions on how to reset your password.
 
-.well.bs-component
-  = form_for @user.becomes(User), url: password_resets_path, html: {class: 'form-vertical'} do |f|
-    %fieldset
-      .form-group
-        %label.control-label Email:
-        = f.email_field :email, placeholder: 'Your email address', class: 'form-control required', required: true
+.panel.panel-default
+  .panel-body
+    = form_for @user.becomes(User), url: password_resets_path, html: {class: 'form-vertical'} do |f|
+      %fieldset
+        .form-group
+          %label.control-label Email:
+          = f.email_field :email, placeholder: 'Your email address', class: 'form-control required', required: true
 
-      .form-group
-        = f.submit 'Send Instructions', :class => 'btn btn-primary', :data => {:submit => true}
+        .form-group
+          = f.submit 'Send Instructions', :class => 'btn btn-primary', :data => {:submit => true}

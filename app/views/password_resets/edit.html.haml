@@ -1,20 +1,21 @@
 %h2 Set New Password
 
-.well.bs-component
-  = form_for @user.becomes(User), url: password_reset_path, html: {class: 'form-vertical'} do |f|
-    %fieldset
-      - if @user.errors.present?
-        .alert.alert-info.alert-dismissible.text-center{role: 'alert'}
-          %button.close{data: {dismiss: 'alert'}} &times;
-          = @user.errors.full_messages.first
+.panel.panel-default
+  .panel-body
+    = form_for @user.becomes(User), url: password_reset_path, html: {class: 'form-vertical'} do |f|
+      %fieldset
+        - if @user.errors.present?
+          .alert.alert-info.alert-dismissible.text-center{role: 'alert'}
+            %button.close{data: {dismiss: 'alert'}} &times;
+            = @user.errors.full_messages.first
 
-      .form-group
-        %label.control-label Enter a New Password:
-        = password_field_tag 'user[password]', nil, placeholder: 'At least 6 characters long', autocomplete: 'off', class: 'form-control required centered', required: true
+        .form-group
+          %label.control-label Enter a New Password:
+          = password_field_tag 'user[password]', nil, placeholder: 'At least 6 characters long', autocomplete: 'off', class: 'form-control required centered', required: true
 
-      .form-group
-        %label.control-label Confirm New Password:
-        = password_field_tag 'user[password_confirmation]', nil, placeholder: 'At least 6 characters long', autocomplete: 'off', class: 'form-control required centered', required: true
+        .form-group
+          %label.control-label Confirm New Password:
+          = password_field_tag 'user[password_confirmation]', nil, placeholder: 'At least 6 characters long', autocomplete: 'off', class: 'form-control required centered', required: true
 
-      .form-group
-        = f.submit 'Save and go to Sign in', class: 'btn btn-primary'
+        .form-group
+          = f.submit 'Save and go to Sign in', class: 'btn btn-primary'

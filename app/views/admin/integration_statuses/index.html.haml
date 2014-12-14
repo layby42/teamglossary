@@ -7,7 +7,7 @@
       = render 'shared/add_new_button', url: new_admin_integration_status_path, remote: true
 
 - show_changes = current_user.admin?
-%table.table.table-striped.table-hover.table-bordered
+%table.table.table-striped.table-bordered
   %thead
     %tr
       %th.text-center{width: 30} Code
@@ -33,5 +33,4 @@
             %i.fa.fa-check
         - if show_changes
           %td
-            = link_to changes_admin_integration_status_path(integration_status), remote: true, class: 'pull-right' do
-              %i.fa.fa-bars.text-muted
+            = render 'shared/changes_url', url: changes_admin_integration_status_path(integration_status)

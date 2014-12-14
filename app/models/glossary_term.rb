@@ -29,6 +29,8 @@
 #
 
 class GlossaryTerm < ActiveRecord::Base
+  include Approval
+
   strip_attributes :only => [:term, :tibetan, :sanskrit, :pali, :arabic, :alternative_tibetan, :alternative_sanskrit, :additional_explanation, :sanskrit_gender, :pali_gender, :definition]
   has_paper_trail :ignore => [:created_at, :updated_at]
 
@@ -46,6 +48,7 @@ class GlossaryTerm < ActiveRecord::Base
   scope :list_order, -> { order('lower(glossary_terms.term)') }
 
   validates :term, :language_id, presence: true
+  validates :term, uniqueness: {case_sensitive: false, scope: :language_id}
 
   def self.simple_search(language, query)
     search_columns = [:term, :tibetan, :sanskrit, :pali, :arabic,

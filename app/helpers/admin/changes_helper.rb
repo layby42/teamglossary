@@ -42,4 +42,5 @@ module Admin::ChangesHelper
       value
     end
   end
+
 end
