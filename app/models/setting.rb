@@ -19,6 +19,7 @@ class Setting < ActiveRecord::Base
   validates :configurable_id, :configurable_type, :name, presence: true
 
   def self.update_value!(configurable, name, value)
+    return unless configurable
     setting = configurable.settings.by_name(name).first || configurable.settings.new(name: name)
     setting.update_attributes!(value: value)
   end

@@ -1,11 +1,15 @@
-%h2
-  = link_to root_path do
-    %i.fa.fa-angle-left
-    = @glossary_title.term
+.row
+  .col-xs-12.col-sm-10.col-md-10.col-lg-10.col-sm-offset-1.col-md-offset-1.col-lg-offset-1
+    %h2
+      = link_to root_path do
+        %i.fa.fa-angle-left
+        = @glossary_title.term
 
-.panel.panel-default
-  .panel-body
-    = render 'show', language: @language, item: @glossary_title
+    .panel.panel-default
+      .panel-body.special-border
+        = render 'show', language: @language, item: @glossary_title
 
-.col-xs-12
-  = render 'shared/term_comments', language: @language, term: @glossary_title
+- if current_user
+  .row
+    .col-xs-12.col-sm-10.col-md-10.col-lg-10.col-sm-offset-1.col-md-offset-1.col-lg-offset-1
+      = render 'shared/term_comments', language: @language, term: @glossary_title

@@ -1,4 +1,5 @@
 class GlossaryNamesController < LanguagesController
+  skip_before_action :require_user, only: [:show]
   before_filter :find_language
   before_filter :find_glossary_name, only: [:show, :edit, :update, :changes, :approve, :reject]
 

@@ -53,7 +53,7 @@
       %th Explanation
       %td= item.explanation
 
-- if current_user.manager_or_editor?(item.language_id)
+- if current_user && current_user.manager_or_editor?(item.language_id)
   %h5
     STATUS
   %table.table.table-striped.table-bordered

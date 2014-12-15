@@ -1,14 +1,14 @@
 .row
-  = form_tag url_for(action: :index), method: :get, remote: true do
+  = form_tag url_for(action: :index), method: :get, remote: true, id: :search_form do
     %fieldset
-      .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6
+      .form-group.col-lg-6.col-md-6.col-sm-6.col-xs-12.col-sm-offset-3.col-md-offset-3.col-lg-offset-3
+        .input-group
+          = text_field_tag 'search[query]', @query, class: 'form-control', placeholder: 'Search query'
+          .input-group-btn
+            = submit_tag 'Search', class: 'btn btn-primary'
+      .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6.col-sm-offset-3.col-md-offset-3.col-lg-offset-3
         .input-group.col-xs-12
           = select_tag 'search[language_id]', active_language_options(@language.id), class: 'form-control', autocomplete: 'off'
       .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6
         .input-group.col-xs-12
           = select_tag 'search[glossary_type_id]', glossary_type_options(@glossary_type.id), class: 'form-control', autocomplete: 'off'
-      .form-group.col-lg-6.col-md-6.col-sm-6.col-xs-12
-        .input-group
-          = text_field_tag 'search[query]', @query, class: 'form-control', placeholder: 'Search query'
-          .input-group-btn
-            = submit_tag 'Search', class: 'btn btn-primary'

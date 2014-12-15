@@ -2,7 +2,7 @@
 
 .row-fluid
   .col-sm-6.col-xs-12
-    - if !request.xhr? && current_user.manager_or_editor?(item.language_id)
+    - if !request.xhr? && current_user && current_user.manager_or_editor?(item.language_id)
       = link_to edit_language_glossary_name_path(language, item), class: 'pull-left btn btn-primary btn-xs', id: :edit_name_button, remote: true, title: "Edit term" do
         %i.fa.fa-edit
       = link_to 'javascript:void(0);', {class: 'pull-left btn btn-default btn-xs', id: :cancel_name_button, style: 'display: none;'} do
@@ -19,7 +19,7 @@
       - translation = item.glossary_name_translations.by_language(language.id).first
       - translation ||= GlossaryNameTranslation.new_with_defaults
 
-      - if !translation.new_record? && !request.xhr? && current_user.manager_or_editor?(language.id)
+      - if !translation.new_record? && !request.xhr? && current_user && current_user.manager_or_editor?(language.id)
         - url = translation.new_record? ? new_language_glossary_name_glossary_name_translation_path(language, item) : edit_language_glossary_name_glossary_name_translation_path(language, item, translation)
         = link_to url, class: 'pull-left btn btn-primary btn-xs', id: :edit_name_translation_button, remote: true, title: "Edit translation" do
           %i.fa.fa-edit
@@ -32,7 +32,7 @@
 
       #name-translation-container.clearfix
         -if translation.new_record?
-          - if current_user.manager_or_editor?(language.id)
+          - if current_user && current_user.manager_or_editor?(language.id)
             = render 'glossary_name_translations/form', language: language, glossary_name: item, glossary_name_translation: translation
           - else
             .col-xs-12

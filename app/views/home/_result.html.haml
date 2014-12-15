@@ -1,24 +1,23 @@
-- can_edit_glossary = current_user.manager_or_editor?(@language.id)
+- can_edit_glossary = current_user ? current_user.manager_or_editor?(@language.id) : false
 .row
-  .col-xs-12
-    %h2
+  .col-xs-12.col-sm-10.col-md-10.col-lg-10.col-sm-offset-1.col-md-offset-1.col-lg-offset-1
+    %h4
       - if can_edit_glossary
         .pull-right.inline
           = render 'shared/add_new_button', url: new_glossary_item_url_helper(@glossary_type, @language), remote: false
 
       Found
       %span.badge #{@data.total_count}
-
+.row
+  .col-xs-12.col-sm-10.col-md-10.col-lg-10.col-sm-offset-1.col-md-offset-1.col-lg-offset-1
     %table.table.table-striped.table-bordered
       %thead
         %tr
           - if @language.is_base_language?
-            %td.col-xs-6 Term
-            %td.col-xs-6 Last Comment
+            %td.col-xs-12 Term
           - else
-            %td.col-xs-4 Term
-            %td.col-xs-4 Translation
-            %td.col-xs-4 Last Comment
+            %td.col-xs-6 Term
+            %td.col-xs-6 Translation
       %tbody
         - @data.each do |item|
           = render "term_#{@glossary_type.code.downcase}", item: item, language: @language, can_edit: can_edit_glossary
