@@ -11,7 +11,6 @@ gem 'foreigner'
 gem 'sass-rails', '~> 4.0.3'
 gem 'autoprefixer-rails'
 gem 'uglifier', '>= 1.3.0'
-gem 'bower-rails'
 gem 'jquery-rails'
 gem 'kaminari'
 gem 'paper_trail'
@@ -22,6 +21,13 @@ group :development, :test do
   gem 'spring'
   gem 'annotate'
 end
+
+# TODO!!!!! this one heroku only
+group :staging do
+  gem 'rails_12factor'
+  gem 'thin'
+end
+
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

@@ -8,9 +8,6 @@
   %meta{:name => 'apple-mobile-web-app-capable', :content => 'yes'}
   = csrf_meta_tags
 
-  :css
-    @import url("//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
-
   = stylesheet_link_tag 'application', media: 'all'
   = stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css'
   = yield :css
