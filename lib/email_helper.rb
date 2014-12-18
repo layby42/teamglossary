@@ -8,7 +8,7 @@ module EmailHelper
         #{EmailHelper.font_family_style}
         font-size: 18px;
         font-weight: 600;
-        color: #FFCC66;
+        color: #FFFFFF;
         margin: 20px 0 20px 0;
       }
   end
