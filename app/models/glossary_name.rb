@@ -15,14 +15,13 @@
 #  deleted               :boolean          default(FALSE), not null
 #  created_at            :datetime
 #  updated_at            :datetime
-#  wade_giles            :string(255)
 #  dates                 :string(255)
 #
 
 class GlossaryName < ActiveRecord::Base
   include Approval
 
-  strip_attributes :only => [:term, :tibetan, :sanskrit, :explanation, :wade_giles, :dates]
+  strip_attributes :only => [:term, :tibetan, :sanskrit, :explanation, :dates]
   has_paper_trail :ignore => [:created_at, :updated_at]
 
   belongs_to :language
@@ -38,7 +37,7 @@ class GlossaryName < ActiveRecord::Base
   validates :term, uniqueness: {case_sensitive: false, scope: :language_id}
 
   def self.simple_search(language, query)
-    search_columns = [:term, :tibetan, :sanskrit, :explanation, :wade_giles, :dates]
+    search_columns = [:term, :tibetan, :sanskrit, :explanation, :dates]
 
     if language.is_base_language?
       GlossaryName.where(%Q{

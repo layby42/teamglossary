@@ -104,7 +104,6 @@ class GlossaryNamesController < LanguagesController
       :tibetan,
       :sanskrit,
       :explanation,
-      :wade_giles,
       :dates
       )
   end

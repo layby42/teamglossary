@@ -11,7 +11,6 @@
 #  term                              :string(255)      not null
 #  tibetan                           :string(255)
 #  sanskrit                          :string(255)
-#  wade_giles                        :string(255)
 #  dates                             :string(255)
 #  term_created_at                   :string(255)
 #  term_updated_at                   :string(255)
