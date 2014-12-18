@@ -5,8 +5,10 @@
     - if !request.xhr? && current_user && current_user.manager_or_editor?(item.language_id)
       = link_to edit_language_glossary_term_path(language, item), class: 'pull-left btn btn-primary btn-xs', id: :edit_term_button, remote: true, title: "Edit term" do
         %i.fa.fa-edit
+        Edit
       = link_to 'javascript:void(0);', {class: 'pull-left btn btn-default btn-xs', id: :cancel_term_button, style: 'display: none;'} do
         %i.fa.fa-times
+        Cancel
 
       = render 'shared/changes_url', url: changes_language_glossary_term_path(language, item)
 
@@ -24,8 +26,10 @@
         - url = translation.new_record? ? new_language_glossary_term_glossary_term_translation_path(language, item) : edit_language_glossary_term_glossary_term_translation_path(language, item, translation)
         = link_to url, class: 'pull-left btn btn-primary btn-xs', id: :edit_term_translation_button, remote: true, title: "Edit translation" do
           %i.fa.fa-edit
+          Edit
         = link_to 'javascript:void(0);', {class: 'pull-left btn btn-default btn-xs', id: :cancel_term_translation_button, style: 'display: none;'} do
           %i.fa.fa-times
+          Cancel
 
         = render 'shared/changes_url', url: changes_language_glossary_term_glossary_term_translation_path(language, item, translation)
 
