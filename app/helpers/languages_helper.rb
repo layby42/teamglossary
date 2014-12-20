@@ -68,12 +68,16 @@ module LanguagesHelper
     apply ? 'position: relative; padding-bottom: 25px;' : ''
   end
 
-  def search_terms_display_options(language)
-    {
+  def search_terms_display_options(language, options={})
+    opts = {
       language: language,
-      can_edit_glossary: can_edit_language_glossary?(language.id),
       language_team: language_team?(language.id),
+      can_edit_language_glossary: can_edit_language_glossary?(language.id),
       base_language_team: base_language_team?
     }
+    options.each do |key, value|
+      opts[key] = value
+    end
+    opts
   end
 end

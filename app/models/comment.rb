@@ -14,6 +14,7 @@
 
 class Comment < ActiveRecord::Base
   strip_attributes :only => [:text]
+  has_paper_trail :ignore => [:created_at, :updated_at]
 
   belongs_to :commentable, :polymorphic => true
   belongs_to :language
@@ -23,4 +24,5 @@ class Comment < ActiveRecord::Base
   scope :list_order, -> { order('comments.created_at DESC') }
 
   validates :commentable_id, :commentable_type, :language_id, :user_id, :text, presence: true
+
 end

@@ -20,7 +20,7 @@
       %th Explanation
       %td= item.explanation
 
-- if current_user && current_user.manager_or_editor?(item.language_id)
+- if can_edit_language_glossary?(item.language_id)
   %h4.title STATUS
   %table.table.table-striped.table-bordered
     %tbody

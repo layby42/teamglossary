@@ -90,6 +90,13 @@ class GlossaryTerm < ActiveRecord::Base
     end
   end
 
+  def not_translated_languages(except_language_id=nil)
+    language_ids = glossary_term_translations.pluck(:language_id)
+    language_ids << except_language_id if except_language_id.present?
+    return [] if language_ids.empty?
+    Language.active.non_base.except_languages(language_ids)
+  end
+
   def self.new_with_defaults
     GlossaryTerm.new(
       integration_status: IntegrationStatus.default.first,

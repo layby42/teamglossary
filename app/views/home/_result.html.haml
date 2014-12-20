@@ -2,7 +2,7 @@
 .row
   .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
     %h4
-      - if edit_options[:can_edit_glossary]
+      - if edit_options[:can_edit_language_glossary]
         .pull-right.inline
           = render 'shared/add_new_button', url: new_glossary_item_url_helper(@glossary_type, @language), remote: false
 

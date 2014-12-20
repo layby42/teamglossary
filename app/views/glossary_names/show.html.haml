@@ -7,7 +7,7 @@
 
     .panel.panel-default
       .panel-body.special-border
-        = render 'show', language: @language, item: @glossary_name
+        = render 'show', search_terms_display_options(@language, {item: @glossary_name})
 
 - if current_user
   .row

@@ -28,12 +28,17 @@ class Language < ActiveRecord::Base
   has_many :glossary_titles
   has_many :glossary_title_translations
 
+  has_many :comments
+
   strip_attributes :only => [:iso_code, :english_name, :name, :notes, :encoding]
   has_paper_trail :ignore => [:created_at, :updated_at]
 
   scope :base, -> { where(is_base_language: true)}
+  scope :non_base, -> { where(is_base_language: false)}
   scope :active, -> { where(is_active: true)}
   scope :list_order, -> { order('lower(languages.iso_code)') }
+
+  scope :except_languages, -> (language_ids) { where('id NOT IN (?)', language_ids) }
 
   validates :iso_code, presence: true, uniqueness: {case_sensitive: false}
   validates :english_name, :name, presence: true

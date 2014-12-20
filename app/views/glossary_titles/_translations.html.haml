@@ -1,0 +1,19 @@
+%h4.title
+  - if !request.xhr? && current_user && current_user.manager_or_editor?
+    = link_to '#', class: 'pull-right btn btn-primary btn-xs', remote: true, title: "Add translation" do
+      %i.fa.fa-plus-circle
+      Add
+
+  = language.is_base_language? ? 'TRANSLATIONS' : 'OTHER TRANSLATIONS'
+
+%table.table.table-striped.table-bordered
+  %tbody
+    - translations.each do |translation|
+      %tr
+        %th= translation.language.english_name
+        %td= link_to translation.term, language_glossary_title_path(translation.language_id, item), remote: request.xhr?
+
+    - if translations.empty?
+      %tr
+        %td{colspan: 2}
+          no translations yet

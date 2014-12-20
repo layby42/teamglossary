@@ -1,7 +1,8 @@
 class CommentsController < LanguagesController
   before_filter :find_language
-  before_filter :find_commentable
+  before_filter :find_commentable, only: [:new, :create]
   before_filter :find_show_comments, only: [:new, :create]
+  before_filter :find_comment, only: [:destroy]
 
   before_filter :require_xhr
 
@@ -14,11 +15,32 @@ class CommentsController < LanguagesController
     @comment.user_id = current_user.id
     if @comment.save
       flash_to notice: 'Comment added!'
-      render action: :create
+      render action: :refresh
     else
       flash_to error: @comment.errors.full_messages.first
       render action: :new
     end
+  end
+
+  def destroy
+    unless current_user.manager_or_editor?(@language.id)
+      unless @comment.user_id == current_user.id
+        raise 'Sorry, you can delete only own comments.'
+      end
+
+      last_comment = @comment.commentable.last_comment(@language.id)
+      unless last_comment && last_comment.id == @comment.id
+        raise 'Sorry, you can delete only last own comment.'
+      end
+    end
+
+    @comment.destroy
+    flash_to notice: 'Comment removed!'
+    render action: :refresh
+
+  rescue Exception => ex
+    flash_to error: ex.message
+    render action: :refresh
   end
 
 
@@ -27,8 +49,9 @@ class CommentsController < LanguagesController
   def find_language
     @language = current_user.languages.find(params[:language_id])
   rescue
-    flash_to error: 'Sorry, language section not found or you do not have access the language section\'s comments'
-    redirect_to root_path
+    flash_to error: 'Sorry, language section not found or you do not have access to the language section\'s comments'
+    render action: :refresh
+    return
   end
 
   def find_commentable
@@ -44,12 +67,21 @@ class CommentsController < LanguagesController
 
     unless @commentable.present?
       flash_to error: 'Sorry, term you are looking for not found'
-      redirect_to root_path
+      render action: :refresh
+      return
     end
   end
 
   def find_show_comments
     @show_comments = (params[:show_comments].presence || true).to_s == 'true'
+  end
+
+  def find_comment
+    @comment = @language.comments.find(params[:id])
+  rescue
+    flash_to error: 'Sorry, comment not found'
+    render action: :refresh
+    return
   end
 
   def require_xhr
@@ -68,8 +100,6 @@ class CommentsController < LanguagesController
   end
 
   def comment_params
-    params.require(:comment).permit(
-      :text
-      )
+    params.require(:comment).permit(:text)
   end
 end

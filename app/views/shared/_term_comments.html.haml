@@ -17,9 +17,20 @@
         %td Comment
         %td By
     %tbody
-      - comments.each do |comment|
+      - can_edit_language = can_edit_language_glossary?(language.id)
+      - comments.each_with_index do |comment, idx|
+        - can_remove_comment = can_edit_language || (idx == 0 && comment.user_id == current_user.try(:id))
         %tr
           %td.col-xs-2
             %small= comment.created_at.strftime('%b %d, %Y %H:%M')
-          %td= comment.text
-          %td.col-xs-2= comment.user.name
+          %td{style: has_comment_style(can_remove_comment)}
+            = comment.text
+            - if can_remove_comment
+              .div{style: 'position: absolute; bottom: 0; right: 8px;'}
+                = link_to language_comment_path(language, comment), method: :delete, class: 'text-muted delete_link', remote: true, data: {confirm: 'Are you sure you want delete this comment?'} do
+                  %small
+                    %i.fa.fa-times-circle
+                    delete comment
+
+          %td.col-xs-2
+            = comment.user.name
