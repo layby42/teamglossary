@@ -1,6 +1,6 @@
 - if !request.xhr? && language_team?(language.id)
   .pull-right
-    = render 'shared/add_new_button', url: new_language_comment_path(language, commentable_type: term.class.to_s, commentable_id: term.id, show_comments: false), remote: true
+    = render 'shared/add_new_button', url: new_language_comment_path(language, commentable_type: term.class.to_s, commentable_id: term.id, show_comments: false), remote: true, title: 'Add comment'
 
 %h4.title
   COMMENTS

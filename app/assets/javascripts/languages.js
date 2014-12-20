@@ -11,4 +11,10 @@ $(function() {
   $(document).on('submit', '#search_form', function(){
     $('#search_result').html('<div class="text-center"><i class="fa fa-spinner fa-spin"></i> Searching...</div>');
   });
+
+  $(document).on('click', '#add_translation_link', function(){
+    var a = $(this).data('url').split('/');
+    a[4] = $('#new_translation_language_id').val();
+    window.location.href = a.join('/');
+  });
 });
