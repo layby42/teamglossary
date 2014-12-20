@@ -6,9 +6,15 @@
     = hidden_field_tag :show_comments, @show_comments
 
     .form-group.row
-      %label.col-sm-12.control-label Comment
+      %label.col-sm-12.control-label
+        Comment
+        %small
+          - if @language.is_base_language?
+            (please use only #{@language.english_name})
+          - else
+            (please use only #{base_language.english_name} or #{@language.english_name})
       .col-sm-12
-        = f.text_area :text, class: 'form-control', autocomplete: 'off', pleaceholder: 'Add your comment here', required: true
+        = f.text_area :text, class: 'form-control', rows: 3, autocomplete: 'off', placeholder: 'Add your comment here', required: true
 
     .form-group.row
       .col-sm-12.text-right
