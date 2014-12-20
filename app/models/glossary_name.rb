@@ -81,5 +81,4 @@ class GlossaryName < ActiveRecord::Base
       proper_name_type: ProperNameType.default.first
     )
   end
-
 end

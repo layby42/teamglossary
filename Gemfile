@@ -20,6 +20,7 @@ group :development, :test do
   gem 'thin'
   gem 'spring'
   gem 'annotate'
+  gem 'quiet_assets'
 end
 
 # TODO!!!!! this one heroku only

@@ -28,4 +28,9 @@ class GeneralStatus < ActiveRecord::Base
       item.update_attributes!(is_default: false)
     end
   end
+
+  def self.full_name_csv
+    code_names = GeneralStatus.pluck(:code, :name).collect{|p| "#{p[0]} – #{p[1]}" }.join('; ')
+    "Status of new terms: #{code_names}"
+  end
 end

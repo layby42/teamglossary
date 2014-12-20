@@ -27,4 +27,9 @@ class SanskritStatus < ActiveRecord::Base
       item.update_attributes!(is_default: false)
     end
   end
+
+  def self.full_name_csv
+    code_names = SanskritStatus.pluck(:code, :name).collect{|p| "#{p[0]} – #{p[1]}" }.join('; ')
+    "Sanskrit / Tibetan status: #{code_names}"
+  end
 end

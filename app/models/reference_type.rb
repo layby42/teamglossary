@@ -27,4 +27,9 @@ class ReferenceType < ActiveRecord::Base
       item.update_attributes!(is_default: false)
     end
   end
+
+  def self.full_name_csv
+    code_names = ReferenceType.pluck(:code, :name).collect{|p| "#{p[0]} – #{p[1]}" }.join('; ')
+    "Reference type of terms: #{code_names}"
+  end
 end

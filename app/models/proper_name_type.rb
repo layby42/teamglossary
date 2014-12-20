@@ -28,4 +28,9 @@ class ProperNameType < ActiveRecord::Base
       item.update_attributes!(is_default: false)
     end
   end
+
+  def self.full_name_csv
+    code_names = ProperNameType.pluck(:code, :name).collect{|p| "#{p[0]} – #{p[1]}" }.join('; ')
+    "Proper name types: #{code_names}"
+  end
 end

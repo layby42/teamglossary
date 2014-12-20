@@ -6,6 +6,13 @@
         .pull-right.inline
           = render 'shared/add_new_button', url: new_glossary_item_url_helper(@glossary_type, @language), remote: false
 
+      - if current_user
+        .pull-right.inline
+          %p
+            = link_to download_path, class: 'text-muted download_link', target: '_blank' do
+              %i.fa.fa-download
+              Download as CSV
+
       Found
       %span.badge #{@data.total_count}
 .row

@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  skip_before_action :require_user
+  skip_before_action :require_user, except: [:download]
   before_action :find_language
   before_action :find_glossary
   before_action :find_query
@@ -8,6 +8,21 @@ class HomeController < ApplicationController
 
   def index
     @data = Kaminari.paginate_array(@glossary_type.glossary_class.simple_search(@language, @query.to_s.strip.downcase)).page(params[:page])
+  end
+
+  def download
+    data = @glossary_type.glossary_class.simple_search(@language, @query.to_s.strip.downcase)
+    csv_data = ExportCsvHelper::prepare(@glossary_type.glossary_class, @language, data, {query: @query})
+    file_name = @glossary_type.csv_file_name(@language)
+    send_data csv_data,
+            :filename => file_name,
+            :content_type => 'text/csv;charset=iso-8859-1;header=present',
+            :disposition => "attachment;filename=#{file_name}",
+            :encoding => @language.encoding.to_s
+
+  rescue Exception => ex
+    flash_to error: ex.message
+    redirect_to action: :index
   end
 
   private

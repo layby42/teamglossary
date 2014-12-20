@@ -27,4 +27,9 @@ class IntegrationStatus < ActiveRecord::Base
       item.update_attributes!(is_default: false)
     end
   end
+
+  def self.full_name_csv(code)
+    code_names = IntegrationStatus.pluck(:code, :name).collect{|p| "#{p[0]} – #{p[1]}" }.join('; ')
+    "Status of #{code} term change integrated into #{code} articles: #{code_names}"
+  end
 end

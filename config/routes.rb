@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'login' => 'user_sessions#new'
   match 'login' => 'user_sessions#create', :via => [:post, :patch]
   match 'logout' => 'user_sessions#destroy', :via => [:get, :delete]
+  match 'download' => 'home#download', :via => [:get]
 
   resources :password_resets, :only => [:new, :create, :edit, :update]
 

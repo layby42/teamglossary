@@ -32,5 +32,6 @@ module TeamGlossary
       *.eot
       *.woff
       *.ttf)
+
   end
 end

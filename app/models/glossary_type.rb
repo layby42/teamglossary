@@ -26,4 +26,15 @@ class GlossaryType < ActiveRecord::Base
       GlossaryTitle
     end
   end
+
+  def csv_file_name(language)
+    case code
+    when 'PPN'
+      "#{language.iso_code}_proper_names_glossary_#{Date.today.to_s(:db)}.csv"
+    when 'THT'
+      "#{language.iso_code}_technical_terms_glossary_#{Date.today.to_s(:db)}.csv"
+    when 'TXT'
+      "#{language.iso_code}_text_titles_glossary_#{Date.today.to_s(:db)}.csv"
+    end
+  end
 end
