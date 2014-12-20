@@ -22,4 +22,5 @@ class Comment < ActiveRecord::Base
   scope :by_language, -> (language_id) { where(language_id: language_id) }
   scope :list_order, -> { order('comments.created_at DESC') }
 
+  validates :commentable_id, :commentable_type, :language_id, :user_id, :text, presence: true
 end

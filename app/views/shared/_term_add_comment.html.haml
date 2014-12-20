@@ -1,0 +1,9 @@
+- comments_count = term.comments.by_language(language.id).count
+.div{style: 'position: absolute; bottom: 0; right: 8px;'}
+  = link_to new_language_comment_path(language, commentable_type: term.class.to_s, commentable_id: term.id), class: 'text-muted', remote: true do
+    %i.fa.fa-plus-circle
+    add comment
+
+    - if comments_count > 0
+      (#{comments_count})
+

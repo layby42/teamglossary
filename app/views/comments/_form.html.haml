@@ -1,0 +1,16 @@
+= form_for [@language, @comment], html: {class: 'form-vertical', remote: true} do |f|
+  .alert.alert-danger.hide
+  %fieldset
+    = hidden_field_tag :commentable_type, @commentable.class.to_s
+    = hidden_field_tag :commentable_id, @commentable.id
+    = hidden_field_tag :show_comments, @show_comments
+
+    .form-group.row
+      %label.col-sm-12.control-label Comment
+      .col-sm-12
+        = f.text_area :text, class: 'form-control', autocomplete: 'off', pleaceholder: 'Add your comment here', required: true
+
+    .form-group.row
+      .col-sm-12.text-right
+        = f.submit 'Save Comment', class: 'btn btn-primary btn-sm'
+

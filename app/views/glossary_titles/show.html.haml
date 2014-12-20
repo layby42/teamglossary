@@ -1,6 +1,6 @@
 .row
-  .col-xs-12.col-sm-10.col-md-10.col-lg-10.col-sm-offset-1.col-md-offset-1.col-lg-offset-1
-    %h2
+  .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
+    %h3
       = link_to root_path do
         %i.fa.fa-angle-left
         = @glossary_title.term
@@ -11,5 +11,5 @@
 
 - if current_user
   .row
-    .col-xs-12.col-sm-10.col-md-10.col-lg-10.col-sm-offset-1.col-md-offset-1.col-lg-offset-1
+    .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
       = render 'shared/term_comments', language: @language, term: @glossary_title

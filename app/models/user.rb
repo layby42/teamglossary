@@ -55,6 +55,10 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def team?(language_id)
+    self.language_users.where(language_id: language_id).count > 0
+  end
+
   def manager?(language_id=nil)
     conditions = {role: :manager}
     conditions[:language_id] = language_id if language_id.present?

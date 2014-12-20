@@ -1,5 +1,5 @@
 %tr
-  %td
+  %td{style: has_comment_style(base_language_team)}
     = render 'shared/term_marks', language: language, term: item
 
     %strong
@@ -10,9 +10,11 @@
       %br/
       = item.definition
 
+    - if base_language_team
+      = render 'shared/term_add_comment', language: base_language, term: item
 
   - unless language.is_base_language?
-    %td
+    %td{style: has_comment_style(language_team)}
       - translation = item.glossary_term_translations.select{|t| t.language_id == @language.id}.first
       - if translation.present?
         %strong
@@ -22,10 +24,11 @@
           %br/
           %br/
           = translation.definition
-      - elsif can_edit
+      - elsif can_edit_glossary
         .text-right
           = link_to language_glossary_term_path(language, item), class: 'text-muted' do
             %i.fa.fa-plus-circle
             add translation
-  -# %td
-  -#   = render 'shared/term_last_comment', language: language, term: item
+
+      - if language_team
+        = render 'shared/term_add_comment', language: language, term: item

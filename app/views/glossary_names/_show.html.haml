@@ -37,7 +37,9 @@
           %i.fa.fa-times
           Cancel
 
-      %h4{class: (show_buttons ? 'term_title' : 'title')} TRANSLATION (#{language.full_name})
+      %h4{class: (show_buttons ? 'term_title' : 'title')}
+        TRANSLATION
+        %small.text-primary (#{language.full_name})
 
       #name-translation-container.clearfix
         -if translation.new_record?

@@ -1,4 +1,11 @@
-%h5 COMMENTS
+- if !request.xhr? && language_team?(language.id)
+  .pull-right
+    = render 'shared/add_new_button', url: new_language_comment_path(language, commentable_type: term.class.to_s, commentable_id: term.id, show_comments: false), remote: true
+
+%h4.title
+  COMMENTS
+  %small.text-primary (#{language.full_name})
+
 - comments = term.comments.by_language(language.id).includes([:user]).list_order
 - if comments.empty?
   no comments yet
@@ -6,12 +13,13 @@
   %table.table.table-striped.table-bordered
     %thead
       %tr.active
-        %td Date
+        %td Date (UTC)
         %td Comment
         %td By
     %tbody
       - comments.each do |comment|
         %tr
-          %td.col-xs-2= comment.created_at
+          %td.col-xs-2
+            %small= comment.created_at.strftime('%b %d, %Y %H:%M')
           %td= comment.text
           %td.col-xs-2= comment.user.name

@@ -71,6 +71,8 @@ Rails.application.routes.draw do
         get :changes, on: :member
       end
     end
+
+    resources :comments, only: [:new, :create, :destroy]
   end
 
   root :to => 'home#index'

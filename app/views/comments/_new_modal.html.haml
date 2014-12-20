@@ -1,0 +1,14 @@
+.modal-header
+  %button{:type => 'button', 'data-dismiss' => 'modal', :class => 'close', 'aria-hidden' => true}= '&times;'.html_safe
+  %h4
+    Comments for
+    = link_to @commentable.term, show_glossary_term_url_helper(@language, @commentable)
+.modal-body
+  .row
+    .col-xs-12
+      = render 'form'
+  - if @show_comments
+    .row
+      .col-xs-12
+        = render 'shared/term_comments', language: @language, term: @commentable
+
