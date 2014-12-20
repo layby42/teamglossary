@@ -21,8 +21,7 @@
       %td= item.explanation
 
 - if current_user && current_user.manager_or_editor?(item.language_id)
-  %h5
-    STATUS
+  %h4.title STATUS
   %table.table.table-striped.table-bordered
     %tbody
       %tr

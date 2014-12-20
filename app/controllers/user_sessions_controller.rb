@@ -2,7 +2,7 @@ class UserSessionsController < ApplicationController
   before_action :require_no_user, :only => [:new, :create]
   before_action :require_user, :only => :destroy
 
-  PAGE_TITLE = 'Sign In to Team Glossary'
+  PAGE_TITLE = 'Log In to Team Glossary'
   layout 'login'
 
   def new

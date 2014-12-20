@@ -20,23 +20,6 @@
     .container
       .navbar-header
         = link_to 'Team Glossary', root_path, :class => 'navbar-brand'
-
-      - if current_user
-        .navbar-collapse.collapse
-          %ul.nav.navbar-nav
-            -# %li= link_to 'Clients', clients_path
-            -# %li= link_to 'Monitor Users', users_path
-            -# %li= link_to 'Settings', settings_path
-
-          %ul.nav.navbar-nav.navbar-right
-            %li.dropdown
-              = link_to('javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'}) do
-                = current_user.name
-                %b.caret
-              %ul.dropdown-menu
-                -# %li= link_to 'Profile'
-                %li= link_to 'Log Out', logout_path, :method => :delete
-
   .container
     %noscript
       .alert.alert-danger

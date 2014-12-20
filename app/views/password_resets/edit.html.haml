@@ -1,6 +1,6 @@
 %h2 Set New Password
 
-.panel.panel-default
+.panel.panel-default.special-border
   .panel-body
     = form_for @user.becomes(User), url: password_reset_path, html: {class: 'form-vertical'} do |f|
       %fieldset
@@ -18,4 +18,4 @@
           = password_field_tag 'user[password_confirmation]', nil, placeholder: 'At least 6 characters long', autocomplete: 'off', class: 'form-control required centered', required: true
 
         .form-group
-          = f.submit 'Save and go to Sign in', class: 'btn btn-primary'
+          = f.submit 'Save and go to Log in', class: 'btn btn-primary'

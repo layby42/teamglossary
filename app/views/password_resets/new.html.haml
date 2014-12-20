@@ -1,7 +1,7 @@
 %h2 Forgot your Password?
 %p Enter your email and we'll send you instructions on how to reset your password.
 
-.panel.panel-default
+.panel.panel-default.special-border
   .panel-body
     = form_for @user.becomes(User), url: password_resets_path, html: {class: 'form-vertical'} do |f|
       %fieldset

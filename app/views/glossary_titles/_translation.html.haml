@@ -16,8 +16,7 @@
       %td= translation.notes
 
 - if current_user && current_user.manager_or_editor?(translation.language_id)
-  %h5
-    STATUS
+  %h4.term STATUS
   %table.table.table-striped.table-bordered
     %tbody
       %tr

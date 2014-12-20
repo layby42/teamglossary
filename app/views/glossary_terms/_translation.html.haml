@@ -18,8 +18,7 @@
       %td= truncate(translation.notes, length: 250, omission: ' ... (more)')
 
 - if current_user && current_user.manager_or_editor?(translation.language_id)
-  %h5
-    STATUS
+  %h4.title STATUS
   %table.table.table-striped.table-bordered
     %tbody
       %tr
