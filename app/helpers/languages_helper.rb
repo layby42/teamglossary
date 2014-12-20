@@ -81,6 +81,10 @@ module LanguagesHelper
     opts
   end
 
+  def add_new_term_translation_language_ids(except_language_ids)
+    current_user.languages.non_base.pluck(:id) - except_language_ids
+  end
+
   def new_translation_language_options(language_ids=[])
     opts = current_user.languages.non_base.where(id: language_ids).collect{|l| [l.english_name, l.id]}
     options_for_select(opts)
