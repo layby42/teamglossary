@@ -1,4 +1,4 @@
-= form_for [:admin, integration_status], :html => {:'data-validate' => 'parsley', class: 'modal-form form-horizontal', :'data-async' =>  ''}  do |f|
+= form_for [:admin, integration_status], :html => {class: 'modal-form form-horizontal'}  do |f|
   .modal-header
     %button{:type => 'button', 'data-dismiss' => 'modal', :class => 'close', 'aria-hidden' => true}= '&times;'.html_safe
     %h3= integration_status.new_record? ? 'New Integration Status' : 'Edit Integration Status'

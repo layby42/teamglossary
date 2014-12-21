@@ -1,4 +1,4 @@
-= form_for [:admin, proper_name_type], :html => {:'data-validate' => 'parsley', class: 'modal-form form-horizontal', :'data-async' =>  ''}  do |f|
+= form_for [:admin, proper_name_type], :html => {class: 'form-horizontal'}  do |f|
   .modal-header
     %button{:type => 'button', 'data-dismiss' => 'modal', :class => 'close', 'aria-hidden' => true}= '&times;'.html_safe
     %h3= proper_name_type.new_record? ? 'New Proper Name Type' : 'Edit Proper Name Type'

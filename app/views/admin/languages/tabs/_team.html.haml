@@ -8,6 +8,7 @@
       - users = language_users_sorted(language, role)
       = link_to new_admin_language_team_path(language.id, role: role), class: 'pull-left btn btn-primary btn-xs', remote: true, title: "Add #{role}" do
         %i.fa.fa-plus-circle
+        Add
       %h4{style: 'margin-top: 2px;'} &nbsp; #{role.to_s.pluralize.upcase}
 
       - users.each_with_index do |language_user, idx|

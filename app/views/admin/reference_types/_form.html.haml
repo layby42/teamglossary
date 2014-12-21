@@ -1,4 +1,4 @@
-= form_for [:admin, reference_type], :html => {:'data-validate' => 'parsley', class: 'modal-form form-horizontal', :'data-async' =>  ''}  do |f|
+= form_for [:admin, reference_type], :html => {class: 'modal-form form-horizontal'}  do |f|
   .modal-header
     %button{:type => 'button', 'data-dismiss' => 'modal', :class => 'close', 'aria-hidden' => true}= '&times;'.html_safe
     %h3= reference_type.new_record? ? 'New Reference Type' : 'Edit Reference Type'

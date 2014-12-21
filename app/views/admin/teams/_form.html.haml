@@ -1,6 +1,6 @@
 - url = admin_language_teams_path if params[:language_id]
 - url = admin_user_teams_path if params[:user_id]
-= form_for [:admin, language_user], url: url, :html => {:'data-validate' => 'parsley', class: 'modal-form form-horizontal', :'data-async' =>  ''}  do |f|
+= form_for [:admin, language_user], url: url, :html => {:class => 'form-vertical'} do |f|
   .modal-header
     %button.close{'aria-hidden' => 'true', 'data-dismiss' => 'modal'} &times;
     %h4.modal-title
