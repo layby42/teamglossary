@@ -29,7 +29,7 @@ class GlossaryName < ActiveRecord::Base
   belongs_to :integration_status
 
   has_many :glossary_name_translations
-  has_many :comments, as: :commentable
+  has_many :comments, as: :commentable, dependent: :destroy
 
   scope :list_order, -> { order('lower(glossary_names.term)') }
 
@@ -80,5 +80,13 @@ class GlossaryName < ActiveRecord::Base
       integration_status: IntegrationStatus.default.first,
       proper_name_type: ProperNameType.default.first
     )
+  end
+
+  def has_translations?
+    self.glossary_name_translations.count > 0
+  end
+
+  def has_no_transaltion?
+    self.glossary_name_translations.count == 0
   end
 end

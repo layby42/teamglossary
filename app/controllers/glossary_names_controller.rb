@@ -1,7 +1,7 @@
 class GlossaryNamesController < LanguagesController
   skip_before_action :require_user, only: [:show]
   before_filter :find_language
-  before_filter :find_glossary_name, only: [:show, :edit, :update, :changes, :approve, :reject]
+  before_filter :find_glossary_name, only: [:show, :edit, :update, :changes, :approve, :reject, :destroy]
 
   before_filter :require_xhr, :only => [:edit, :changes]
 
@@ -56,6 +56,18 @@ class GlossaryNamesController < LanguagesController
   end
 
   def reject
+  end
+
+  def destroy
+    if @glossary_name.glossary_name_translations.count > 0
+      raise 'Sorry, you cannot delete proper name because it has translations.'
+    end
+    @glossary_name.destroy
+    flash_to notice: 'Proper name removed!'
+    redirect_to root_path
+  rescue Exception => ex
+    flash_to error: ex.message
+    redirect_to language_glossary_name_path(@language, @glossary_name)
   end
 
   private

@@ -3,14 +3,14 @@
   %tbody
     %tr
       %th.col-xs-4 Translation
-      %td{style: bottom_link_style_helper(can_edit_language_glossary)}
+      %td{style: bottom_link_style_helper(!request.xhr? && can_edit_language_glossary)}
         = link_to translation.term, language_glossary_title_path(language, item), remote: request.xhr?
         - [:alt_term1, :alt_term2, :alt_term3].each do |field|
           - next unless translation[field].present?
           %br/
           * #{translation[field]}
 
-        - if can_edit_language_glossary
+        - if !request.xhr? && can_edit_language_glossary
           .div{style: 'position: absolute; bottom: 0; right: 8px;'}
             = link_to language_glossary_title_glossary_title_translation_path(language, item, translation), method: :delete, class: 'text-muted delete_link', data: {confirm: 'Are you sure you want delete this translation?'} do
               %small

@@ -1,7 +1,7 @@
 class GlossaryTermsController < LanguagesController
   skip_before_action :require_user, only: [:show]
   before_filter :find_language
-  before_filter :find_glossary_term, only: [:show, :edit, :update, :changes, :approve, :reject]
+  before_filter :find_glossary_term, only: [:show, :edit, :update, :changes, :approve, :reject, :destroy]
 
   before_filter :require_xhr, :only => [:edit, :changes]
 
@@ -47,15 +47,27 @@ class GlossaryTermsController < LanguagesController
   end
 
   def approve
-    @glossary_title.approve!
+    @glossary_term.approve!
     flash_to notice: 'Term approved!'
   rescue Exception => ex
     flash_to error: ex.message
   ensure
-    redirect_to language_glossary_title_path(@language, @glossary_title)
+    redirect_to language_glossary_term_path(@language, @glossary_term)
   end
 
   def reject
+  end
+
+  def destroy
+    if @glossary_term.glossary_term_translations.count > 0
+      raise 'Sorry, you cannot delete technical term because it has translations.'
+    end
+    @glossary_term.destroy
+    flash_to notice: 'Technical term removed!'
+    redirect_to root_path
+  rescue Exception => ex
+    flash_to error: ex.message
+    redirect_to language_glossary_term_path(@language, @glossary_term)
   end
 
   private

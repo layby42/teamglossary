@@ -1,8 +1,9 @@
+- can_edit_language_glossary = can_edit_language_glossary?(item.language_id)
 %table.table.table-striped.table-bordered
   %tbody
     %tr
       %th.col-xs-4 Term
-      %td
+      %td{style: bottom_link_style_helper(!request.xhr? && can_edit_language_glossary)}
         = link_to item.term, language_glossary_term_path(item.language, item), remote: request.xhr?
         - if item.glossary_term_id.present?
           %br/
@@ -20,6 +21,13 @@
             %br/
             = link_to glossary_term.term, language_glossary_term_path(glossary_term.language_id, glossary_term), remote: request.xhr?
             %small (#{glossary_term.reference_type.name})
+
+        - if !request.xhr? && can_edit_language_glossary && item.has_no_transaltion?
+          .div{style: 'position: absolute; bottom: 0; right: 8px;'}
+            = link_to language_glossary_term_path(language, item), method: :delete, class: 'text-muted delete_link', data: {confirm: 'Are you sure you want delete this term?'} do
+              %small
+                %i.fa.fa-times-circle
+                delete term
     %tr
       %th Tibetan
       %td
@@ -51,7 +59,7 @@
       %th Explanation
       %td= truncate(item.additional_explanation, length: 250, omission: ' ... (more)')
 
-- if can_edit_language_glossary?(item.language_id)
+- if can_edit_language_glossary
   %h4.title STATUS
   %table.table.table-striped.table-bordered
     %tbody

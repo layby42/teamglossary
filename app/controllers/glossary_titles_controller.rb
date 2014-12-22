@@ -1,11 +1,11 @@
 class GlossaryTitlesController < LanguagesController
   skip_before_action :require_user, only: [:show]
   before_filter :find_language
-  before_filter :find_glossary_title, only: [:show, :edit, :update, :changes, :approve, :reject]
+  before_filter :find_glossary_title, only: [:show, :edit, :update, :changes, :approve, :reject, :destroy]
 
   before_filter :require_xhr, :only => [:edit, :changes]
 
-  before_filter :require_language_manager_or_editor, only: [:new, :create, :edit, :update, :changes]
+  before_filter :require_language_manager_or_editor, only: [:new, :create, :edit, :update, :changes, :destroy]
   before_filter :require_base_language_manager_or_editor, only: [:approve, :reject]
 
   def new
@@ -56,6 +56,18 @@ class GlossaryTitlesController < LanguagesController
   end
 
   def reject
+  end
+
+  def destroy
+    if @glossary_title.glossary_title_translations.count > 0
+      raise 'Sorry, you cannot delete text title because it has translations.'
+    end
+    @glossary_title.destroy
+    flash_to notice: 'Text title removed!'
+    redirect_to root_path
+  rescue Exception => ex
+    flash_to error: ex.message
+    redirect_to language_glossary_title_path(@language, @glossary_title)
   end
 
   private

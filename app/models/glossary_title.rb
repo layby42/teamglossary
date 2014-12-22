@@ -36,7 +36,7 @@ class GlossaryTitle < ActiveRecord::Base
   belongs_to :integration_status
 
   has_many :glossary_title_translations
-  has_many :comments, as: :commentable
+  has_many :comments, as: :commentable, dependent: :destroy
 
   scope :list_order, -> { order('lower(glossary_titles.term)') }
 
@@ -93,5 +93,13 @@ class GlossaryTitle < ActiveRecord::Base
     GlossaryTitle.new(
       integration_status: IntegrationStatus.default.first
     )
+  end
+
+  def has_translations?
+    self.glossary_title_translations.count > 0
+  end
+
+  def has_no_transaltion?
+    self.glossary_title_translations.count == 0
   end
 end

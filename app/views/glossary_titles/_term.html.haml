@@ -1,8 +1,9 @@
+- can_edit_language_glossary = can_edit_language_glossary?(item.language_id)
 %table.table.table-striped.table-bordered
   %tbody
     %tr
       %th.col-xs-4 Term
-      %td
+      %td{style: bottom_link_style_helper(!request.xhr? && can_edit_language_glossary)}
         = link_to item.term, language_glossary_title_path(item.language, item), remote: request.xhr?
 
         - if item.alt_term1.present? || item.alt_term2.present?
@@ -17,6 +18,12 @@
           %br/
           Popular: #{item.popular_term}
 
+        - if !request.xhr? && can_edit_language_glossary && item.has_no_transaltion?
+          .div{style: 'position: absolute; bottom: 0; right: 8px;'}
+            = link_to language_glossary_title_path(language, item), method: :delete, class: 'text-muted delete_link', data: {confirm: 'Are you sure you want delete this term?'} do
+              %small
+                %i.fa.fa-times-circle
+                delete term
     %tr
       %th Author
       %td
@@ -53,7 +60,7 @@
       %th Explanation
       %td= item.explanation
 
-- if can_edit_language_glossary?(item.language_id)
+- if can_edit_language_glossary
   %h4.term STATUS
   %table.table.table-striped.table-bordered
     %tbody
