@@ -6,6 +6,13 @@
       = link_to item.term, language_glossary_name_path(item.language, item), remote: true
     - if item.dates.present?
       (#{item.dates})
+
+    - if can_edit_base_language_glossary
+      .text-right
+        = link_to edit_language_glossary_name_path(language, item), class: 'text-muted' do
+          %i.fa.fa-edit
+          edit term
+
     - if item.explanation.present?
       %br/
       %br/
@@ -21,6 +28,13 @@
         %strong
           = link_to translation.term, language_glossary_name_path(language, item), remote: true
         %i= translation.alternative_as_string
+
+        - if can_edit_language_glossary
+          .text-right
+            = link_to edit_language_glossary_name_glossary_name_translation_path(language, item, translation), class: 'text-muted' do
+              %i.fa.fa-edit
+              edit translation
+
         - if translation.notes.present?
           %br/
           %br/

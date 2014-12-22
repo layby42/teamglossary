@@ -73,7 +73,8 @@ module LanguagesHelper
       language: language,
       language_team: language_team?(language.id),
       can_edit_language_glossary: can_edit_language_glossary?(language.id),
-      base_language_team: base_language_team?
+      base_language_team: base_language_team?,
+      can_edit_base_language_glossary: can_edit_language_glossary?(base_language.id)
     }
     options.each do |key, value|
       opts[key] = value

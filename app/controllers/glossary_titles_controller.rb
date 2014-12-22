@@ -3,7 +3,7 @@ class GlossaryTitlesController < LanguagesController
   before_filter :find_language
   before_filter :find_glossary_title, only: [:show, :edit, :update, :changes, :approve, :reject, :destroy]
 
-  before_filter :require_xhr, :only => [:edit, :changes]
+  before_filter :require_xhr, :only => [:changes]
 
   before_filter :require_language_manager_or_editor, only: [:new, :create, :edit, :update, :changes, :destroy]
   before_filter :require_base_language_manager_or_editor, only: [:approve, :reject]

@@ -2,18 +2,25 @@
 
 .row-fluid
   .col-sm-6.col-xs-12
-    - show_buttons = !request.xhr? && can_edit_language_glossary?(item.language_id)
-    - if show_buttons
-      .pull-left= render 'shared/changes_url', url: changes_language_glossary_term_path(language, item)
+    - can_edit = can_edit_language_glossary?(item.language_id)
 
-      = link_to edit_language_glossary_term_path(language, item), class: 'pull-right btn btn-primary btn-xs', id: :edit_term_button, remote: true, title: "Edit term" do
-        %i.fa.fa-edit
-        Edit
-      = link_to 'javascript:void(0);', {class: 'pull-right btn btn-default btn-xs', id: :cancel_term_button, style: 'display: none;'} do
-        %i.fa.fa-times
-        Cancel
+    - if can_edit
+      - if request.xhr?
+        = link_to edit_language_glossary_term_path(language, item), class: 'pull-right btn btn-primary btn-xs', id: :edit_term_button, remote: false, title: "Edit term" do
+          %i.fa.fa-edit
+          Edit
+      - else
+        .pull-left
+          = render 'shared/changes_url', url: changes_language_glossary_term_path(language, item)
 
-    %h4{class: (show_buttons ? 'term_title' : 'title')} TERM DETAILS
+        = link_to edit_language_glossary_term_path(language, item), class: 'pull-right btn btn-primary btn-xs', id: :edit_term_button, remote: true, title: "Edit term" do
+          %i.fa.fa-edit
+          Edit
+        = link_to 'javascript:void(0);', {class: 'pull-right btn btn-default btn-xs', id: :cancel_term_button, style: 'display: none;'} do
+          %i.fa.fa-times
+          Cancel
+
+    %h4{class: (!request.xhr? && can_edit ? 'term_title' : 'title')} TERM DETAILS
 
     #term-container.clearfix
       = render 'term', language: language, item: item
@@ -23,19 +30,24 @@
       - translation = item.glossary_term_translations.by_language(language.id).first
       - translation ||= GlossaryTermTranslation.new_with_defaults
 
-      - show_buttons = !translation.new_record? && !request.xhr? && can_edit_language_glossary?(language.id)
-      - if show_buttons
-        .pull-left= render 'shared/changes_url', url: changes_language_glossary_term_glossary_term_translation_path(language, item, translation)
+      - can_edit = !translation.new_record? && can_edit_language_glossary?(language.id)
+      - if can_edit
+        - url = edit_language_glossary_term_glossary_term_translation_path(language, item, translation)
+        - if request.xhr?
+          = link_to url, class: 'pull-right btn btn-primary btn-xs', id: :edit_term_translation_button, remote: false, title: "Edit translation" do
+            %i.fa.fa-edit
+            Edit
+        - else
+          .pull-left= render 'shared/changes_url', url: changes_language_glossary_term_glossary_term_translation_path(language, item, translation)
 
-        - url = translation.new_record? ? new_language_glossary_term_glossary_term_translation_path(language, item) : edit_language_glossary_term_glossary_term_translation_path(language, item, translation)
-        = link_to url, class: 'pull-right btn btn-primary btn-xs', id: :edit_term_translation_button, remote: true, title: "Edit translation" do
-          %i.fa.fa-edit
-          Edit
-        = link_to 'javascript:void(0);', {class: 'pull-right btn btn-default btn-xs', id: :cancel_term_translation_button, style: 'display: none;'} do
-          %i.fa.fa-times
-          Cancel
+          = link_to url, class: 'pull-right btn btn-primary btn-xs', id: :edit_term_translation_button, remote: true, title: "Edit translation" do
+            %i.fa.fa-edit
+            Edit
+          = link_to 'javascript:void(0);', {class: 'pull-right btn btn-default btn-xs', id: :cancel_term_translation_button, style: 'display: none;'} do
+            %i.fa.fa-times
+            Cancel
 
-      %h4{class: (show_buttons ? 'term_title' : 'title')}
+      %h4{class: (!request.xhr? && can_edit ? 'term_title' : 'title')}
         TRANSLATION
         %small.text-primary (#{language.full_name})
 

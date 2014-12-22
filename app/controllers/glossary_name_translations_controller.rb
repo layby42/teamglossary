@@ -3,7 +3,7 @@ class GlossaryNameTranslationsController < GlossaryNamesController
   before_filter :find_glossary_name
   before_filter :find_glossary_name_translation, only: [:edit, :update, :changes, :destroy]
 
-  before_filter :require_xhr, :only => [:edit, :changes]
+  before_filter :require_xhr, :only => [:changes]
 
   before_filter :require_language_manager_or_editor
 

@@ -9,6 +9,12 @@
       .text-left
         %i -- #{item.author}
 
+    - if can_edit_base_language_glossary
+      .text-right
+        = link_to edit_language_glossary_title_path(language, item), class: 'text-muted' do
+          %i.fa.fa-edit
+          edit term
+
     - if item.explanation.present?
       %br/
       %br/
@@ -29,6 +35,12 @@
 
         %br/
         %i= translation.alternative_as_string
+
+        - if can_edit_language_glossary
+          .text-right
+            = link_to edit_language_glossary_title_glossary_title_translation_path(language, item, translation), class: 'text-muted' do
+              %i.fa.fa-edit
+              edit translation
 
         - if translation.notes.present?
           %br/

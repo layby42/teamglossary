@@ -5,6 +5,12 @@
     %strong
       = link_to item.term, language_glossary_term_path(item.language, item), remote: true
 
+    - if can_edit_base_language_glossary
+      .text-right
+        = link_to edit_language_glossary_term_path(language, item), class: 'text-muted' do
+          %i.fa.fa-edit
+          edit term
+
     - if item.definition.present?
       %br/
       %br/
@@ -19,6 +25,12 @@
       - if translation.present?
         %strong
           = link_to translation.term, language_glossary_term_path(language, item), remote: true
+
+        - if can_edit_language_glossary
+          .text-right
+            = link_to edit_language_glossary_term_glossary_term_translation_path(language, item, translation), class: 'text-muted' do
+              %i.fa.fa-edit
+              edit translation
 
         - if translation.definition.present?
           %br/
