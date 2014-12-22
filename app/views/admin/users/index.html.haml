@@ -11,7 +11,7 @@
       %th Name
       %th Email
       %th # Teams
-      %th Last log in
+      %th Last seen
   %tbody
     - @users.each do |user|
       %tr
@@ -23,5 +23,5 @@
         %td
           = link_to user.teams_count, admin_user_path(user)
         %td
-          = time_ago(user.last_login_at)
+          = time_ago(user.last_request_at)
 
