@@ -56,6 +56,8 @@ class GlossaryTermsController < LanguagesController
   end
 
   def reject
+    flash_to error: 'Sorry, not implemented yet'
+    redirect_to language_glossary_term_path(@language, @glossary_term)
   end
 
   def destroy
