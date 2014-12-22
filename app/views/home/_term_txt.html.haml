@@ -1,5 +1,5 @@
 %tr
-  %td{style: has_comment_style(base_language_team)}
+  %td{style: bottom_link_style_helper(base_language_team)}
     = render 'shared/term_marks', language: language, term: item
 
     %strong
@@ -18,7 +18,7 @@
       = render 'shared/term_add_comment', language: base_language, term: item
 
   - unless language.is_base_language?
-    %td{style: has_comment_style(language_team)}
+    %td{style: bottom_link_style_helper(language_team)}
       - translation = item.glossary_title_translations.select{|t| t.language_id == language.id}.first
       - if translation.present?
         %strong

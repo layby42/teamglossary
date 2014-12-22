@@ -1,11 +1,11 @@
 class GlossaryTitleTranslationsController < GlossaryTitlesController
   before_filter :find_language
   before_filter :find_glossary_title
-  before_filter :find_glossary_title_translation, only: [:show, :edit, :update, :changes]
+  before_filter :find_glossary_title_translation, only: [:edit, :update, :changes, :destroy]
 
   before_filter :require_xhr, :only => [:edit, :changes]
 
-  before_filter :require_language_manager_or_editor, only: [:create, :edit, :update, :changes]
+  before_filter :require_language_manager_or_editor
 
   def create
     glossary_title_translation = GlossaryTitleTranslation.new(glossary_title_translation_params)
@@ -13,6 +13,8 @@ class GlossaryTitleTranslationsController < GlossaryTitlesController
     glossary_title_translation.glossary_title_id = @glossary_title.id
     if glossary_title_translation.save
       flash_to notice: 'Changes saved!'
+    else
+      flash_to error: glossary_title_translation.errors.full_messages.first
     end
   ensure
     redirect_to language_glossary_title_path(@language, @glossary_title)
@@ -24,15 +26,25 @@ class GlossaryTitleTranslationsController < GlossaryTitlesController
   def update
     if @glossary_title_translation.update_attributes!(glossary_title_translation_params)
       flash_to notice: 'Changes saved!'
-      redirect_to action: :show
     else
-      render action: :show
+      flash_to error: @glossary_title_translation.errors.full_messages.first
     end
+  ensure
+    redirect_to language_glossary_title_path(@language, @glossary_title)
   end
 
   def changes
     @changes = Change.for_item(@glossary_title_translation).sort {|a, b| b.created_at <=> a.created_at}
     render template: 'admin/changes/changes'
+  end
+
+  def destroy
+    @glossary_title_translation.destroy
+    flash_to notice: 'Translation removed!'
+  rescue Exception => ex
+    flash_to error: ex.message
+  ensure
+    redirect_to language_glossary_title_path(@language, @glossary_title)
   end
 
   private

@@ -1,7 +1,7 @@
 class GlossaryNameTranslationsController < GlossaryNamesController
   before_filter :find_language
   before_filter :find_glossary_name
-  before_filter :find_glossary_name_translation, only: [:show, :edit, :update, :changes]
+  before_filter :find_glossary_name_translation, only: [:edit, :update, :changes, :destroy]
 
   before_filter :require_xhr, :only => [:edit, :changes]
 
@@ -13,6 +13,8 @@ class GlossaryNameTranslationsController < GlossaryNamesController
     glossary_name_translation.glossary_name_id = @glossary_name.id
     if glossary_name_translation.save
       flash_to notice: 'Changes saved!'
+    else
+      flash_to error: glossary_name_translation.errors.full_messages.first
     end
   ensure
     redirect_to language_glossary_name_path(@language, @glossary_name)
@@ -24,15 +26,25 @@ class GlossaryNameTranslationsController < GlossaryNamesController
   def update
     if @glossary_name_translation.update_attributes!(glossary_name_translation_params)
       flash_to notice: 'Changes saved!'
-      redirect_to action: :show
     else
-      render action: :show
+      flash_to error: @glossary_name_translation.errors.full_messages.first
     end
+  ensure
+    redirect_to language_glossary_name_path(@language, @glossary_name)
   end
 
   def changes
     @changes = Change.for_item(@glossary_name_translation).sort {|a, b| b.created_at <=> a.created_at}
     render template: 'admin/changes/changes'
+  end
+
+  def destroy
+    @glossary_name_translation.destroy
+    flash_to notice: 'Translation removed!'
+  rescue Exception => ex
+    flash_to error: ex.message
+  ensure
+    redirect_to language_glossary_name_path(@language, @glossary_name)
   end
 
   private
@@ -77,6 +89,7 @@ class GlossaryNameTranslationsController < GlossaryNamesController
 
   def require_language_manager_or_editor
     unless current_user.manager_or_editor?(@language)
+      flash_to error: 'Sorry, you have read-only access to the glossary'
       redirect_to language_glossary_name_path(@language, @glossary_name)
     end
   end

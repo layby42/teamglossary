@@ -1,7 +1,7 @@
 %table.table.table-striped.table-bordered
   %tbody
     %tr
-      %th Term
+      %th.col-xs-4 Term
       %td
         = link_to item.term, language_glossary_term_path(item.language, item), remote: request.xhr?
         - if item.glossary_term_id.present?

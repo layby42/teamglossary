@@ -1,7 +1,7 @@
 class GlossaryTermTranslationsController < GlossaryTermsController
   before_filter :find_language
   before_filter :find_glossary_term
-  before_filter :find_glossary_term_translation, only: [:show, :edit, :update, :changes]
+  before_filter :find_glossary_term_translation, only: [:edit, :update, :changes, :destroy]
 
   before_filter :require_xhr, :only => [:edit, :changes]
 
@@ -13,6 +13,8 @@ class GlossaryTermTranslationsController < GlossaryTermsController
     glossary_term_translation.glossary_term_id = @glossary_term.id
     if glossary_term_translation.save
       flash_to notice: 'Changes saved!'
+    else
+      flash_to error: glossary_term_translation.errors.full_messages.first
     end
   ensure
     redirect_to language_glossary_term_path(@language, @glossary_term)
@@ -24,15 +26,25 @@ class GlossaryTermTranslationsController < GlossaryTermsController
   def update
     if @glossary_term_translation.update_attributes!(glossary_term_translation_params)
       flash_to notice: 'Changes saved!'
-      redirect_to action: :show
     else
-      render action: :show
+      flash_to error: @glossary_term_translation.errors.full_messages.first
     end
+  ensure
+    redirect_to language_glossary_term_path(@language, @glossary_term)
   end
 
   def changes
     @changes = Change.for_item(@glossary_term_translation).sort {|a, b| b.created_at <=> a.created_at}
     render template: 'admin/changes/changes'
+  end
+
+  def destroy
+    @glossary_term_translation.destroy
+    flash_to notice: 'Translation removed!'
+  rescue Exception => ex
+    flash_to error: ex.message
+  ensure
+    redirect_to language_glossary_term_path(@language, @glossary_term)
   end
 
   private

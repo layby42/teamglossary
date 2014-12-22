@@ -96,4 +96,8 @@ class User < ActiveRecord::Base
     setting = self.settings.by_name(setting_name).first
     setting ? setting.value : nil
   end
+
+  def write_access_languages
+    Language.active.where(id: self.language_users.where(role: [:editor, :manager]).pluck(:language_id))
+  end
 end

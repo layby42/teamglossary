@@ -43,32 +43,32 @@ Rails.application.routes.draw do
 
   resources :languages, only: [:show] do
 
-    resources :glossary_terms, only: [:new, :create, :show, :edit, :update] do
+    resources :glossary_terms, only: [:new, :create, :show, :edit, :update, :destroy] do
       get :changes, on: :member
       put :approve, on: :member
       put :reject, on: :member
 
-      resources :glossary_term_translations, only: [:create, :show, :edit, :update] do
+      resources :glossary_term_translations, only: [:create, :edit, :update, :destroy] do
         get :changes, on: :member
       end
     end
 
-    resources :glossary_names, only: [:new, :create, :show, :edit, :update] do
+    resources :glossary_names, only: [:new, :create, :show, :edit, :update, :destroy] do
       get :changes, on: :member
       put :approve, on: :member
       put :reject, on: :member
 
-      resources :glossary_name_translations, only: [:create, :show, :edit, :update] do
+      resources :glossary_name_translations, only: [:create, :edit, :update, :destroy] do
         get :changes, on: :member
       end
     end
 
-    resources :glossary_titles, only: [:new, :create, :show, :edit, :update] do
+    resources :glossary_titles, only: [:new, :create, :show, :edit, :update, :destroy] do
       get :changes, on: :member
       put :approve, on: :member
       put :reject, on: :member
 
-      resources :glossary_title_translations, only: [:create, :show, :edit, :update] do
+      resources :glossary_title_translations, only: [:create, :edit, :update, :destroy] do
         get :changes, on: :member
       end
     end

@@ -64,7 +64,7 @@ module LanguagesHelper
     current_user && current_user.manager_or_editor?(language_id)
   end
 
-  def has_comment_style(apply=false)
+  def bottom_link_style_helper(apply=false)
     apply ? 'position: relative; padding-bottom: 25px;' : ''
   end
 
@@ -82,7 +82,7 @@ module LanguagesHelper
   end
 
   def add_new_term_translation_language_ids(except_language_ids)
-    current_user.languages.non_base.pluck(:id) - except_language_ids
+    current_user.write_access_languages.non_base.pluck(:id) - except_language_ids
   end
 
   def new_translation_language_options(language_ids=[])

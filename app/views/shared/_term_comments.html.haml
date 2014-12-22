@@ -23,7 +23,7 @@
         %tr
           %td.col-xs-2
             %small= comment.created_at.strftime('%b %d, %Y %H:%M')
-          %td{style: has_comment_style(can_remove_comment)}
+          %td{style: bottom_link_style_helper(can_remove_comment)}
             = comment.text
             - if can_remove_comment
               .div{style: 'position: absolute; bottom: 0; right: 8px;'}
