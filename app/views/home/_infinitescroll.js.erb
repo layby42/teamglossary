@@ -1,0 +1,9 @@
+$('#terms_table').infinitescroll({
+    navSelector: ".pagination",
+    nextSelector: ".pagination a[rel=next]",
+    itemSelector: ".term_table_row",
+    loading: {
+        msgText: "<em>Loading...</em>",
+        finishedMsg: "<em>All Terms have been loaded.</em>"
+    }
+});

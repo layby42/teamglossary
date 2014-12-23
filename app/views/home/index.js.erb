@@ -1,1 +1,12 @@
 $('#search_result').html('<%=j render "result" %>');
+
+$('#terms_table').each(function() {
+    var instance = $.data(this, 'infinitescroll');
+    if (instance) {
+        instance.unbind();
+        instance.destroy();
+        $.data(this, 'infinitescroll', null);
+    }
+});
+
+<%= render :partial => 'infinitescroll.js' %>

@@ -25,7 +25,7 @@
           - else
             %td.col-xs-6 Term
             %td.col-xs-6 Translation
-      %tbody
+      %tbody#terms_table
         - @data.each do |item|
           - edit_options[:item] = item
           = render "term_#{@glossary_type.code.downcase}", edit_options
@@ -34,4 +34,12 @@
           %tr
             %td.text-right{colspan: (@language.is_base_language? ? 2 : 3)}
               no terms found
-    = render 'shared/paginator', objects: @data, remote: true
+    -# # = render 'shared/paginator', objects: @data, remote: true
+.row
+  .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
+    .pagination.pagination-centered
+      - params.clear
+      = paginate @data, :params => {:controller => 'home', :action => 'index'}
+
+:javascript
+  #{ render :partial => 'infinitescroll.js' }
