@@ -81,7 +81,8 @@ class GlossaryName < ActiveRecord::Base
   def self.new_with_defaults
     GlossaryName.new(
       integration_status: IntegrationStatus.default.first,
-      proper_name_type: ProperNameType.default.first
+      proper_name_type: ProperNameType.default.first,
+      is_private: true
     )
   end
 

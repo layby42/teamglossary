@@ -94,7 +94,8 @@ class GlossaryTitle < ActiveRecord::Base
 
   def self.new_with_defaults
     GlossaryTitle.new(
-      integration_status: IntegrationStatus.default.first
+      integration_status: IntegrationStatus.default.first,
+      is_private: true
     )
   end
 

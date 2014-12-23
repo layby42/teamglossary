@@ -68,7 +68,6 @@ class GlossaryTitlesController < LanguagesController
     else
       redirect_to language_glossary_title_path(@language, @glossary_title)
     end
-    redirect_to language_glossary_title_path(@language, @glossary_title)
   rescue Exception => ex
     flash_to error: ex.message
     redirect_to language_glossary_title_path(@language, @glossary_title)
@@ -154,4 +153,9 @@ class GlossaryTitlesController < LanguagesController
       )
   end
 
+  def reject_params
+    params.require(:glossary_title).permit(
+      :rejected_because
+    )
+  end
 end

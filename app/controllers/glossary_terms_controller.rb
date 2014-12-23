@@ -68,7 +68,6 @@ class GlossaryTermsController < LanguagesController
     else
       redirect_to language_glossary_term_path(@language, @glossary_term)
     end
-    redirect_to language_glossary_term_path(@language, @glossary_term)
   rescue Exception => ex
     flash_to error: ex.message
     redirect_to language_glossary_term_path(@language, @glossary_term)
@@ -154,5 +153,11 @@ class GlossaryTermsController < LanguagesController
       :is_definition_private,
       :additional_explanation
       )
+  end
+
+  def reject_params
+    params.require(:glossary_term).permit(
+      :rejected_because
+    )
   end
 end
