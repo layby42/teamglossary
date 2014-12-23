@@ -39,16 +39,79 @@ module LanguagesHelper
     end
   end
 
-  def show_glossary_term_url_helper(language, item)
+  def show_glossary_term_url_helper(language, item, full=false)
     case item.class.to_s
     when 'GlossaryName'
-      language_glossary_name_path(language, item)
+      full ? language_glossary_name_url(language, item) : language_glossary_name_path(language, item)
     when 'GlossaryTerm'
-      language_glossary_term_path(language, item)
+      full ? language_glossary_term_url(language, item) : language_glossary_term_path(language, item)
     when 'GlossaryTitle'
-      language_glossary_title_path(language, item)
+      full ? language_glossary_title_url(language, item) : language_glossary_title_path(language, item)
     else
       '#'
+    end
+  end
+
+  def edit_glossary_term_url_helper(language, item)
+    case item.class.to_s
+    when 'GlossaryName'
+      edit_language_glossary_name_path(language, item)
+    when 'GlossaryTerm'
+      edit_language_glossary_term_path(language, item)
+    when 'GlossaryTitle'
+      edit_language_glossary_title_path(language, item)
+    else
+      '#'
+    end
+  end
+
+  def changes_glossary_term_url_helper(language, item)
+    case item.class.to_s
+    when 'GlossaryName'
+      changes_language_glossary_name_path(language, item)
+    when 'GlossaryTerm'
+      changes_language_glossary_term_path(language, item)
+    when 'GlossaryTitle'
+     changes_language_glossary_title_path(language, item)
+    else
+      '#'
+    end
+  end
+
+  def edit_glossary_term_translation_url_helper(language, item, translation)
+    case item.class.to_s
+    when 'GlossaryName'
+      edit_language_glossary_name_glossary_name_translation_path(language, item, translation)
+    when 'GlossaryTerm'
+      edit_language_glossary_term_glossary_term_translation_path(language, item, translation)
+    when 'GlossaryTitle'
+      edit_language_glossary_title_glossary_title_translation_path(language, item, translation)
+    else
+      '#'
+    end
+  end
+
+  def changes_glossary_term_translation_url_helper(language, item, translation)
+    case item.class.to_s
+    when 'GlossaryName'
+      changes_language_glossary_name_glossary_name_translation_path(language, item, translation)
+    when 'GlossaryTerm'
+      changes_language_glossary_term_glossary_term_translation_path(language, item, translation)
+    when 'GlossaryTitle'
+     changes_language_glossary_title_glossary_title_translation_path(language, item, translation)
+    else
+      '#'
+    end
+  end
+
+  def title_helper(item)
+    case item.class.to_s
+    when 'GlossaryName'
+      'PROPER NAME'
+    when 'GlossaryTerm'
+      'TECHNICAL TERM'
+    when 'GlossaryTitle'
+      'TEXT TITLE'
     end
   end
 

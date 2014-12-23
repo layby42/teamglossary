@@ -1,16 +1,16 @@
-var cancel_html = $("#title-container").html();
-$("#title-container").html('<%=j render "form", language: @language, glossary_title: @glossary_title %>');
-$('#edit_title_button').hide();
-$('#cancel_title_button').show();
+var cancel_html = $("#term-container").html();
+$("#term-container").html('<%=j render "form", language: @language, glossary_title: @glossary_title %>');
+$('#edit_term_button').hide();
+$('#cancel_term_button').show();
 
-$('#cancel_title_edit').on('click', function(){
-  $("#title-container").html(cancel_html);
-  $('#edit_title_button').show();
-  $('#cancel_title_button').hide();
+$('#cancel_term_edit').on('click', function(){
+  $("#term-container").html(cancel_html);
+  $('#edit_term_button').show();
+  $('#cancel_term_button').hide();
 });
 
-$('#cancel_title_button').on('click', function(){
-  $("#title-container").html(cancel_html);
-  $('#edit_title_button').show();
-  $('#cancel_title_button').hide();
+$('#cancel_term_button').on('click', function(){
+  $("#term-container").html(cancel_html);
+  $('#edit_term_button').show();
+  $('#cancel_term_button').hide();
 });

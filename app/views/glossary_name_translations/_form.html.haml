@@ -30,5 +30,5 @@
       - if glossary_name_translation.new_record?
         = link_to 'Cancel', root_path, class: 'btn btn-default'
       - else
-        = link_to_empty 'Cancel', {class: 'btn btn-default', id: :cancel_name_translation_edit}
+        = link_to_empty 'Cancel', {class: 'btn btn-default', id: :cancel_term_translation_edit}
       = f.submit 'Save Changes', class: 'btn btn-primary'

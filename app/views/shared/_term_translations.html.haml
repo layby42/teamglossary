@@ -1,3 +1,5 @@
+- translations = item.translations_except_language(language.id)
+
 - if current_user && current_user.manager_or_editor?
   - language_ids = add_new_term_translation_language_ids(translations.collect(&:language_id) + [language.id])
   - add_new_translations = !language_ids.empty?
@@ -13,14 +15,13 @@
       - translations.each do |translation|
         %tr
           %th.col-xs-6= truncate(translation.language.english_name, length: 25)
-          %td= link_to translation.term, language_glossary_term_path(translation.language_id, item), remote: request.xhr?
+          %td= link_to translation.term, show_glossary_term_url_helper(translation.language_id, item), remote: request.xhr?
 
       - if add_new_translations
         %tr
           %td
             = select_tag 'new_translation_language_id', new_translation_language_options(language_ids), class: 'form-control', autocomplete: 'off'
           %td{style: 'vertical-align: middle;'}
-            = link_to 'javascript:void(0);', class: 'text-muted', id: 'add_translation_link', data: {url: language_glossary_term_url(language_ids.first, item)} do
+            = link_to 'javascript:void(0);', class: 'text-muted', id: 'add_translation_link', data: {url: show_glossary_term_url_helper(language_ids.first, item, true)} do
               %i.fa.fa-plus-circle
               add translation
-

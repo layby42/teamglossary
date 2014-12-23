@@ -1,0 +1,23 @@
+- can_edit = can_edit_language_glossary?(item.language_id)
+
+- if can_edit
+  - if request.xhr?
+    = link_to edit_glossary_term_url_helper(language, item), class: 'pull-right btn btn-primary btn-xs', title: "Edit term" do
+      %i.fa.fa-edit
+      Edit
+  - else
+    .pull-left
+      = render 'shared/changes_url', url: changes_glossary_term_url_helper(language, item)
+
+    = link_to edit_glossary_term_url_helper(language, item), class: 'pull-right btn btn-primary btn-xs', id: :edit_term_button, remote: true, title: "Edit term" do
+      %i.fa.fa-edit
+      Edit
+    = link_to 'javascript:void(0);', {class: 'pull-right btn btn-default btn-xs', id: :cancel_term_button, style: 'display: none;'} do
+      %i.fa.fa-times
+      Cancel
+
+%h4{class: (!request.xhr? && can_edit ? 'term_title' : 'title')}
+  = "#{title_helper(item)} DETAILS"
+
+#term-container.clearfix
+  = render 'term', language: language, item: item

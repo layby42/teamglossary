@@ -1,7 +1,7 @@
-var cancel_html = $("#name-container").html();
-$("#name-container").html('<%=j render "form", language: @language, glossary_name: @glossary_name %>');
-$('#edit_name_button').hide();
-$('#cancel_name_button').show();
+var cancel_html = $("#term-container").html();
+$("#term-container").html('<%=j render "form", language: @language, glossary_name: @glossary_name %>');
+$('#edit_term_button').hide();
+$('#cancel_term_button').show();
 
 $('#glossary_name_proper_name_type_id').on('change', function(){
   if ($('#glossary_name_proper_name_type_id > option:selected').data('code') == 'P'){
@@ -18,14 +18,14 @@ $("#glossary_name_proper_name_type_id").parents('form').submit(function(){
   $('#glossary_name_dates').prop('disabled', false);
 });
 
-$('#cancel_name_edit').on('click', function(){
-  $("#name-container").html(cancel_html);
-  $('#edit_name_button').show();
-  $('#cancel_name_button').hide();
+$('#cancel_term_edit').on('click', function(){
+  $("#term-container").html(cancel_html);
+  $('#edit_term_button').show();
+  $('#cancel_term_button').hide();
 });
 
-$('#cancel_name_button').on('click', function(){
-  $("#name-container").html(cancel_html);
-  $('#edit_name_button').show();
-  $('#cancel_name_button').hide();
+$('#cancel_term_button').on('click', function(){
+  $("#term-container").html(cancel_html);
+  $('#edit_term_button').show();
+  $('#cancel_term_button').hide();
 });

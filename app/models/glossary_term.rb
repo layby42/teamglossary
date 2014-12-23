@@ -106,4 +106,13 @@ class GlossaryTerm < ActiveRecord::Base
   def has_no_transaltion?
     self.glossary_term_translations.count == 0
   end
+
+  def translation_for_language(language_id)
+    self.glossary_term_translations.by_language(language_id).first ||
+    GlossaryTermTranslation.new_with_defaults
+  end
+
+  def translations_except_language(language_id)
+    self.glossary_term_translations.except_language(language.id).includes([:language]).sort{|x,y| x.language.iso_code <=> y.language.iso_code}
+  end
 end

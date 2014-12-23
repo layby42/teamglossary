@@ -1,0 +1,39 @@
+- unless language.is_base_language?
+  - translation = item.translation_for_language(language.id)
+
+  - can_edit = !translation.new_record? && can_edit_language_glossary?(language.id)
+  - if can_edit
+    - url = edit_glossary_term_translation_url_helper(language, item, translation)
+    - if request.xhr?
+      = link_to url, class: 'pull-right btn btn-primary btn-xs', title: "Edit translation" do
+        %i.fa.fa-edit
+        Edit
+    - else
+      .pull-left
+        = render 'shared/changes_url', url: changes_glossary_term_translation_url_helper(language, item, translation)
+
+      = link_to url, class: 'pull-right btn btn-primary btn-xs', id: :edit_term_translation_button, remote: true, title: "Edit translation" do
+        %i.fa.fa-edit
+        Edit
+      = link_to 'javascript:void(0);', {class: 'pull-right btn btn-default btn-xs', id: :cancel_term_translation_button, style: 'display: none;'} do
+        %i.fa.fa-times
+        Cancel
+
+  %h4{class: (!request.xhr? && can_edit ? 'term_title' : 'title')}
+    TRANSLATION
+    %small.text-primary (#{language.full_name})
+
+  #term-translation-container.clearfix
+    -if translation.new_record?
+      - if can_edit_language_glossary?(language.id)
+        = render "#{translation.class.to_s.pluralize.underscore}/form", :language => language, :"#{item.class.to_s.underscore}" => item, :"#{translation.class.to_s.underscore}" => translation
+      - else
+        .col-xs-12
+          Term not yet translated.
+          %br/
+          If you'd like to propose translation, please use Comments section below.
+    - else
+      = render "#{item.class.to_s.pluralize.underscore}/translation", language: language, item: item, translation: translation
+
+- unless item.is_private?
+  = render 'shared/term_translations', language: language, item: item

@@ -7,7 +7,12 @@
 
     .panel.panel-default
       .panel-body.special-border
-        = render 'show', search_terms_display_options(language, {item: item})
+        = render 'shared/term_alerts', language: language, term: item
+        .row
+          .col-sm-6.col-xs-12
+            = render 'shared/term_show_term', language: language, item: item
+          .col-sm-6.col-xs-12
+            = render 'shared/term_show_translation', language: language, item: item
 
 - if current_user
   .row

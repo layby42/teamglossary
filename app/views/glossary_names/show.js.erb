@@ -1,4 +1,4 @@
-$("#modal-content").html('<%=j render "show_modal" %>');
+$("#modal-content").html('<%=j render "shared/term_show_modal", language: @language, item: @glossary_name %>');
 if ($("#modal").modal(true)) {
    $("#modal").modal('show');
 } else {

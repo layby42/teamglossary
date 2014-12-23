@@ -1,9 +1,0 @@
-.modal-header
-  %button{:type => 'button', 'data-dismiss' => 'modal', :class => 'close', 'aria-hidden' => true}= '&times;'.html_safe
-  %h4
-    = @glossary_term.term
-.modal-body
-  .row
-    = render 'show', search_terms_display_options(@language, {item: @glossary_term})
-    .col-xs-12.text-right
-      = link_to 'More details...', language_glossary_term_path(@language, @glossary_term)
