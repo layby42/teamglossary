@@ -46,7 +46,11 @@ Rails.application.routes.draw do
     resources :glossary_terms, only: [:new, :create, :show, :edit, :update, :destroy] do
       get :changes, on: :member
       put :approve, on: :member
-      put :reject, on: :member
+
+      get :reject, on: :member
+      post :reject, on: :member
+
+      put :propose, on: :member
 
       resources :glossary_term_translations, only: [:create, :edit, :update, :destroy] do
         get :changes, on: :member
@@ -56,7 +60,11 @@ Rails.application.routes.draw do
     resources :glossary_names, only: [:new, :create, :show, :edit, :update, :destroy] do
       get :changes, on: :member
       put :approve, on: :member
-      put :reject, on: :member
+
+      get :reject, on: :member
+      post :reject, on: :member
+
+      put :propose, on: :member
 
       resources :glossary_name_translations, only: [:create, :edit, :update, :destroy] do
         get :changes, on: :member
@@ -66,7 +74,11 @@ Rails.application.routes.draw do
     resources :glossary_titles, only: [:new, :create, :show, :edit, :update, :destroy] do
       get :changes, on: :member
       put :approve, on: :member
-      put :reject, on: :member
+
+      get :reject, on: :member
+      post :reject, on: :member
+
+      put :propose, on: :member
 
       resources :glossary_title_translations, only: [:create, :edit, :update, :destroy] do
         get :changes, on: :member

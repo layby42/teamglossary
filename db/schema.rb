@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141218000039) do
+ActiveRecord::Schema.define(version: 20141223175830) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(version: 20141218000039) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "dates"
+    t.text     "rejected_because"
   end
 
   add_index "glossary_names", ["language_id", "integration_status_id"], name: "index_glossary_names_on_language_id_and_integration_status_id", using: :btree
@@ -201,6 +202,7 @@ ActiveRecord::Schema.define(version: 20141218000039) do
     t.string   "pali_gender"
     t.text     "definition"
     t.boolean  "is_definition_private",  default: false, null: false
+    t.text     "rejected_because"
   end
 
   add_index "glossary_terms", ["glossary_term_id", "id"], name: "index_glossary_terms_on_glossary_term_id_and_id", using: :btree
@@ -247,6 +249,7 @@ ActiveRecord::Schema.define(version: 20141218000039) do
     t.string   "alt_term2"
     t.string   "popular_term"
     t.string   "pali"
+    t.text     "rejected_because"
   end
 
   add_index "glossary_titles", ["language_id", "integration_status_id"], name: "index_glossary_titles_on_language_id_and_integration_status_id", using: :btree

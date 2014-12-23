@@ -1,11 +1,11 @@
 class GlossaryTermsController < LanguagesController
   skip_before_action :require_user, only: [:show]
   before_filter :find_language
-  before_filter :find_glossary_term, only: [:show, :edit, :update, :changes, :approve, :reject, :destroy]
+  before_filter :find_glossary_term, only: [:show, :edit, :update, :changes, :approve, :reject, :destroy, :propose]
 
   before_filter :require_xhr, :only => [:changes]
 
-  before_filter :require_language_manager_or_editor, only: [:new, :create, :edit, :update, :changes]
+  before_filter :require_language_manager_or_editor, only: [:new, :create, :edit, :update, :changes, :propose]
   before_filter :require_base_language_manager_or_editor, only: [:approve, :reject]
 
   def new
@@ -56,7 +56,31 @@ class GlossaryTermsController < LanguagesController
   end
 
   def reject
-    flash_to error: 'Sorry, not implemented yet'
+    case request.method
+    when 'GET'
+      unless request.xhr?
+        redirect_to language_glossary_term_path(@language, @glossary_term)
+      end
+    when 'POST'
+      @glossary_term.reject!(reject_params[:rejected_because])
+      flash_to notice: 'Term rejected!'
+      redirect_to language_glossary_term_path(@language, @glossary_term)
+    else
+      redirect_to language_glossary_term_path(@language, @glossary_term)
+    end
+    redirect_to language_glossary_term_path(@language, @glossary_term)
+  rescue Exception => ex
+    flash_to error: ex.message
+    redirect_to language_glossary_term_path(@language, @glossary_term)
+  end
+
+  def propose
+    @glossary_term.update_attributes!(is_private: false)
+    if @glossary_term.language.is_base_language?
+      flash_to notice: 'Term shared with all language glossaries!'
+    else
+      flash_to notice: 'Term proposed to the Main glossary!'
+    end
     redirect_to language_glossary_term_path(@language, @glossary_term)
   end
 
@@ -103,7 +127,7 @@ class GlossaryTermsController < LanguagesController
   end
 
   def require_base_language_manager_or_editor
-    unless current_user.manager_or_editor?(base_language.language_id)
+    unless current_user.manager_or_editor?(base_language.id)
       flash_to error: 'Sorry, you must have manager or editor access level to Main glossary'
       redirect_to language_glossary_term_path(@language, @glossary_term)
     end

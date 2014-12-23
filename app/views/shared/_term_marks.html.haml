@@ -1,4 +1,6 @@
 - if poposed_item?(language, term)
-  %i.pull-right.fa.fa-warning.text-warning{title: "Proposed to the Main glossary by #{term.language.english_name} team"}
+  - title = "Proposed to the Main glossary by #{term.language.english_name} team"
+  %i.pull-right.fa.fa-warning.text-warning.cursor_default{title: title}
 - if term.is_private?
-  %i.pull-right.fa.fa-eye.text-info{title: 'Private'}
+  - title = "Private to #{term.language.english_name} glossary"
+  %i.pull-right.fa.fa-eye.text-info.cursor_default{title: title}

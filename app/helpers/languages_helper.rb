@@ -39,6 +39,19 @@ module LanguagesHelper
     end
   end
 
+  def propose_glossary_item_url_helper(language, item)
+    case item.class.to_s
+    when 'GlossaryName'
+      propose_language_glossary_name_path(language, item)
+    when 'GlossaryTerm'
+      propose_language_glossary_term_path(language, item)
+    when 'GlossaryTitle'
+      propose_language_glossary_title_path(language, item)
+    else
+      '#'
+    end
+  end
+
   def show_glossary_term_url_helper(language, item, full=false)
     case item.class.to_s
     when 'GlossaryName'

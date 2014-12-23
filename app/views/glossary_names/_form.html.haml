@@ -3,8 +3,9 @@
     %h4 TERM
     .col-sm-12
       = f.text_field :term, class: 'form-control', autocomplete: 'off'
-      = f.check_box :is_private, autocomplete: 'off'
-      = label_tag :is_private, "private"
+      - unless glossary_name.has_translations?
+        = f.check_box :is_private, autocomplete: 'off'
+        = label_tag :is_private, "private"
       = f.select :proper_name_type_id, model_to_select(ProperNameType, glossary_name.proper_name_type_id), {}, {class: 'form-control', autocomplete: 'off'}
       = f.text_field :dates, class: 'form-control', autocomplete: 'off', placeholder: 'Dates'
 

@@ -24,12 +24,13 @@
 #  alt_term2              :string(255)
 #  popular_term           :string(255)
 #  pali                   :string(255)
+#  rejected_because       :text
 #
 
 class GlossaryTitle < ActiveRecord::Base
   include Approval
 
-  strip_attributes :only => [:term, :alt_term1, :alt_term2, :popular_term, :author, :author_translit, :tibetan_full, :tibetan_short, :sanskrit_full, :sanskrit_short, :sanskrit_full_diacrit, :sanskrit_short_diacrit, :pali, :explanation]
+  strip_attributes :only => [:term, :alt_term1, :alt_term2, :popular_term, :author, :author_translit, :tibetan_full, :tibetan_short, :sanskrit_full, :sanskrit_short, :sanskrit_full_diacrit, :sanskrit_short_diacrit, :pali, :explanation, :rejected_because]
   has_paper_trail :ignore => [:created_at, :updated_at]
 
   belongs_to :language
@@ -38,10 +39,12 @@ class GlossaryTitle < ActiveRecord::Base
   has_many :glossary_title_translations
   has_many :comments, as: :commentable, dependent: :destroy
 
+  scope :by_language, -> (language_id) { where(language_id: language_id) }
+  scope :by_term, -> (term) { where('lower(glossary_titles.term) = ?', term.downcase) }
   scope :list_order, -> { order('lower(glossary_titles.term)') }
 
   validates :term, :language_id, :integration_status_id, presence: true
-  validates :term, uniqueness: {case_sensitive: false, scope: :language_id}
+  validates :term, uniqueness: {case_sensitive: false, scope: :language_id, message: 'term already exists'}
 
   def self.simple_search(language, query)
     search_columns = [ :term, :author, :author_translit,
@@ -110,5 +113,26 @@ class GlossaryTitle < ActiveRecord::Base
 
   def translations_except_language(language_id)
     self.glossary_title_translations.except_language(language.id).includes([:language]).sort{|x,y| x.language.iso_code <=> y.language.iso_code}
+  end
+
+  def reject!(reason)
+    base_language = Language.base_language
+    return if self.language_id == base_language.id
+     GlossaryTitle.transaction do
+      self.rejected_because = reason
+      self.is_private = true
+      self.save!
+
+      self.translations_except_language(self.language_id).each do |translation|
+        t = self.dup
+        t.language_id = translation.language_id
+
+        if GlossaryTitle.by_language(translation.language_id).by_term(self.term).first
+          t.term = "#{t.term} [DUPLICATE #{SecureRandom.hex(8)}]"
+        end
+        t.save!
+        translation.update_attributes!(glossary_title_id: t.id)
+      end
+    end
   end
 end

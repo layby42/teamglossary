@@ -1,23 +1,60 @@
-- if poposed_item?(language, term)
-  .col-xs-12
-    .panel.panel-default
-      .panel-body
-        %i.fa.fa-warning.text-warning
-        Termin proposed to the Main glossary by #{term.language.english_name} team
+- if poposed_item?(language, term) && can_edit_language_glossary?(base_language.id)
+  %h4.title APPROVE / REJECT
+  %table.table.table-striped.table-bordered
+    %tbody
+      %tr
+        %td
+          Proposed to the Main glossary by #{term.language.english_name} team
 
-        - if !request.xhr? && can_edit_language_glossary?(base_language.id)
-
-          = link_to reject_glossary_item_url_helper(language, term), method: :put, class: 'pull-right btn btn-danger btn-xs', style: 'margin-left: 10px;', data: {confirm: "Are you sure? This term will became private to #{term.language.english_name} glossary and all others that did translation for the term. Check Other Translations section below."} do
+          - if term.rejected_because.present?
+            %small
+              %br/
+              %br/
+              %i.fa.fa-warning.text-danger
+              %b Was once rejected with reason:
+              %br/
+              = term.rejected_because
+      %tr
+        %td
+          = link_to reject_glossary_item_url_helper(language, term), method: :get, remote: true, class: 'pull-right btn btn-danger btn-xs', style: 'margin-left: 10px;' do
             %i.fa.fa-times
             Reject
 
           = link_to approve_glossary_item_url_helper(language, term), method: :put, class: 'pull-right btn btn-success btn-xs', data: {confirm: "Are you sure? This term will became part of the #{base_language.english_name} glossary."} do
-            %i.fa.fa-check
+            %i.fa.fa-check-square-o
             Approve
 
-- if term.is_private?
-  .col-xs-12
-    .panel.panel-default
-      .panel-body
-        %i.fa.fa-eye.text-info
-        This is a private term. Used by #{term.language.english_name} team only.
+- if term.is_private? && can_edit_language_glossary?(term.language_id)
+  - if term.language_id != base_language.id
+    %h4.title PROPOSE
+    %table.table.table-striped.table-bordered
+      %tbody
+        %tr
+          %td
+            Propose to the Main glossary
+
+            - if term.rejected_because.present?
+              %small
+                %br/
+                %br/
+                %i.fa.fa-warning.text-danger
+                %b Was once rejected with reason:
+                %br/
+                = term.rejected_because
+        %tr
+          %td
+            = link_to propose_glossary_item_url_helper(language, term), method: :put, class: 'pull-right btn btn-info btn-xs', data: {confirm: "Are you sure?."} do
+              %i.fa.fa-thumbs-o-up
+              Propose
+  - else
+    %h4.title SHARE
+    %table.table.table-striped.table-bordered
+      %tbody
+        %tr
+          %td
+            Share term with other languages (make term public)
+        %tr
+          %td
+            = link_to propose_glossary_item_url_helper(language, term), method: :put, class: 'pull-right btn btn-info btn-xs', data: {confirm: "Are you sure?."} do
+              %i.fa.fa-share-square-o
+              Share

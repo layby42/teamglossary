@@ -1,11 +1,11 @@
 class GlossaryTitlesController < LanguagesController
   skip_before_action :require_user, only: [:show]
   before_filter :find_language
-  before_filter :find_glossary_title, only: [:show, :edit, :update, :changes, :approve, :reject, :destroy]
+  before_filter :find_glossary_title, only: [:show, :edit, :update, :changes, :approve, :reject, :destroy, :propose]
 
   before_filter :require_xhr, :only => [:changes]
 
-  before_filter :require_language_manager_or_editor, only: [:new, :create, :edit, :update, :changes, :destroy]
+  before_filter :require_language_manager_or_editor, only: [:new, :create, :edit, :update, :changes, :destroy, :propose]
   before_filter :require_base_language_manager_or_editor, only: [:approve, :reject]
 
   def new
@@ -56,7 +56,31 @@ class GlossaryTitlesController < LanguagesController
   end
 
   def reject
-    flash_to error: 'Sorry, not implemented yet'
+    case request.method
+    when 'GET'
+      unless request.xhr?
+        redirect_to language_glossary_title_path(@language, @glossary_title)
+      end
+    when 'POST'
+      @glossary_title.reject!(reject_params[:rejected_because])
+      flash_to notice: 'Term rejected!'
+      redirect_to language_glossary_title_path(@language, @glossary_title)
+    else
+      redirect_to language_glossary_title_path(@language, @glossary_title)
+    end
+    redirect_to language_glossary_title_path(@language, @glossary_title)
+  rescue Exception => ex
+    flash_to error: ex.message
+    redirect_to language_glossary_title_path(@language, @glossary_title)
+  end
+
+  def propose
+    @glossary_title.update_attributes!(is_private: false)
+    if @glossary_title.language.is_base_language?
+      flash_to notice: 'Term shared with all language glossaries!'
+    else
+      flash_to notice: 'Term proposed to the Main glossary!'
+    end
     redirect_to language_glossary_title_path(@language, @glossary_title)
   end
 

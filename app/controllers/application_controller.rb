@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   def base_language
-    @base_language ||= Language.base.first
+    @base_language ||= Language.base_language
   end
 
   def require_ssl

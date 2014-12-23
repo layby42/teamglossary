@@ -1,0 +1,23 @@
+= form_for [language, item], url: reject_glossary_item_url_helper(language, item), method: :post, :html => {:class => 'form-vertical'} do |f|
+  .modal-header
+    %button{:type => 'button', 'data-dismiss' => 'modal', :class => 'close', 'aria-hidden' => true}
+      = '&times;'.html_safe
+    %h4
+      Rejecting #{item.term}
+  .modal-body
+    .row
+      .col-sm-12
+        %label.control-label Please provide reason for term rejection
+        = f.text_area :rejected_because, class: 'form-control', style: 'width:100%', autocomplete: 'off', maxlength: 2000, required: true
+
+    .row
+      .col-sm-12
+        .text-danger
+          Are you sure? This term will become private in
+          - language_names = ([item.language] + item.translations_except_language(item.language_id).collect(&:language)).collect(&:english_name)
+          - if language_names.length > 1
+            #{language_names.join(', ')} glossaries.
+          - else
+            #{language_names[0]} glossary.
+  .modal-footer
+    %button#submit.btn.btn-danger Reject

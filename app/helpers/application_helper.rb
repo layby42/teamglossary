@@ -20,7 +20,8 @@ module ApplicationHelper
   end
 
   def poposed_item?(language, item)
-    language.is_base_language? ? (item.language_id != language.id) : (item.language_id == language.id && !item.is_private)
+    (item.language_id != base_language.id) && !item.is_private
+    # language.is_base_language? ? (item.language_id != language.id) : (item.language_id == language.id && !item.is_private)
   end
 
   def tab_for(tab_name, &block)

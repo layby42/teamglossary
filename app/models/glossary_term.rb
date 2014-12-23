@@ -26,12 +26,13 @@
 #  pali_gender            :string(255)
 #  definition             :text
 #  is_definition_private  :boolean          default(FALSE), not null
+#  rejected_because       :text
 #
 
 class GlossaryTerm < ActiveRecord::Base
   include Approval
 
-  strip_attributes :only => [:term, :tibetan, :sanskrit, :pali, :arabic, :alternative_tibetan, :alternative_sanskrit, :additional_explanation, :sanskrit_gender, :pali_gender, :definition]
+  strip_attributes :only => [:term, :tibetan, :sanskrit, :pali, :arabic, :alternative_tibetan, :alternative_sanskrit, :additional_explanation, :sanskrit_gender, :pali_gender, :definition, :rejected_because]
   has_paper_trail :ignore => [:created_at, :updated_at]
 
   belongs_to :language
@@ -45,10 +46,12 @@ class GlossaryTerm < ActiveRecord::Base
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :glossary_terms
 
+  scope :by_language, -> (language_id) { where(language_id: language_id) }
+  scope :by_term, -> (term) { where('lower(glossary_terms.term) = ?', term.downcase) }
   scope :list_order, -> { order('lower(glossary_terms.term)') }
 
   validates :term, :language_id, presence: true
-  validates :term, uniqueness: {case_sensitive: false, scope: :language_id}
+  validates :term, uniqueness: {case_sensitive: false, scope: :language_id, message: 'term already exists'}
 
   def self.simple_search(language, query)
     search_columns = [:term, :tibetan, :sanskrit, :pali, :arabic,
@@ -114,5 +117,26 @@ class GlossaryTerm < ActiveRecord::Base
 
   def translations_except_language(language_id)
     self.glossary_term_translations.except_language(language.id).includes([:language]).sort{|x,y| x.language.iso_code <=> y.language.iso_code}
+  end
+
+  def reject!(reason)
+    base_language = Language.base_language
+    return if self.language_id == base_language.id
+     GlossaryTerm.transaction do
+      self.rejected_because = reason
+      self.is_private = true
+      self.save!
+
+      self.translations_except_language(self.language_id).each do |translation|
+        t = self.dup
+        t.language_id = translation.language_id
+
+        if GlossaryTerm.by_language(translation.language_id).by_term(self.term).first
+          t.term = "#{t.term} [DUPLICATE #{SecureRandom.hex(8)}]"
+        end
+        t.save!
+        translation.update_attributes!(glossary_term_id: t.id)
+      end
+    end
   end
 end
