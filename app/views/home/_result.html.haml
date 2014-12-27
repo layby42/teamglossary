@@ -2,19 +2,20 @@
 .row
   .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
     %h4
-      - if edit_options[:can_edit_language_glossary]
+      - if !@glossary_type.general_menu? && edit_options[:can_edit_language_glossary]
         .pull-right.inline
           = render 'shared/add_new_button', url: new_glossary_item_url_helper(@glossary_type, @language), remote: false
 
-      - if current_user
+      - if current_user && !@glossary_type.general_menu?
         .pull-right.inline
           %p
             = link_to download_path, class: 'text-muted download_link', target: '_blank' do
               %i.fa.fa-download
               Download as CSV
 
-      Found
-      %span.badge #{@data.total_count}
+      - if @query.present? || !@glossary_type.general_menu?
+        Found
+        %span.badge #{@data.total_count}
 .row
   .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
     %table.table.table-striped.table-bordered

@@ -1,4 +1,11 @@
 $(function() {
+  $.closeFolder = function(parent_id){
+    $("tr[data-parent='" + parent_id + "']").each(function(){
+      $.closeFolder($(this).data('id'));
+    });
+    $("tr[data-parent='" + parent_id + "']").remove();
+  }
+
   $(document).on('change', '#search_glossary_type_id', function(){
     $(this).parents('form').submit();
     $('#search_result').html('<div class="text-center"><i class="fa fa-spinner fa-spin"></i> Searching...</div>');

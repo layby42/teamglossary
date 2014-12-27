@@ -16,4 +16,23 @@
 #
 
 class GeneralMenuTranslation < ActiveRecord::Base
+  strip_attributes :only => [:name, :notes, :additional_text]
+  has_paper_trail :ignore => [:created_at, :updated_at]
+
+  belongs_to :language
+  belongs_to :general_menu
+
+  scope :by_language, -> (language_id) { where(language_id: language_id) }
+  scope :except_language, -> (language_id) { where('general_menu_translations.language_id <> ?', language_id) }
+
+  validates :name, :language_id, :general_menu_id, presence: true
+  validates :general_menu_id, uniqueness: {scope: :language_id}
+
+  def term
+    name
+  end
+
+  def self.new_with_defaults
+    GeneralMenuTranslation.new
+  end
 end

@@ -22,7 +22,7 @@ module ExportCsvHelper
         self.prepare_text_titles(language, data, options)
       end
     else
-      raise 'invalid data type'
+      raise 'Sorry, not yet implemented'
     end
   end
 

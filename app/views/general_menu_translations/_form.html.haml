@@ -1,0 +1,32 @@
+= form_for [language, general_menu, general_menu_translation], html: {class: 'form-horizontal well'} do |f|
+  .form-group
+    %h4 TRANSLATION
+    %label.col-sm-3.control-label Title
+    .col-sm-9
+      = f.text_field :name, class: 'form-control', autocomplete: 'off', placeholder: 'Translation', disabled: general_menu_translation.synchronized?
+    %label.col-sm-3.control-label Additional text
+    .col-sm-9
+      = f.text_area :additional_text, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Additional text Translation', disabled: general_menu_translation.synchronized?
+    %label.col-sm-3.control-label Online
+    .col-sm-9
+      = f.text_field :online, class: 'form-control edit_date', autocomplete: 'off', placeholder: 'YYYY-MM-DD', disabled: general_menu_translation.synchronized?, data: {:'date-format' => "yyyy-mm-dd"}
+      - if general_menu_translation.synchronized?
+        %i.fa.fa-check.text-success
+        (synchronized)
+
+  .form-group
+    %h4 NOTES
+    .col-sm-12
+      = f.text_area :notes, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Notes'
+  .form-group
+    .col-sm-12.text-right
+      - if general_menu_translation.new_record?
+        = link_to 'Cancel', root_path, class: 'btn btn-default'
+      - else
+        = link_to_empty 'Cancel', {class: 'btn btn-default', id: :cancel_term_translation_edit}
+      = f.submit 'Save Changes', class: 'btn btn-primary'
+
+:javascript
+  $(function() {
+    $('.edit_date').datepicker();
+  });

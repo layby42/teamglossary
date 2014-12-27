@@ -1,0 +1,41 @@
+- can_edit_language_glossary = can_edit_language_glossary?(item.language_id)
+%table.table.table-striped.table-bordered
+  %tbody
+    %tr
+      %th.col-xs-4 Title
+      %td
+        = link_to item.name, language_general_menu_path(item.language, item), remote: request.xhr?
+    %tr
+      %th Type
+      %td= item.item_type_name
+    - if item.length_type.present?
+      %tr
+        %th Length
+        %td= item.length_type
+
+    - if item.additional_text.present?
+      %tr
+        %th Additional text
+        %td= item.additional_text
+    %tr
+      %th CMS
+      %td
+        - if item.synchronized?
+          %i.fa.fa-check.text-success
+          (synchronized)
+
+        %p
+          %br/
+          %small= (item.full_cms_path.presence || item.cms_name).sub('/', '/ ')
+
+        - if item.cms_updated.present?
+          %p
+            %br/
+            %small last update: #{item.cms_updated}
+    %tr
+      %th Online
+      %td= item.online
+    - if item.wiki_qa.present?
+      %tr
+        %th Wiki Q&A
+        %td= item.wiki_qa

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141223175830) do
+ActiveRecord::Schema.define(version: 20141227155818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -256,11 +256,13 @@ ActiveRecord::Schema.define(version: 20141223175830) do
   add_index "glossary_titles", ["language_id", "term"], name: "glossary_titles_language_term", unique: true, using: :btree
 
   create_table "glossary_types", force: true do |t|
-    t.string   "code",        null: false
-    t.string   "name",        null: false
+    t.string   "code",                    null: false
+    t.string   "name",                    null: false
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "model_name",              null: false
+    t.integer  "sorting",     default: 0, null: false
   end
 
   add_index "glossary_types", ["code"], name: "index_glossary_types_on_code", unique: true, using: :btree

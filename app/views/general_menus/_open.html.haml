@@ -1,0 +1,4 @@
+- edit_options = search_terms_display_options(@language)
+- @data.each do |item|
+  - edit_options[:item] = item
+  = render 'home/term_gm', edit_options

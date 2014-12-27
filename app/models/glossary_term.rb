@@ -53,6 +53,10 @@ class GlossaryTerm < ActiveRecord::Base
   validates :term, :language_id, presence: true
   validates :term, uniqueness: {case_sensitive: false, scope: :language_id, message: 'term already exists'}
 
+  def editable?
+    true
+  end
+
   def self.simple_search(language, query)
     search_columns = [:term, :tibetan, :sanskrit, :pali, :arabic,
       :alternative_tibetan, :alternative_sanskrit, :additional_explanation, :definition]

@@ -1,0 +1,2 @@
+module GeneralMenusHelper
+end

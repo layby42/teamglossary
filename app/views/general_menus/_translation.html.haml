@@ -1,0 +1,29 @@
+- can_edit_language_glossary = can_edit_language_glossary?(translation.language_id)
+%table.table.table-striped.table-bordered
+  %tbody
+    %tr
+      %th.col-xs-4 Translation
+      %td
+        = link_to translation.term, language_general_menu_path(language, item), remote: request.xhr?
+    %tr
+      %th CMS
+      %td
+        - if translation.synchronized?
+          %i.fa.fa-check.text-success
+          (synchronized)
+
+        - if translation.cms_updated.present?
+          %p
+            %br/
+            %small last update: #{translation.cms_updated}
+
+    - if translation.additional_text.present?
+      %tr
+        %th Additional text
+        %td= translation.additional_text
+    %tr
+      %th Notes
+      %td= truncate(translation.notes, length: 250, omission: ' ... (more)')
+    %tr
+      %th Online
+      %td= translation.online

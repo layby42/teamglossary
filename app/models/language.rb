@@ -28,6 +28,9 @@ class Language < ActiveRecord::Base
   has_many :glossary_titles
   has_many :glossary_title_translations
 
+  has_many :general_menus
+  has_many :general_menu_translations
+
   has_many :comments
 
   strip_attributes :only => [:iso_code, :english_name, :name, :notes, :encoding]

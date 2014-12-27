@@ -1,0 +1,29 @@
+- search_result = @query.present?
+- level = item.level
+%tr{class: "#{'term_table_row' if search_result}", id: "general_menu_row_#{item.id}", data: {parent: item.general_menu_id.to_i, id: item.id}}
+  %td{style: "#{bottom_link_style_helper(item.folder?)} padding-left: #{30 + 8 * (level - 1)}px; padding-bottom: 8px;"}
+    %strong
+      = link_to item.name, language_general_menu_path(item.language, item), remote: true
+
+    - if item.folder?
+      .div{style: "position: absolute; top: 5px; left: #{8 * level }px;"}
+        = link_to open_language_general_menu_path(language, item), class: 'text-primary open_folder_link', remote: true do
+          %i.fa.fa-folder-o
+        = link_to 'javascript:void(0);', class: 'text-primary close_folder_link', style: 'display: none;' do
+          %i.fa.fa-folder-open
+    - else
+      %br/
+      %small
+        %i.fa{class: item.fa_icon} &nbsp; #{item.cms_name}
+
+  - unless language.is_base_language?
+    %td
+      - translation = item.general_menu_translations.select{|t| t.language_id == language.id}.first
+      - if translation.present?
+        %strong
+          = link_to translation.name, language_general_menu_path(language, item), remote: true
+      - elsif can_edit_language_glossary
+        .text-right
+          = link_to language_general_menu_path(language, item), class: 'text-muted' do
+            %i.fa.fa-plus-circle
+            add translation

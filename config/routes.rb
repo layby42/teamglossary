@@ -85,6 +85,16 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :general_menus, only: [:show, :edit, :update] do
+      get :changes, on: :member
+
+      get :open, on: :member
+
+      resources :general_menu_translations, only: [:create, :edit, :update, :destroy] do
+        get :changes, on: :member
+      end
+    end
+
     resources :comments, only: [:new, :create, :destroy]
   end
 

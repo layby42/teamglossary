@@ -1,0 +1,14 @@
+var row = $('tr#general_menu_row_<%= @general_menu.id %>');
+row.find('.open_folder_link').hide();
+row.find('.close_folder_link').show();
+
+$.closeFolder(row.data('id'));
+
+row.after('<%=j render "open" %>');
+
+$('.close_folder_link').on('click', function(){
+  $(this).parents('tr').find('.open_folder_link').show();
+  $(this).hide();
+  $.closeFolder($(this).parents('tr').data('id'));
+  var parent_id = $(this).parents('tr').data('id');
+});

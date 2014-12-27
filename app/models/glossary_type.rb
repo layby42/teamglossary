@@ -8,23 +8,21 @@
 #  description :string(255)
 #  created_at  :datetime
 #  updated_at  :datetime
+#  model_name  :string(255)      not null
+#  sorting     :integer          default(0), not null
 #
 
 class GlossaryType < ActiveRecord::Base
-  scope :list_order, -> { order('lower(glossary_types.name)') }
+  strip_attributes :only => [:code, :name, :description, :model_name]
+
+  scope :list_order, -> { order('glossary_types.sorting') }
+  scope :except_menu, -> { where(code: ['PPN', 'THT', 'TXT'])}
 
   validates :code, presence: true, uniqueness: {case_sensitive: false}
   validates :name, presence: true, uniqueness: {case_sensitive: false}
 
   def glossary_class
-    case code
-    when 'PPN'
-      GlossaryName
-    when 'THT'
-      GlossaryTerm
-    when 'TXT'
-      GlossaryTitle
-    end
+    Object.const_get(self.model_name)
   end
 
   def csv_file_name(language)
@@ -36,5 +34,9 @@ class GlossaryType < ActiveRecord::Base
     when 'TXT'
       "#{language.iso_code}_text_titles_glossary_#{Date.today.to_s(:db)}.csv"
     end
+  end
+
+  def general_menu?
+    code == 'GM'
   end
 end

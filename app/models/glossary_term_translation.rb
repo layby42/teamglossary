@@ -29,7 +29,7 @@ class GlossaryTermTranslation < ActiveRecord::Base
   scope :except_language, -> (language_id) { where('glossary_term_translations.language_id <> ?', language_id) }
 
   validates :term, :language_id, :glossary_term_id, presence: true
-  validates :glossary_term_id, uniqueness: {scope: :language_id, case_sensitive: false}
+  validates :glossary_term_id, uniqueness: {scope: :language_id}
 
   def self.new_with_defaults
     GlossaryTermTranslation.new(

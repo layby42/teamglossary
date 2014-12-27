@@ -60,6 +60,8 @@ module LanguagesHelper
       full ? language_glossary_term_url(language, item) : language_glossary_term_path(language, item)
     when 'GlossaryTitle'
       full ? language_glossary_title_url(language, item) : language_glossary_title_path(language, item)
+    when 'GeneralMenu'
+      full ? language_general_menu_url(language, item) : language_general_menu_path(language, item)
     else
       '#'
     end
@@ -73,6 +75,8 @@ module LanguagesHelper
       edit_language_glossary_term_path(language, item)
     when 'GlossaryTitle'
       edit_language_glossary_title_path(language, item)
+    when 'GeneralMenu'
+      edit_language_general_menu_path(language, item)
     else
       '#'
     end
@@ -86,6 +90,8 @@ module LanguagesHelper
       changes_language_glossary_term_path(language, item)
     when 'GlossaryTitle'
      changes_language_glossary_title_path(language, item)
+    when 'GeneralMenu'
+     changes_language_general_menu_path(language, item)
     else
       '#'
     end
@@ -99,6 +105,8 @@ module LanguagesHelper
       edit_language_glossary_term_glossary_term_translation_path(language, item, translation)
     when 'GlossaryTitle'
       edit_language_glossary_title_glossary_title_translation_path(language, item, translation)
+    when 'GeneralMenu'
+      edit_language_general_menu_general_menu_translation_path(language, item, translation)
     else
       '#'
     end
@@ -112,6 +120,8 @@ module LanguagesHelper
       changes_language_glossary_term_glossary_term_translation_path(language, item, translation)
     when 'GlossaryTitle'
      changes_language_glossary_title_glossary_title_translation_path(language, item, translation)
+    when 'GeneralMenu'
+     changes_language_general_menu_general_menu_translation_path(language, item, translation)
     else
       '#'
     end
@@ -125,6 +135,8 @@ module LanguagesHelper
       'TECHNICAL TERM'
     when 'GlossaryTitle'
       'TEXT TITLE'
+    when 'GeneralMenu'
+      'GENERAL MENU ITEM'
     end
   end
 

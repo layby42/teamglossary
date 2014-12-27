@@ -56,13 +56,8 @@ class CommentsController < LanguagesController
 
   def find_commentable
     @commentable = nil
-    case params[:commentable_type]
-    when 'GlossaryTerm'
-      @commentable = GlossaryTerm.where(id: params[:commentable_id]).first
-    when 'GlossaryName'
-      @commentable = GlossaryName.where(id: params[:commentable_id]).first
-    when 'GlossaryTitle'
-      @commentable = GlossaryTitle.where(id: params[:commentable_id]).first
+    if params[:commentable_type].present?
+      @commentable = Object.const_get(params[:commentable_type]).where(id: params[:commentable_id]).first
     end
 
     unless @commentable.present?
@@ -93,6 +88,8 @@ class CommentsController < LanguagesController
         redirect_to language_glossary_name_path(@language, @commentable)
       when 'GlossaryTitle'
         redirect_to language_glossary_title_path(@language, @commentable)
+      when 'GeneralMenu'
+        redirect_to language_general_menu_path(@language, @commentable)
       else
         redirect_to root_path
       end
