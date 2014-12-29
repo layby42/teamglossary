@@ -1,0 +1,31 @@
+= form_for [:admin, task], :html => {class: 'modal-form form-horizontal'}  do |f|
+  .modal-header
+    %button{:type => 'button', 'data-dismiss' => 'modal', :class => 'close', 'aria-hidden' => true}= '&times;'.html_safe
+    %h3= task.new_record? ? 'New General Menu Task' : 'Edit General Menu Task'
+
+  .modal-body
+    .alert.alert-danger.hide
+    .row
+      .col-sm-8.col-xs-12
+        %label.control-label Task Title
+        = f.text_field :title, class: 'form-control', style: 'width:100%', autocomplete: 'off', maxlength: 100
+
+      .col-sm-4.col-xs-12
+        %label.control-label Applicable to:
+        %ul.list-unstyled
+          %li
+            = f.check_box :article, autocomplete: 'off'
+            &nbsp;
+            = label_tag :article, 'Text Articles'
+          %li
+            = f.check_box :audio, autocomplete: 'off'
+            &nbsp;
+            = label_tag :audio, 'Audio'
+          %li
+            = f.check_box :video, autocomplete: 'off'
+            &nbsp;
+            = label_tag :video, 'Video'
+
+  .modal-footer
+    %button#submit.btn.btn-primary Save changes
+

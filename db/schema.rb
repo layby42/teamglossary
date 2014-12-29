@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141227155818) do
+ActiveRecord::Schema.define(version: 20141229221048) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,15 +30,16 @@ ActiveRecord::Schema.define(version: 20141227155818) do
   add_index "comments", ["user_id", "commentable_type", "language_id", "commentable_id"], name: "discussions_user_discussible_type_language_discussible", using: :btree
 
   create_table "general_menu_actions", force: true do |t|
-    t.integer  "language_id"
-    t.integer  "general_menu_id"
+    t.integer  "language_id",     null: false
+    t.integer  "general_menu_id", null: false
     t.string   "action"
     t.string   "name"
-    t.date     "start_date"
+    t.date     "start_date",      null: false
     t.date     "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
+    t.integer  "task_id",         null: false
   end
 
   add_index "general_menu_actions", ["general_menu_id", "language_id", "action"], name: "general_menu_actions_menu_language_action", using: :btree
@@ -523,6 +524,17 @@ ActiveRecord::Schema.define(version: 20141227155818) do
 
   add_index "settings", ["configurable_id", "configurable_type", "name"], name: "configurable_index", unique: true, using: :btree
 
+  create_table "tasks", force: true do |t|
+    t.string   "title",                      null: false
+    t.boolean  "article",    default: false, null: false
+    t.boolean  "audio",      default: false, null: false
+    t.boolean  "video",      default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tasks", ["title"], name: "index_tasks_on_title", unique: true, using: :btree
+
   create_table "users", force: true do |t|
     t.string   "login",                               null: false
     t.string   "first_name",                          null: false
@@ -577,6 +589,7 @@ ActiveRecord::Schema.define(version: 20141227155818) do
 
   add_foreign_key "general_menu_actions", "general_menus", name: "fk_general_menu_actions_general_menus", dependent: :restrict
   add_foreign_key "general_menu_actions", "languages", name: "fk_general_menu_actions_languages", dependent: :restrict
+  add_foreign_key "general_menu_actions", "tasks", name: "general_menu_actions_task_id_fk"
   add_foreign_key "general_menu_actions", "users", name: "fk_general_menu_actions_users", dependent: :restrict
 
   add_foreign_key "general_menu_siblings", "general_menus", name: "fk_general_menu_siblings_general_menus", dependent: :restrict

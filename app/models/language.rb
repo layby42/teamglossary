@@ -33,6 +33,8 @@ class Language < ActiveRecord::Base
 
   has_many :comments
 
+  has_many :general_menu_actions
+
   strip_attributes :only => [:iso_code, :english_name, :name, :notes, :encoding]
   has_paper_trail :ignore => [:created_at, :updated_at]
 

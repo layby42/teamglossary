@@ -20,6 +20,10 @@ Rails.application.routes.draw do
       resources :teams, only: [:new, :create, :destroy]
     end
 
+    resources :tasks, only: [:index, :new, :create, :edit, :update] do
+      get :changes, on: :member
+    end
+
     resources :proper_name_types, only: [:index, :new, :create, :edit, :update] do
       get :changes, on: :member
     end
@@ -91,6 +95,10 @@ Rails.application.routes.draw do
       get :open, on: :member
 
       resources :general_menu_translations, only: [:create, :edit, :update, :destroy] do
+        get :changes, on: :member
+      end
+
+      resources :general_menu_actions, only: [:new, :create, :edit, :update, :destroy] do
         get :changes, on: :member
       end
     end

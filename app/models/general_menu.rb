@@ -30,6 +30,7 @@ class GeneralMenu < ActiveRecord::Base
 
   has_many :general_menus
   has_many :general_menu_translations
+  has_many :general_menu_actions
 
   has_many :comments, as: :commentable, dependent: :destroy
 
@@ -117,13 +118,13 @@ class GeneralMenu < ActiveRecord::Base
   def item_type_name
     case item_type
     when 'F'
-      'folder'
+      :folder
     when 'A'
-      'audio file'
+      :audio
     when 'V'
-      'video file'
+      :video
     else
-      'text'
+      :article
     end
   end
 

@@ -1,0 +1,36 @@
+%h3
+  General Menu Tasks
+  %span.badge #{@tasks.count}
+
+  - if current_user.admin?
+    .pull-right
+      = render 'shared/add_new_button', url: new_admin_task_path, remote: true
+
+- show_changes = current_user.admin?
+%table.table.table-striped.table-bordered
+  %thead
+    %tr
+      %th Title
+      %th Article
+      %th Audio
+      %th Video
+      - if show_changes
+        %th
+  %tbody
+    - show_changes = current_user.admin?
+    - @tasks.each do |task|
+      %tr
+        %td
+          - if current_user.admin?
+            = link_to task.title, edit_admin_task_path(task), remote: true
+          - else
+            = task.title
+        %td
+          %i.fa{class: task.article ? 'fa-check text-success' : 'fa-times text-muted'}
+        %td
+          %i.fa{class: task.audio ? 'fa-check text-success' : 'fa-times text-muted'}
+        %td
+          %i.fa{class: task.video ? 'fa-check text-success' : 'fa-times text-muted'}
+        - if show_changes
+          %td
+            = render 'shared/changes_url', url: changes_admin_task_path(task)

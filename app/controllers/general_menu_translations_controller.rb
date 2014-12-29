@@ -62,7 +62,7 @@ class GeneralMenuTranslationsController < GeneralMenusController
   def find_general_menu_translation
     @general_menu_translation = @language.general_menu_translations.where(general_menu_id: @general_menu.id).find(params[:id])
   rescue
-    flash_to error: 'Sorry, proper name translation not found'
+    flash_to error: 'Sorry, general menu translation not found'
     redirect_to language_general_menu_path(@language, @general_menu)
   end
 

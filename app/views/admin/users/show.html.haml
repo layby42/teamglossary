@@ -33,21 +33,41 @@
       .row
         %h3.col-xs-12 About
         %p.col-xs-12= @user.about
+
     .row
-      %h3.col-xs-12
-        Teams
-        %span.badge= @user.languages.count
+      %h3.col-xs-12 Teams
 
       - show_links = current_user.admin? || current_user.manager?
       - LanguageUser::ROLES.each do |role|
         .col-sm-4.col-xs-12
           - languages = user_languages_sorted(@user, role)
           %h4 #{role.to_s.upcase}
-          - languages.each_with_index do |language_user, idx|
+          - languages.each do |language_user|
             %p
               - if show_links
-                = link_to language_user.language.full_name, admin_language_path(language_user.language_id)
+                = link_to(language_user.language.english_name, admin_language_path(language_user.language_id))
               - else
-                = language_user.language.full_name
+                = language_user.language.english_name
           - if languages.empty?
             %p= '-'
+
+    - open_tasks = @user.general_menu_actions.open.list_order.includes([:language, :task, :general_menu])
+    - if open_tasks.count > 0
+      %h3
+        Tasks in Progress
+        %span.badge= open_tasks.count
+
+      %table.table.table-striped.table-bordered
+        %thead
+          %tr
+            %th Task
+            %th Started
+            %th Team
+            %th Article
+        %tbody
+          - open_tasks.each do |task|
+            %tr
+              %td= task.task.title
+              %td= task.start_date
+              %td= link_to task.language.english_name, admin_language_path(task.language_id)
+              %td= link_to task.general_menu.name, language_general_menu_path(task.language_id, task.general_menu_id)

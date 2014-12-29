@@ -41,6 +41,8 @@ class User < ActiveRecord::Base
   has_many :language_users, dependent: :destroy
   has_and_belongs_to_many :languages, join_table: :language_users
 
+  has_many :general_menu_actions
+
   has_many :settings, :as => :configurable, :dependent => :destroy
 
   validates :email, presence: true, uniqueness: {case_sensitive: false}

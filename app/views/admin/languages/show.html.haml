@@ -42,8 +42,33 @@
         .col-sm-4.col-xs-12
           - users = language_users_sorted(@language, role)
           %h4 #{role.to_s.pluralize.upcase}
-          - users.each_with_index do |language_user, idx|
+          - users.each do |language_user|
             %p
               = link_to language_user.user.name, admin_user_path(language_user.user_id)
           - if users.empty?
             %p= '-'
+
+    - open_tasks = @language.general_menu_actions.open.list_order.includes([:user, :task, :general_menu])
+    - if open_tasks.count > 0
+      %h3
+        Tasks in Progress
+        %span.badge= open_tasks.count
+
+      %table.table.table-striped.table-bordered
+        %thead
+          %tr
+            %th Task
+            %th Started
+            %th By Whom
+            %th Article
+        %tbody
+          - open_tasks.each do |task|
+            %tr
+              %td= task.task.title
+              %td= task.start_date
+              %td
+                - if task.user_id.present?
+                  = link_to task.user.name, admin_user_path(task.user_id)
+                - else
+                  = task.name
+              %td= link_to task.general_menu.name, language_general_menu_path(task.language_id, task.general_menu_id)

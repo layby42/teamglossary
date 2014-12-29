@@ -13,6 +13,13 @@
           .col-sm-6.col-xs-12
             = render 'shared/term_show_translation', language: language, item: item
 
+
+- if current_user && item.is_a?(GeneralMenu) && !item.folder?
+  .row
+    .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
+      = render 'general_menu_actions/list', language: language, item: item
+  %br/
+
 - if current_user
   .row
     .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1

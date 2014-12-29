@@ -1,7 +1,7 @@
 - search_result = @query.present?
 - level = item.level
 %tr{class: "#{'term_table_row' if search_result}", id: "general_menu_row_#{item.id}", data: {parent: item.general_menu_id.to_i, id: item.id}}
-  %td{style: "#{bottom_link_style_helper(item.folder?)} padding-left: #{30 + 8 * (level - 1)}px; padding-bottom: 8px;"}
+  %td{style: "#{bottom_link_style_helper(base_language_team)} padding-left: #{30 + 8 * (level - 1)}px;"}
     %strong
       = link_to item.name, language_general_menu_path(item.language, item), remote: true
 
@@ -16,8 +16,11 @@
       %small
         %i.fa{class: item.fa_icon} &nbsp; #{item.cms_name}
 
+    - if base_language_team
+      = render 'shared/term_add_comment', language: base_language, term: item
+
   - unless language.is_base_language?
-    %td
+    %td{style: bottom_link_style_helper(language_team)}
       - translation = item.general_menu_translations.select{|t| t.language_id == language.id}.first
       - if translation.present?
         %strong
@@ -27,3 +30,6 @@
           = link_to language_general_menu_path(language, item), class: 'text-muted' do
             %i.fa.fa-plus-circle
             add translation
+
+      - if language_team
+        = render 'shared/term_add_comment', language: language, term: item
