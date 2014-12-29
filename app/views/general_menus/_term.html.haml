@@ -3,7 +3,7 @@
   %tbody
     %tr
       %th.col-xs-4 Title
-      %td
+      %td.col-xs-8
         = link_to item.name, language_general_menu_path(item.language, item), remote: request.xhr?
     %tr
       %th Type
@@ -26,7 +26,8 @@
 
         %p
           %br/
-          %small= (item.full_cms_path.presence || item.cms_name).sub('/', '/ ')
+          %small
+            = (item.full_cms_path.presence || item.cms_name).gsub('/', '/ ')
 
         - if item.cms_updated.present?
           %p
