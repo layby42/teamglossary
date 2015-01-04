@@ -1,11 +1,12 @@
 .modal-header
   %button{:type => 'button', 'data-dismiss' => 'modal', :class => 'close', 'aria-hidden' => true}= '&times;'.html_safe
   %h4
+    = @general_menu_action.new_record? ? 'Add task for' : 'Edit task for'
     = link_to @general_menu.name, show_glossary_term_url_helper(@language, @general_menu)
 .modal-body
   .row
     .col-xs-12
-      = form_for [@language, @general_menu, @general_menu_action], html: {class: 'form-horizontal'} do |f|
+      = form_for [@language, @general_menu, @general_menu_action], html: {class: 'form-horizontal',remote: true} do |f|
         .alert.alert-danger.hide
         %fieldset
           = hidden_field_tag :show_tasks, @show_tasks
@@ -31,7 +32,7 @@
 
           .form-group.row
             .col-sm-12.text-right
-              = f.submit 'Save Task', class: 'btn btn-primary btn-sm'
+              = f.submit 'Save task', class: 'btn btn-primary btn-sm'
   - if @show_tasks
     .row
       .col-xs-12

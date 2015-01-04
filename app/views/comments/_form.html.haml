@@ -1,22 +1,37 @@
-= form_for [@language, @comment], html: {class: 'form-vertical', remote: true} do |f|
-  .alert.alert-danger.hide
-  %fieldset
-    = hidden_field_tag :commentable_type, @commentable.class.to_s
-    = hidden_field_tag :commentable_id, @commentable.id
-    = hidden_field_tag :show_comments, @show_comments
+.modal-header
+  %button{:type => 'button', 'data-dismiss' => 'modal', :class => 'close', 'aria-hidden' => true}= '&times;'.html_safe
+  %h4
+    Comments for
+    = link_to @commentable.term, show_glossary_term_url_helper(@language, @commentable)
+.modal-body
+  .row
+    .col-xs-12
+      = form_for [@language, @comment], html: {class: 'form-vertical', remote: true} do |f|
+        .alert.alert-danger.hide
+        %fieldset
+          = hidden_field_tag :commentable_type, @commentable.class.to_s
+          = hidden_field_tag :commentable_id, @commentable.id
+          = hidden_field_tag :show_comments, @show_comments
 
-    .form-group.row
-      %label.col-sm-12.control-label
-        Comment
-        %small
-          - if @language.is_base_language?
-            (please use only #{@language.english_name})
-          - else
-            (please use only #{base_language.english_name} or #{@language.english_name})
-      .col-sm-12
-        = f.text_area :text, class: 'form-control', rows: 3, autocomplete: 'off', placeholder: 'Add your comment here', required: true
+          .form-group.row
+            %label.col-sm-12.control-label
+              Comment
+              %small
+                - if @language.is_base_language?
+                  (please use only #{@language.english_name})
+                - else
+                  (please use only #{base_language.english_name} or #{@language.english_name})
+            .col-sm-12
+              = f.text_area :text, class: 'form-control', rows: 3, autocomplete: 'off', placeholder: 'Add your comment here', required: true
 
-    .form-group.row
-      .col-sm-12.text-right
-        = f.submit 'Save Comment', class: 'btn btn-primary btn-sm'
+          .form-group.row
+            .col-sm-12.text-right
+              = f.submit 'Save Comment', class: 'btn btn-primary btn-sm'
+  - if @show_comments
+    .row
+      .col-xs-12
+        = render 'shared/term_comments', language: @language, term: @commentable
+
+
+
 

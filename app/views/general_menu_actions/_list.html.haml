@@ -1,7 +1,7 @@
 - manager = current_user.manager?(language.id)
-- if !request.xhr? && manager
+- if manager
   .pull-right
-    = render 'shared/add_new_button', url: new_language_general_menu_general_menu_action_path(language, item, show_tasks: false), remote: true, title: 'Add task'
+    = render 'shared/add_new_button', url: new_language_general_menu_general_menu_action_path(language, item, show_tasks: true), remote: true, title: 'Add task'
 
 %h4.title
   TASKS
@@ -18,31 +18,28 @@
         %td Started
         %td Finished
         %td What
-        - if manager
+        - if !request.xhr? && manager
           %th.text-center{width: 30}
     %tbody
       - tasks.each do |task|
         %tr
           %td
             - if task.user_id?
-              - if manager
-                = link_to task.user.name, admin_user_path(task.user_id)
-              - else
-                = task.user.name
+              = task.user.name
             - else
               = task.name
           %td= task.start_date
           %td= task.end_date
           %td
             - if manager
-              = link_to task.task.title, edit_language_general_menu_general_menu_action_path(language, item, task, show_tasks: false), remote: true
+              = link_to task.task.title, edit_language_general_menu_general_menu_action_path(language, item, task, show_tasks: true), remote: true
             - else
               = task.task.title
             - if manager
               %small.pull-right
-                = link_to language_general_menu_general_menu_action_path(language, item, task), method: :delete, class: 'text-muted delete_link', data: {confirm: 'Are you sure?'} do
+                = link_to language_general_menu_general_menu_action_path(language, item, task), method: :delete, class: 'text-muted delete_link', remote: true, data: {confirm: 'Are you sure?'} do
                   %i.fa.fa-times-circle
 
-          - if manager
+          - if !request.xhr? && manager
             %td
               = render 'shared/changes_url', url: changes_language_general_menu_general_menu_action_path(language, item, task)

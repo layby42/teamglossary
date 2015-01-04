@@ -27,7 +27,11 @@
       - if translation.present?
         %strong
           = link_to translation.term, language_glossary_name_path(language, item), remote: true
-        %i= translation.alternative_as_string
+
+        - [translation.alt_term1, translation.alt_term2, translation.alt_term3].compact.each do |alt_term|
+          - next unless alt_term.present?
+          %br/
+          %i= alt_term
 
         - if can_edit_language_glossary
           .text-right

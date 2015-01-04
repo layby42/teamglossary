@@ -54,19 +54,19 @@ class GeneralMenu < ActiveRecord::Base
   def self.simple_search(language, query)
     if query.blank?
       if language.is_base_language?
-        GeneralMenu.by_language(language.id).where(general_menu_id: nil).list_order
+        GeneralMenu.by_language(language.id).where(general_menu_id: nil).list_order.includes([:general_menu_actions])
       else
-        GeneralMenu.where(language_id: [language.id, Language.base_language.id], general_menu_id: nil).list_order.includes([:general_menu_translations])
+        GeneralMenu.where(language_id: [language.id, Language.base_language.id], general_menu_id: nil).list_order.includes([:general_menu_translations, :general_menu_actions])
       end
     else
       search_columns = [:name, :remark, :additional_text, :cms_name, :full_cms_path]
       if language.is_base_language?
-        GeneralMenu.by_language(language.id).list_order.select do |item|
+        GeneralMenu.by_language(language.id).list_order.includes([:general_menu_actions]).select do |item|
           search_columns.collect{|field| item[field].to_s}.join(' ').downcase.include?(query)
         end
       else
         search_transaction_columns = [:name, :notes, :additional_text]
-        GeneralMenu.where(language_id: [language.id, Language.base_language.id]).list_order.includes([:general_menu_translations]).select do |item|
+        GeneralMenu.where(language_id: [language.id, Language.base_language.id]).list_order.includes([:general_menu_translations, :general_menu_actions]).select do |item|
           search_columns.collect{|field| item[field].to_s}.join(' ').downcase.include?(query) ||
           (
             (

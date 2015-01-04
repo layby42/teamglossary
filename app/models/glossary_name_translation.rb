@@ -29,10 +29,6 @@ class GlossaryNameTranslation < ActiveRecord::Base
   validates :term, :language_id, :glossary_name_id, presence: true
   validates :glossary_name_id, uniqueness: {scope: :language_id, case_sensitive: false}
 
-  def alternative_as_string
-    [alt_term1, alt_term2, alt_term3].compact.join(' / ')
-  end
-
   def self.new_with_defaults
     GlossaryNameTranslation.new(
       integration_status: IntegrationStatus.default.first

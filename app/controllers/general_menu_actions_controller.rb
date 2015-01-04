@@ -5,42 +5,43 @@ class GeneralMenuActionsController < GeneralMenusController
   before_filter :find_general_menu_action, only: [:edit, :update, :changes, :destroy]
   before_filter :find_show_tasks, only: [:new, :create, :edit, :update]
 
-  before_filter :require_xhr, :only => [:new, :edit, :changes]
+  before_filter :require_xhr
 
   def new
     @general_menu_action = @general_menu.general_menu_actions.by_language(@language.id).new(start_date: Time.zone.now.to_date)
   end
 
   def create
-    general_menu_action = GeneralMenuAction.new(general_menu_action_params)
-    general_menu_action.language_id = @language.id
-    general_menu_action.general_menu_id = @general_menu.id
-    if general_menu_action.save
+    @general_menu_action = GeneralMenuAction.new(general_menu_action_params)
+    @general_menu_action.language_id = @language.id
+    @general_menu_action.general_menu_id = @general_menu.id
+    if @general_menu_action.save
       flash_to notice: 'Changes saved!'
+      render action: :refresh
     else
-      flash_to error: general_menu_action.errors.full_messages.first
+      flash_to error: @general_menu_action.errors.full_messages.first
+      render action: :new
     end
-  ensure
-    redirect_to language_general_menu_path(@language, @general_menu)
   end
 
   def update
     if @general_menu_action.update_attributes!(general_menu_action_params)
       flash_to notice: 'Changes saved!'
+      render action: :refresh
     else
       flash_to error: @general_menu_action.errors.full_messages.first
+      render action: :edit
     end
-  ensure
-    redirect_to language_general_menu_path(@language, @general_menu)
   end
 
   def destroy
     @general_menu_action.destroy
     flash_to notice: 'Task removed!'
+    render action: :refresh
+
   rescue Exception => ex
     flash_to error: ex.message
-  ensure
-    redirect_to language_general_menu_path(@language, @general_menu)
+    render action: :refresh
   end
 
   def changes
