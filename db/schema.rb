@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141229221048) do
+ActiveRecord::Schema.define(version: 20150104215813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,50 +44,40 @@ ActiveRecord::Schema.define(version: 20141229221048) do
 
   add_index "general_menu_actions", ["general_menu_id", "language_id", "action"], name: "general_menu_actions_menu_language_action", using: :btree
 
-  create_table "general_menu_siblings", force: true do |t|
-    t.integer  "general_menu_id"
-    t.integer  "sibling_id",      null: false
-    t.integer  "sequence",        null: false
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "full_cms_path"
-  end
-
-  add_index "general_menu_siblings", ["general_menu_id", "sibling_id"], name: "index_general_menu_siblings_on_general_menu_id_and_main_id", unique: true, using: :btree
-
   create_table "general_menu_translations", force: true do |t|
     t.integer  "language_id"
     t.integer  "general_menu_id"
-    t.string   "name",            limit: 500,                 null: false
+    t.string   "name",                limit: 500,                 null: false
     t.date     "online"
     t.text     "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "additional_text"
     t.date     "cms_updated"
-    t.boolean  "synchronized",                default: false, null: false
+    t.boolean  "synchronized",                    default: false, null: false
+    t.datetime "updated_from_cms_at"
   end
 
   add_index "general_menu_translations", ["general_menu_id", "language_id"], name: "general_menu_translations_menu_item_language", unique: true, using: :btree
 
   create_table "general_menus", force: true do |t|
     t.integer  "general_menu_id"
-    t.string   "cms_name",                                    null: false
-    t.string   "name",            limit: 500,                 null: false
-    t.integer  "sequence",                                    null: false
+    t.string   "cms_name",                                        null: false
+    t.string   "name",                limit: 500,                 null: false
+    t.integer  "sequence",                                        null: false
     t.text     "remark"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "item_type",                   default: "F",   null: false
-    t.integer  "language_id",                 default: 3,     null: false
-    t.boolean  "synchronized",                default: false, null: false
+    t.string   "item_type",                       default: "F",   null: false
+    t.integer  "language_id",                     default: 3,     null: false
+    t.boolean  "synchronized",                    default: false, null: false
     t.string   "length_type"
     t.text     "additional_text"
     t.date     "cms_updated"
     t.string   "wiki_qa"
     t.string   "full_cms_path"
     t.date     "online"
+    t.datetime "updated_from_cms_at"
   end
 
   add_index "general_menus", ["general_menu_id", "sequence", "name"], name: "index_general_menus_on_general_menu_id_and_sequence_and_name", using: :btree
@@ -591,9 +581,6 @@ ActiveRecord::Schema.define(version: 20141229221048) do
   add_foreign_key "general_menu_actions", "languages", name: "fk_general_menu_actions_languages", dependent: :restrict
   add_foreign_key "general_menu_actions", "tasks", name: "general_menu_actions_task_id_fk"
   add_foreign_key "general_menu_actions", "users", name: "fk_general_menu_actions_users", dependent: :restrict
-
-  add_foreign_key "general_menu_siblings", "general_menus", name: "fk_general_menu_siblings_general_menus", dependent: :restrict
-  add_foreign_key "general_menu_siblings", "general_menus", name: "fk_general_menu_siblings_general_menus_main", column: "sibling_id", dependent: :restrict
 
   add_foreign_key "general_menu_translations", "general_menus", name: "fk_general_menu_translations_general_menus", dependent: :restrict
   add_foreign_key "general_menu_translations", "languages", name: "fk_general_menu_translations_languages", dependent: :restrict

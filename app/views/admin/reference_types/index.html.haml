@@ -1,6 +1,8 @@
 %h3
-  Reference Types
-  %span.badge #{@reference_types.count}
+  = link_to admin_settings_path do
+    %i.fa.fa-angle-left
+    Reference Types
+    %span.badge #{@reference_types.count}
 
   - if current_user.admin?
     .pull-right

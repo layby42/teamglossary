@@ -43,6 +43,10 @@ Rails.application.routes.draw do
     resources :general_statuses, only: [:index, :new, :create, :edit, :update] do
       get :changes, on: :member
     end
+
+    resources :imports, :only => [:index] do
+      post :general_menu, on: :collection
+    end
   end
 
   resources :languages, only: [:show] do

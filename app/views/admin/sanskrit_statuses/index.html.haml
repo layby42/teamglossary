@@ -1,6 +1,8 @@
 %h3
-  Sanskrit Statuses
-  %span.badge #{@sanskrit_statuses.count}
+  = link_to admin_settings_path do
+    %i.fa.fa-angle-left
+    Sanskrit Statuses
+    %span.badge #{@sanskrit_statuses.count}
 
   - if current_user.admin?
     .pull-right

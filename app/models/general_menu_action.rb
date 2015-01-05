@@ -3,11 +3,11 @@
 # Table name: general_menu_actions
 #
 #  id              :integer          not null, primary key
-#  language_id     :integer
-#  general_menu_id :integer
+#  language_id     :integer          not null
+#  general_menu_id :integer          not null
 #  action          :string(255)
 #  name            :string(255)
-#  start_date      :date
+#  start_date      :date             not null
 #  end_date        :date
 #  created_at      :datetime
 #  updated_at      :datetime

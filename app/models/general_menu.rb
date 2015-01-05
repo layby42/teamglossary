@@ -2,28 +2,29 @@
 #
 # Table name: general_menus
 #
-#  id              :integer          not null, primary key
-#  general_menu_id :integer
-#  cms_name        :string(255)      not null
-#  name            :string(500)      not null
-#  sequence        :integer          not null
-#  remark          :text
-#  created_at      :datetime
-#  updated_at      :datetime
-#  item_type       :string(255)      default("F"), not null
-#  language_id     :integer          default(3), not null
-#  synchronized    :boolean          default(FALSE), not null
-#  length_type     :string(255)
-#  additional_text :text
-#  cms_updated     :date
-#  wiki_qa         :string(255)
-#  full_cms_path   :string(255)
-#  online          :date
+#  id                  :integer          not null, primary key
+#  general_menu_id     :integer
+#  cms_name            :string(255)      not null
+#  name                :string(500)      not null
+#  sequence            :integer          not null
+#  remark              :text
+#  created_at          :datetime
+#  updated_at          :datetime
+#  item_type           :string(255)      default("F"), not null
+#  language_id         :integer          default(3), not null
+#  synchronized        :boolean          default(FALSE), not null
+#  length_type         :string(255)
+#  additional_text     :text
+#  cms_updated         :date
+#  wiki_qa             :string(255)
+#  full_cms_path       :string(255)
+#  online              :date
+#  updated_from_cms_at :datetime
 #
 
 class GeneralMenu < ActiveRecord::Base
   strip_attributes :only => [:cms_name, :name, :remark, :item_type, :length_type, :additional_text, :wiki_qa, :full_cms_path, :online]
-  has_paper_trail :ignore => [:created_at, :updated_at]
+  has_paper_trail :ignore => [:created_at, :updated_at, :updated_from_cms_at]
 
   belongs_to :language
   belongs_to :general_menu
@@ -108,7 +109,7 @@ class GeneralMenu < ActiveRecord::Base
 
 
   def level
-    full_cms_path.split('/').length
+    full_cms_path.split('/').length - 1
   end
 
   def folder?

@@ -1,6 +1,8 @@
 %h3
-  Users
-  %span.badge #{@users.count}
+  = link_to admin_settings_path do
+    %i.fa.fa-angle-left
+    Users
+    %span.badge #{@users.count}
 
   .pull-right
     = render 'shared/add_new_button', url: new_admin_user_path, remote: false

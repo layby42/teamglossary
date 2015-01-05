@@ -38,6 +38,7 @@
                 %li= link_to 'Profile', admin_user_path(current_user)
                 - if current_user.admin? || current_user.manager?
                   %li= link_to 'Settings', admin_settings_path
+                  %li= link_to 'Imports', admin_imports_path
                 %li.divider
                 %li= link_to 'Log Out', logout_path, :method => :delete
           - else

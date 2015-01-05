@@ -1,6 +1,8 @@
 %h3
-  General Menu Tasks
-  %span.badge #{@tasks.count}
+  = link_to admin_settings_path do
+    %i.fa.fa-angle-left
+    General Menu Tasks
+    %span.badge #{@tasks.count}
 
   - if current_user.admin?
     .pull-right

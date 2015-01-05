@@ -1,6 +1,8 @@
 %h3
-  Proper Name Types
-  %span.badge #{@proper_name_types.count}
+  = link_to admin_settings_path do
+    %i.fa.fa-angle-left
+    Proper Name Types
+    %span.badge #{@proper_name_types.count}
 
   - if current_user.admin?
     .pull-right
