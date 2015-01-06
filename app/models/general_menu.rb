@@ -36,7 +36,11 @@ class GeneralMenu < ActiveRecord::Base
   has_many :comments, as: :commentable, dependent: :destroy
 
   scope :by_language, -> (language_id) { where(language_id: language_id) }
-  scope :list_order, -> { order('lower(general_menus.name)') }
+  scope :search_order, -> { order('lower(general_menus.name)') }
+  scope :list_order, -> { order('general_menus.sequence') }
+
+  scope :except_broken, -> { where('general_menus.level > 0 OR general_menus.general_menu_id IS NULL')}
+  scope :broken, -> { where('general_menus.level = 0 AND general_menus.general_menu_id IS NOT NULL')}
 
   validates :cms_name, :name, :language_id, presence: true
 
@@ -55,19 +59,19 @@ class GeneralMenu < ActiveRecord::Base
   def self.simple_search(language, query)
     if query.blank?
       if language.is_base_language?
-        GeneralMenu.by_language(language.id).where(general_menu_id: nil).list_order.includes([:general_menu_actions])
+        GeneralMenu.by_language(language.id).where(general_menu_id: nil).except_broken.list_order.includes([:general_menu_actions])
       else
-        GeneralMenu.where(language_id: [language.id, Language.base_language.id], general_menu_id: nil).list_order.includes([:general_menu_translations, :general_menu_actions])
+        GeneralMenu.where(language_id: [language.id, Language.base_language.id], general_menu_id: nil).except_broken.list_order.includes([:general_menu_translations, :general_menu_actions])
       end
     else
       search_columns = [:name, :remark, :additional_text, :cms_name, :full_cms_path]
       if language.is_base_language?
-        GeneralMenu.by_language(language.id).list_order.includes([:general_menu_actions]).select do |item|
+        GeneralMenu.by_language(language.id).except_broken.search_order.includes([:general_menu_actions]).select do |item|
           search_columns.collect{|field| item[field].to_s}.join(' ').downcase.include?(query)
         end
       else
         search_transaction_columns = [:name, :notes, :additional_text]
-        GeneralMenu.where(language_id: [language.id, Language.base_language.id]).list_order.includes([:general_menu_translations, :general_menu_actions]).select do |item|
+        GeneralMenu.where(language_id: [language.id, Language.base_language.id]).except_broken.search_order.includes([:general_menu_translations, :general_menu_actions]).select do |item|
           search_columns.collect{|field| item[field].to_s}.join(' ').downcase.include?(query) ||
           (
             (
@@ -84,9 +88,9 @@ class GeneralMenu < ActiveRecord::Base
 
   def children(language)
     if language.is_base_language?
-      self.general_menus.by_language(language.id).list_order
+      self.general_menus.by_language(language.id).except_broken.list_order
     else
-      self.general_menus.where(language_id: [language.id, Language.base_language.id]).list_order.includes([:general_menu_translations])
+      self.general_menus.where(language_id: [language.id, Language.base_language.id]).except_broken.list_order.includes([:general_menu_translations])
     end
   end
 
@@ -108,9 +112,10 @@ class GeneralMenu < ActiveRecord::Base
   end
 
 
-  def level
-    full_cms_path.split('/').length - 1
-  end
+  # def level
+  #   l = full_cms_path.split('/').length - 3
+  #   l < 0 ? 0 : l
+  # end
 
   def folder?
     item_type == 'F'

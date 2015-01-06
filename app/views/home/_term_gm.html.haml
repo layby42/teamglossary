@@ -1,12 +1,13 @@
 - search_result = @query.present?
 - level = item.level
+- bottom_link = can_manage_base_language_glossary && !item.folder?
 %tr{class: "#{'term_table_row' if search_result}", id: "general_menu_row_#{item.id}", data: {parent: item.general_menu_id.to_i, id: item.id}}
-  %td{style: "#{bottom_link_style_helper(base_language_team)} padding-left: #{30 + 8 * (level - 1)}px;"}
+  %td{style: general_menu_left_and_bottom_link_style_helper(level, item.folder?, bottom_link)}
     %strong
       = link_to item.name, language_general_menu_path(item.language, item), remote: true
 
     - if item.folder?
-      .div{style: "position: absolute; top: 5px; left: #{8 * level }px;"}
+      .div{style: "position: absolute; top: 5px; left: #{8 * (level + 1) }px;"}
         = link_to open_language_general_menu_path(language, item), class: 'text-primary open_folder_link', remote: true do
           %i.fa.fa-folder-o
         = link_to 'javascript:void(0);', class: 'text-primary close_folder_link', style: 'display: none;' do
@@ -16,11 +17,12 @@
       %small
         %i.fa{class: item.fa_icon} &nbsp; #{item.cms_name}
 
-    - if base_language_team
-      = render 'shared/term_add_comment', language: base_language, term: item
+    - if bottom_link
+      = render 'shared/term_add_task', language: base_language, term: item
 
   - unless language.is_base_language?
-    %td{style: bottom_link_style_helper(language_team)}
+    - bottom_link = can_manage_language_glossary && !item.folder?
+    %td{style: bottom_link_style_helper(bottom_link)}
       - translation = item.general_menu_translations.select{|t| t.language_id == language.id}.first
       - if translation.present?
         %strong
@@ -31,5 +33,5 @@
             %i.fa.fa-plus-circle
             add translation
 
-      - if language_team
-        = render 'shared/term_add_comment', language: language, term: item
+      - if bottom_link
+        = render 'shared/term_add_task', language: language, term: item

@@ -156,13 +156,25 @@ module LanguagesHelper
     apply ? 'position: relative; padding-bottom: 25px;' : ''
   end
 
+  def general_menu_left_and_bottom_link_style_helper(level=0, is_folder=false, apply_link=false)
+    padding_left = 8 * (level + 1)
+    padding_left += 20 if is_folder
+    [
+      'position: relative;',
+      (apply_link ? 'padding-bottom: 25px;' : ''),
+      "padding-left: #{padding_left}px;"
+      ].join('')
+  end
+
   def search_terms_display_options(language, options={})
     opts = {
       language: language,
       language_team: language_team?(language.id),
       can_edit_language_glossary: can_edit_language_glossary?(language.id),
+      can_manage_language_glossary: (current_user && current_user.manager?(language.id)),
       base_language_team: base_language_team?,
-      can_edit_base_language_glossary: can_edit_language_glossary?(base_language.id)
+      can_edit_base_language_glossary: can_edit_language_glossary?(base_language.id),
+      can_manage_base_language_glossary: (current_user && current_user.manager?(base_language.id))
     }
     options.each do |key, value|
       opts[key] = value

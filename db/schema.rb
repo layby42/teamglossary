@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150104215813) do
+ActiveRecord::Schema.define(version: 20150106205609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(version: 20150104215813) do
     t.string   "full_cms_path"
     t.date     "online"
     t.datetime "updated_from_cms_at"
+    t.integer  "level",                           default: 0,     null: false
   end
 
   add_index "general_menus", ["general_menu_id", "sequence", "name"], name: "index_general_menus_on_general_menu_id_and_sequence_and_name", using: :btree
