@@ -44,9 +44,11 @@ Rails.application.routes.draw do
       get :changes, on: :member
     end
 
-    resources :imports, :only => [:index] do
+    resources :imports, only: [:index] do
       post :general_menu, on: :collection
     end
+
+    resources :diagnostics, only: [:index]
   end
 
   resources :languages, only: [:show] do
@@ -93,7 +95,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :general_menus, only: [:show, :edit, :update] do
+    resources :general_menus, only: [:show, :destroy] do
       get :changes, on: :member
 
       get :open, on: :member

@@ -1,0 +1,32 @@
+.row
+  .col-xs-12
+    %h4 GENERAL MENU
+    %p
+      Those general menu item are not in CMS JSON file, but marked as synchronized with CMS.
+      %ul
+        %li It could be issue with CMS JSON file (article not included for some reason).
+        %li It could be that file or its folder was renamed in CMS.
+    %table.table.table-striped.table-bordered
+      %thead
+        %tr
+          %th Language
+          %th Name
+          %th Tasks
+      %tbody
+        - languages = Language.all.inject({}){|r, l| r[l.id] = l.english_name; r}
+        - @general_menus.each do |general_menu|
+          %tr
+            %td= general_menu.language.english_name
+            %td
+              .pull-right
+                = link_to language_general_menu_path(general_menu.language_id, general_menu), method: :delete, class: 'text-muted delete_link', data: {confirm: 'Are you sure you want delete this term?'} do
+                  %small
+                    %i.fa.fa-times-circle
+              = link_to general_menu.name, language_general_menu_path(general_menu.language_id, general_menu)
+              %p
+                %small= (general_menu.full_cms_path.presence || general_menu.cms_name).gsub('/', '/ ')
+            %td
+              - general_menu.general_menu_actions.group_by{|g| g.language_id}.each do |language_id, tasks|
+                = link_to "#{languages[language_id]}(#{tasks.length})", language_general_menu_path(language_id, general_menu)
+                %br/
+
