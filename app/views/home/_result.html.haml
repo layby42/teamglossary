@@ -31,10 +31,18 @@
           - edit_options[:item] = item
           = render "term_#{@glossary_type.code.downcase}", edit_options
 
-        - if @data.empty?
-          %tr
-            %td.text-right{colspan: (@language.is_base_language? ? 2 : 3)}
-              no terms found
+    - if @data.empty?
+      .text-center
+        Sorry, nothing was found.
+        %br/
+        %br/
+      .text-left
+        Try to adjust the search string:
+        %ul
+          %li use singular instead of plural;
+          %li avoid quotation marks unless this is what you are searching for;
+          %li try to search by part of the word or phrase;
+          %li exclude leading 'the' & 'a';
 .row
   .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
     .pagination.pagination-centered
