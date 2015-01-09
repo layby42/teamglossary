@@ -8,25 +8,31 @@ gem 'pg'
 gem 'authlogic'
 gem 'strip_attributes'
 gem 'foreigner'
-gem 'sass-rails', '~> 4.0.3'
 gem 'autoprefixer-rails'
-gem 'uglifier', '>= 1.3.0'
 gem 'jquery-rails'
 gem 'kaminari'
 gem 'paper_trail'
 gem 'exception_notification'
+
+group :assets do
+  gem 'sass-rails', '~> 4.0.3'
+  gem 'uglifier', '>= 1.3.0'
+end
 
 group :development, :test do
   gem 'thin'
   gem 'spring'
   gem 'annotate'
   gem 'quiet_assets'
+  gem 'capistrano', '~> 3.0'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails'
+  gem 'capistrano-passenger'
+  gem 'capistrano-rvm'
 end
 
-# TODO!!!!! this one heroku only
-group :staging do
+group :heroku do
   gem 'rails_12factor'
-  gem 'thin'
 end
 
 
@@ -41,4 +47,3 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-

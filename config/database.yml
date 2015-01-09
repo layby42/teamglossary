@@ -78,14 +78,15 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
+
 staging:
   <<: *default
-  database: teamglossary
+  database: teamglossary_staging
   username: teamglossary
   password: <%= ENV['TEAMGLOSSARY_DATABASE_PASSWORD'] %>
 
 production:
   <<: *default
-  database: teamglossary
+  database: teamglossary_production
   username: teamglossary
   password: <%= ENV['TEAMGLOSSARY_DATABASE_PASSWORD'] %>
