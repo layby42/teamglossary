@@ -6,12 +6,14 @@ class FixUsersTable < ActiveRecord::Migration
     add_column :users, :single_access_token, :string
     add_column :users, :perishable_token, :string
 
+    User.paper_trail_off!
     User.all.each_with_index do |user, idx|
       user.reset_perishable_token!
       user.reset_single_access_token!
       user.reset_persistence_token!
       user.update_attributes(email: "undefined#{idx}@test.com") unless user.email.present?
     end
+    User.paper_trail_on!
 
     change_column :users, :persistence_token, :string, null: false
     change_column :users, :single_access_token, :string, null: false
