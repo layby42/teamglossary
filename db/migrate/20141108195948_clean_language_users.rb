@@ -8,6 +8,7 @@ class CleanLanguageUsers < ActiveRecord::Migration
       user.update_attributes!(admin: true)
     end
     User.paper_trail_on!
+    execute(%q{DELETE FROM language_users WHERE role ='admin';})
   end
 
   def down
