@@ -3,15 +3,6 @@ $("#term-container").html('<%=j render "form", language: @language, glossary_nam
 $('#edit_term_button').hide();
 $('#cancel_term_button').show();
 
-$('#glossary_name_proper_name_type_id').on('change', function(){
-  if ($('#glossary_name_proper_name_type_id > option:selected').data('code') == 'P'){
-    $('#glossary_name_dates').prop('disabled', false);
-  } else {
-    $('#glossary_name_dates').val('');
-    $('#glossary_name_dates').prop('disabled', true);
-  }
-});
-
 $('#glossary_name_proper_name_type_id').change();
 
 $("#glossary_name_proper_name_type_id").parents('form').submit(function(){

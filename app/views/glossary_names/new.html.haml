@@ -8,5 +8,45 @@
     .row-fluid
       .col-sm-6.col-xs-12
         = render 'form', language: @language, glossary_name: @glossary_name
+
+        :javascript
+          $(function(){
+            $('#glossary_name_proper_name_type_id').change();
+          });
+
       .col-sm-6.col-xs-12
-        TODO: add help
+        %h4 PLEASE DO INVESTIGATION FIRST
+        %ol
+          %li Is it really a proper name? If it is a technical term or a text title, please do not add the term to the proper names glossary.
+          %li Is it a SINGULAR version of the term? Please never add plural versions.
+          %li Does singular version of the term already exists in the glossary? It exists, just translate it, do not add new term.
+          %li In some cases all you need to do is fix type of existing proper name, then translate it. Mostly it is related to proper name of type 'Other'.
+          %li If you know Sanskrit or Tibetan version of the term, please try to search for term using Sanskrit and Tibetan.
+          %li Please make sure your version of the term is not a misspelling of existing term.
+
+        %h4 HOW TO ADD NEW PROPER NAME
+        %p
+          TERM is the only required field.
+          %br/
+          When adding new proper name:
+          %ul
+            %li Please use singular version of the term;
+            %li Use private flag if you'd like the term to appear only in the #{@language.english_name} glossary
+            - if !@language.is_base_language?
+              %li
+                Do not mark term as private if you'd like the term to appear in all
+                glossaries (in other words if you'd like to propose the term to the
+                main proper names glossary)
+            %li
+              Please select type of proper name. Use 'Other' if type not found.
+              Please contact one of site administrators if you think that list of proper name types should be extended.
+            %li If your proper name is name of a person or a dynasty, please specify dates if known.
+
+        %p
+          TIBETAN and SANSKRIT are not required. But, if known, please specify.
+
+        %p
+          EXPLANATION is not required, but may help translators, so provide if possible.
+
+        %p
+          STATUS in most cases you just leave it as it is by default.

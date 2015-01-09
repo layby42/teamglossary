@@ -8,5 +8,44 @@
     .row-fluid
       .col-sm-6.col-xs-12
         = render 'form', language: @language, glossary_term: @glossary_term
+
+        :javascript
+          $(function(){
+            $('#glossary_term_reference_type_id').change();
+          });
+
       .col-sm-6.col-xs-12
-        TODO: add help
+        %h4 PLEASE DO INVESTIGATION FIRST
+        %ol
+          %li Is it really a technical term? If it is a proper name or a text title, please do not add the term to the technical terms glossary.
+          %li Is it a SINGULAR version of the term? Please never add plural versions.
+          %li Does singular version of the term already exists in the glossary? It exists, just translate it, do not add new term.
+          %li If you know Sanskrit, Tibetan or Pali version of the term, please try to search for term using Sanskrit, Tibetan and Pali.
+          %li Please make sure your version of the term is not a misspelling of existing term.
+
+        %h4 HOW TO ADD NEW TECHNICAL TERM
+        %p
+          TERM is the only required field.
+          %br/
+          When adding new term:
+          %ul
+            %li Please use singular version of the term;
+            %li Use private flag if you'd like the term to appear only in the #{@language.english_name} glossary
+            - if !@language.is_base_language?
+              %li
+                Do not mark term as private if you'd like the term to appear in all
+                glossaries (in other words if you'd like to propose the term to the
+                main technical terms glossary)
+            %li
+              If your new term is an alternative of existing term or a cross-reference,
+              change the 'main term' to 'alternative' or 'cross-reference' and specify
+              the term for which it is alternative or a cross-reference
+
+        %p
+          TIBETAN, SANSKRIT, PALI and ARABIC are not required. But, if known, please specify.
+
+        %p
+          DEFINITION and ADDITIONAL EXPLANATION are not required, but please provide at least one.
+
+        %p
+          STATUS in most cases you just leave it as it is by default.

@@ -3,17 +3,6 @@ $("#term-container").html('<%=j render "form", language: @language, glossary_ter
 $('#edit_term_button').hide();
 $('#cancel_term_button').show();
 
-$('#glossary_term_reference_type_id').on('change', function(){
-  if ($('#glossary_term_reference_type_id > option:selected').data('code') == 'M'){
-    $('#glossary_term_glossary_term_id').val('');
-    $('#glossary_term_glossary_term_id').prop('disabled', true);
-    $('#glossary_term_glossary_term_id').prop('required', false);
-  } else {
-    $('#glossary_term_glossary_term_id').prop('disabled', false);
-    $('#glossary_term_glossary_term_id').prop('required', true);
-  }
-});
-
 $("#glossary_term_reference_type_id").parents('form').submit(function(){
   $('#glossary_term_glossary_term_id').prop('disabled', false);
 });

@@ -103,7 +103,8 @@ class GlossaryTerm < ActiveRecord::Base
       reference_type: ReferenceType.default.first,
       general_status: GeneralStatus.default.first,
       sanskrit_status: SanskritStatus.default.first,
-      is_private: true
+      is_private: true,
+      is_definition_private: true
     )
   end
 

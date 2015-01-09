@@ -2,7 +2,7 @@
   .form-group
     %h4 TERM
     .col-sm-9.col-sm-offset-3
-      = f.text_field :term, class: 'form-control', autocomplete: 'off'
+      = f.text_field :term, class: 'form-control', autocomplete: 'off', required: true
       - unless glossary_title.has_translations?
         = f.check_box :is_private, autocomplete: 'off'
         = label_tag :is_private, "private"

@@ -55,4 +55,8 @@ class Language < ActiveRecord::Base
   def self.base_language
     @base_language = Language.base.first
   end
+
+  def arabic?
+    iso_code == 'AR'
+  end
 end

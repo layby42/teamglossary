@@ -9,4 +9,34 @@
       .col-sm-6.col-xs-12
         = render 'form', language: @language, glossary_title: @glossary_title
       .col-sm-6.col-xs-12
-        TODO: add help
+        %h4 PLEASE DO INVESTIGATION FIRST
+        %ol
+          %li Is it really a text title? If it is a technical term or a proper name or title of BerzinArchives article, please do not add the term to the text titles glossary.
+          %li Does text title already exist in the glossary? It exists, just translate it, do not add it as new term.
+          %li If you know Sanskrit, Tibetan or Pali version of the title, please try to search for title using Sanskrit, Tibetan and Pali.
+          %li Please make sure your version of the title is not a misspelling of existing title.
+        %h4 HOW TO ADD NEW PROPER NAME
+        %p
+          TERM is the only required field.
+          %br/
+          When adding new title:
+          %ul
+            %li Use private flag if you'd like the term to appear only in the #{@language.english_name} glossary
+            - if !@language.is_base_language?
+              %li
+                Do not mark term as private if you'd like the term to appear in all
+                glossaries (in other words if you'd like to propose the term to the
+                main proper names glossary)
+            %li Please specify alternative and popular version of the title if known
+        %p
+          AUTHOR is not required. But, please specify if known. This information will help translators.
+
+        %p
+          TIBETAN, SANSKRIT (with and without Diacritical marks) and PALI are not required. But, if known, please specify.
+
+        %p
+          EXPLANATION is not required, but may help translators.
+
+        %p
+          STATUS in most cases you just leave it as it is by default.
+
