@@ -29,7 +29,8 @@ module ExportCsvHelper
   private
 
   def self.prepare_base_proper_names(language, data, options)
-    csv_string = CSV.generate({force_quotes: true, encoding: 'UTF-8', col_sep: ','}) do |csv|
+    col_sep = options[:col_sep].presence || ','
+    csv_string = CSV.generate({force_quotes: true, encoding: 'UTF-8', col_sep: col_sep}) do |csv|
       csv << self.cms_file_title(language.full_name, data.count, options[:query])
 
       # columns
@@ -74,7 +75,8 @@ module ExportCsvHelper
   end
 
   def self.prepare_proper_names(language, data, options)
-    csv_string = CSV.generate({force_quotes: true, encoding: 'UTF-8', col_sep: ','}) do |csv|
+    col_sep = options[:col_sep].presence || ','
+    csv_string = CSV.generate({force_quotes: true, encoding: 'UTF-8', col_sep: col_sep}) do |csv|
       csv << self.cms_file_title(language.full_name, data.count, options[:query])
       # columns
       csv << [
@@ -142,7 +144,8 @@ module ExportCsvHelper
   end
 
   def self.prepare_base_technical_terms(language, data, options)
-    csv_string = CSV.generate({force_quotes: true, encoding: 'UTF-8', col_sep: ','}) do |csv|
+    col_sep = options[:col_sep].presence || ','
+    csv_string = CSV.generate({force_quotes: true, encoding: 'UTF-8', col_sep: col_sep}) do |csv|
       csv << self.cms_file_title(language.full_name, data.count, options[:query])
 
       # columns
@@ -205,7 +208,8 @@ module ExportCsvHelper
   end
 
   def self.prepare_technical_terms(language, data, options)
-    csv_string = CSV.generate({force_quotes: true, encoding: 'UTF-8', col_sep: ','}) do |csv|
+    col_sep = options[:col_sep].presence || ','
+    csv_string = CSV.generate({force_quotes: true, encoding: 'UTF-8', col_sep: col_sep}) do |csv|
       csv << self.cms_file_title(language.full_name, data.count, options[:query])
       # columns
       csv << [
@@ -297,7 +301,8 @@ module ExportCsvHelper
   end
 
   def self.prepare_base_text_titles(language, data, options)
-    csv_string = CSV.generate({force_quotes: true, encoding: 'UTF-8', col_sep: ','}) do |csv|
+    col_sep = options[:col_sep].presence || ','
+    csv_string = CSV.generate({force_quotes: true, encoding: 'UTF-8', col_sep: col_sep}) do |csv|
       csv << self.cms_file_title(language.full_name, data.count, options[:query])
 
       # columns
@@ -351,7 +356,8 @@ module ExportCsvHelper
   end
 
   def self.prepare_text_titles(language, data, options)
-    csv_string = CSV.generate({force_quotes: true, encoding: 'UTF-8', col_sep: ','}) do |csv|
+    col_sep = options[:col_sep].presence || ','
+    csv_string = CSV.generate({force_quotes: true, encoding: 'UTF-8', col_sep: col_sep}) do |csv|
       csv << self.cms_file_title(language.full_name, data.count, options[:query])
       # columns
       csv << [

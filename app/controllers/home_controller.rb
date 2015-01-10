@@ -12,7 +12,7 @@ class HomeController < ApplicationController
 
   def download
     data = @glossary_type.glossary_class.simple_search(@language, @query.to_s.strip.downcase)
-    csv_data = ExportCsvHelper::prepare(@glossary_type.glossary_class, @language, data, {query: @query})
+    csv_data = ExportCsvHelper::prepare(@glossary_type.glossary_class, @language, data, {query: @query, col_sep: params[:col_sep]})
     file_name = @glossary_type.csv_file_name(@language)
     send_data csv_data,
             :filename => file_name,
