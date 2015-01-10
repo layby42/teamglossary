@@ -1,4 +1,4 @@
-- can_edit_language_glossary = can_edit_language_glossary?(translation.language_id)
+- can_edit_language_glossary = manager_or_editor_language_ids.include?(translation.language_id)
 %table.table.table-striped.table-bordered
   %tbody
     %tr

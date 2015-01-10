@@ -1,6 +1,6 @@
 - search_result = @query.present?
 - level = item.level
-- bottom_link = can_manage_base_language_glossary && !item.folder?
+- bottom_link = manager_language_ids.include?(item.language_id) && !item.folder?
 %tr{class: "#{'term_table_row' if search_result}", id: "general_menu_row_#{item.id}", data: {parent: item.general_menu_id.to_i, id: item.id}}
   %td{style: general_menu_left_and_bottom_link_style_helper(level, item.folder?, bottom_link)}
     %strong
@@ -21,13 +21,13 @@
       = render 'shared/term_add_task', language: base_language, term: item
 
   - unless language.is_base_language?
-    - bottom_link = can_manage_language_glossary && !item.folder?
+    - bottom_link = manager_language_ids.include?(item.language_id) && !item.folder?
     %td{style: bottom_link_style_helper(bottom_link)}
       - translation = item.general_menu_translations.select{|t| t.language_id == language.id}.first
       - if translation.present?
         %strong
           = link_to translation.name, language_general_menu_path(language, item), remote: true
-      - elsif can_edit_language_glossary
+      - elsif manager_or_editor_language_ids.include?(language.id)
         .text-right
           = link_to language_general_menu_path(language, item), class: 'text-muted' do
             %i.fa.fa-plus-circle

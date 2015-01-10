@@ -17,7 +17,7 @@
         %td Comment
         %td By
     %tbody
-      - can_edit_language = can_edit_language_glossary?(language.id)
+      - can_edit_language = manager_or_editor_language_ids.include?(language.id)
       - comments.each_with_index do |comment, idx|
         %tr
           %td.col-xs-2

@@ -88,7 +88,7 @@ class GlossaryNameTranslationsController < GlossaryNamesController
   end
 
   def require_language_manager_or_editor
-    unless current_user.manager_or_editor?(@language)
+    unless current_user.manager_or_editor?(@language.id)
       flash_to error: 'Sorry, you have read-only access to the glossary'
       redirect_to language_glossary_name_path(@language, @glossary_name)
     end

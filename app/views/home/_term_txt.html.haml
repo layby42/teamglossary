@@ -1,5 +1,6 @@
+- item_language_team = team_ids.include?(item.language_id)
 %tr.term_table_row
-  %td{style: bottom_link_style_helper(base_language_team)}
+  %td{style: bottom_link_style_helper(item_language_team)}
     = render 'shared/term_marks', language: language, term: item
 
     %strong
@@ -9,7 +10,7 @@
       .text-left
         %i -- #{item.author}
 
-    - if can_edit_base_language_glossary
+    - if manager_or_editor_language_ids.include?(item.language_id)
       .text-right
         = link_to edit_language_glossary_title_path(language, item), class: 'text-muted' do
           %i.fa.fa-edit
@@ -20,10 +21,11 @@
       %br/
       = item.explanation
 
-    - if base_language_team
-      = render 'shared/term_add_comment', language: base_language, term: item
+    - if item_language_team
+      = render 'shared/term_add_comment', language: item.language, term: item
 
   - unless language.is_base_language?
+    - language_team = team_ids.include?(language.id)
     %td{style: bottom_link_style_helper(language_team)}
       - translation = item.glossary_title_translations.select{|t| t.language_id == language.id}.first
       - if translation.present?
@@ -38,7 +40,7 @@
           %br/
           %i= alt_term
 
-        - if can_edit_language_glossary
+        - if manager_or_editor_language_ids.include?(language.id)
           .text-right
             = link_to edit_language_glossary_title_glossary_title_translation_path(language, item, translation), class: 'text-muted' do
               %i.fa.fa-edit
@@ -48,7 +50,7 @@
           %br/
           %br/
           = translation.notes
-      - elsif can_edit_language_glossary
+      - elsif manager_or_editor_language_ids.include?(language.id)
         .text-right
           = link_to language_glossary_title_path(language, item), class: 'text-muted' do
             %i.fa.fa-plus-circle

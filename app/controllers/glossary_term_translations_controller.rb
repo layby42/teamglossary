@@ -90,7 +90,7 @@ class GlossaryTermTranslationsController < GlossaryTermsController
   end
 
   def require_language_manager_or_editor
-    unless current_user.manager_or_editor?(@language)
+    unless current_user.manager_or_editor?(@language.id)
       redirect_to language_glossary_term_path(@language, @glossary_term)
     end
   end

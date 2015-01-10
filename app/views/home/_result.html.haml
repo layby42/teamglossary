@@ -1,8 +1,7 @@
-- edit_options = search_terms_display_options(@language)
 .row
   .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
     %h4
-      - if !@glossary_type.general_menu? && edit_options[:can_edit_language_glossary]
+      - if !@glossary_type.general_menu? && manager_or_editor_language_ids.include?(@language.id)
         .pull-right.inline
           = render 'shared/add_new_button', url: new_glossary_item_url_helper(@glossary_type, @language), remote: false
 
@@ -28,8 +27,7 @@
             %td.col-xs-6 Translation
       %tbody#terms_table
         - @data.each do |item|
-          - edit_options[:item] = item
-          = render "term_#{@glossary_type.code.downcase}", edit_options
+          = render "term_#{@glossary_type.code.downcase}", language: @language, item:item
 
     - if @data.empty?
       .text-center

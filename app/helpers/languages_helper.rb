@@ -140,18 +140,6 @@ module LanguagesHelper
     end
   end
 
-  def base_language_team?
-    current_user && current_user.team?(base_language.id)
-  end
-
-  def language_team?(language_id)
-    current_user && current_user.team?(language_id)
-  end
-
-  def can_edit_language_glossary?(language_id)
-    current_user && current_user.manager_or_editor?(language_id)
-  end
-
   def bottom_link_style_helper(apply=false)
     apply ? 'position: relative; padding-bottom: 25px;' : ''
   end
@@ -164,22 +152,6 @@ module LanguagesHelper
       (apply_link ? 'padding-bottom: 25px;' : ''),
       "padding-left: #{padding_left}px;"
       ].join('')
-  end
-
-  def search_terms_display_options(language, options={})
-    opts = {
-      language: language,
-      language_team: language_team?(language.id),
-      can_edit_language_glossary: can_edit_language_glossary?(language.id),
-      can_manage_language_glossary: (current_user && current_user.manager?(language.id)),
-      base_language_team: base_language_team?,
-      can_edit_base_language_glossary: can_edit_language_glossary?(base_language.id),
-      can_manage_base_language_glossary: (current_user && current_user.manager?(base_language.id))
-    }
-    options.each do |key, value|
-      opts[key] = value
-    end
-    opts
   end
 
   def add_new_term_translation_language_ids(except_language_ids)

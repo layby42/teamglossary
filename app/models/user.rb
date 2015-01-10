@@ -57,41 +57,54 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def team_ids
+    self.language_users.pluck(:language_id)
+  end
+
   def team?(language_id)
-    self.language_users.where(language_id: language_id).count > 0
+    team_ids.include?(language_id)
+  end
+
+  def manager_language_ids
+    self.language_users.where({role: :manager}).pluck(:language_id)
   end
 
   def manager?(language_id=nil)
-    conditions = {role: :manager}
-    conditions[:language_id] = language_id if language_id.present?
-    self.language_users.where(conditions).count > 0
+    return manager_language_ids.include?(language_id) if language_id.present?
+    manager_language_ids.length > 0
+  end
+
+  def editor_language_ids
+    self.language_users.where({role: :editor}).pluck(:language_id)
   end
 
   def editor?(language_id=nil)
-    conditions = {role: :editor}
-    conditions[:language_id] = language_id if language_id.present?
-    self.language_users.where(conditions).count > 0
+    return editor_language_ids.include?(language_id) if language_id.present?
+    editor_language_ids.length > 0
+  end
+
+  def manager_or_editor_language_ids
+    self.language_users.where({role: [:editor, :manager]}).pluck(:language_id)
   end
 
   def manager_or_editor?(language_id=nil)
-    conditions = {role: [:editor, :manager]}
-    conditions[:language_id] = language_id if language_id.present?
-    self.language_users.where(conditions).count > 0
+    return manager_or_editor_language_ids.include?(language_id) if language_id.present?
+    manager_or_editor_language_ids.length > 0
   end
 
   def can_manage_user_team?(user)
     return true if user.admin?
-    user_language_ids = user.language_users.pluck(:language_id)
-    return false if user_language_ids.empty?
+    user_team_ids = user.team_ids
+    return false if user_team_ids.empty?
 
     self.language_users.where({
       role: :manager,
-      language_id: user_language_ids
+      language_id: user_team_ids
       }).count > 0
   end
 
   def teams_count
-    language_users.count(:language_id)
+    team_ids.length
   end
 
   def get_setting_value(setting_name)

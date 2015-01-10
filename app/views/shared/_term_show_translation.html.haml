@@ -2,7 +2,7 @@
   - translation = item.translation_for_language(language.id)
 
   - unless request.xhr? && translation.new_record?
-    - can_edit = !translation.new_record? && can_edit_language_glossary?(language.id)
+    - can_edit = !translation.new_record? && manager_or_editor_language_ids.include?(language.id)
     - if can_edit
       - url = edit_glossary_term_translation_url_helper(language, item, translation)
       - if request.xhr?
@@ -26,7 +26,7 @@
 
     #term-translation-container.clearfix
       -if translation.new_record?
-        - if can_edit_language_glossary?(language.id)
+        - if manager_or_editor_language_ids.include?(language.id)
           = render "#{translation.class.to_s.pluralize.underscore}/form", :language => language, :"#{item.class.to_s.underscore}" => item, :"#{translation.class.to_s.underscore}" => translation
         - else
           .col-xs-12

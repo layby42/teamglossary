@@ -1,4 +1,4 @@
-- if poposed_item?(language, term) && can_edit_language_glossary?(base_language.id)
+- if poposed_item?(language, term) && manager_or_editor_language_ids.include?(base_language.id)
   %h4.title APPROVE / REJECT
   %table.table.table-striped.table-bordered
     %tbody
@@ -24,7 +24,7 @@
             %i.fa.fa-check-square-o
             Approve
 
-- if term.is_private? && can_edit_language_glossary?(term.language_id)
+- if term.is_private? && manager_or_editor_language_ids.include?(term.language_id)
   - if term.language_id != base_language.id
     %h4.title PROPOSE
     %table.table.table-striped.table-bordered

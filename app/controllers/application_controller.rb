@@ -9,6 +9,9 @@ class ApplicationController < ActionController::Base
   before_action :require_ssl
 
   helper_method :base_language
+  helper_method :team_ids
+  helper_method :manager_or_editor_language_ids
+  helper_method :manager_language_ids
 
   private
 
@@ -18,6 +21,30 @@ class ApplicationController < ActionController::Base
 
   def base_language
     @base_language ||= Language.base_language
+  end
+
+  def team_ids
+    if current_user
+      current_user.team_ids
+    else
+      []
+    end
+  end
+
+  def manager_or_editor_language_ids
+    if current_user
+      current_user.manager_or_editor_language_ids
+    else
+      []
+    end
+  end
+
+  def manager_language_ids
+    if current_user
+      current_user.manager_language_ids
+    else
+      []
+    end
   end
 
   def require_ssl
