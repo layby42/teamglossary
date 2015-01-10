@@ -33,11 +33,16 @@ class GlossaryName < ActiveRecord::Base
   has_many :comments, as: :commentable, dependent: :destroy
 
   scope :by_language, -> (language_id) { where(language_id: language_id) }
-  scope :by_term, -> (term) { where('lower(glossary_names.term) = ?', term.downcase) }
+  scope :by_term, -> (term) { where('lower(glossary_names.term) = ?', term.to_s.strip.downcase) }
   scope :list_order, -> { order('lower(glossary_names.term)') }
 
   validates :term, :language_id, :proper_name_type_id, presence: true
-  validates :term, uniqueness: {case_sensitive: false, scope: :language_id, message: 'term already exists'}
+  validates :term, uniqueness: {case_sensitive: false, scope: [:language_id, :proper_name_type_id], message: 'term already exists'}
+  validates :term, uniqueness: {case_sensitive: false, scope: :proper_name_type_id, message: 'public term already exists'}, if: :is_public?
+
+  def is_public?
+    is_private == false
+  end
 
   def editable?
     true

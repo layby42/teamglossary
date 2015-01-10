@@ -47,11 +47,16 @@ class GlossaryTerm < ActiveRecord::Base
   has_many :glossary_terms
 
   scope :by_language, -> (language_id) { where(language_id: language_id) }
-  scope :by_term, -> (term) { where('lower(glossary_terms.term) = ?', term.downcase) }
+  scope :by_term, -> (term) { where('lower(glossary_terms.term) = ?', term.to_s.strip.downcase) }
   scope :list_order, -> { order('lower(glossary_terms.term)') }
 
   validates :term, :language_id, presence: true
   validates :term, uniqueness: {case_sensitive: false, scope: :language_id, message: 'term already exists'}
+  validates :term, uniqueness: {case_sensitive: false, message: 'public term already exists'}, if: :is_public?
+
+  def is_public?
+    is_private == false
+  end
 
   def editable?
     true

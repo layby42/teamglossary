@@ -16,6 +16,7 @@ class GlossaryNamesController < LanguagesController
   def create
     @glossary_name = GlossaryName.new(glossary_name_params)
     @glossary_name.language_id = @language.id
+
     if @glossary_name.save
       flash_to notice: 'Changes saved!'
       redirect_to edit_language_glossary_name_path(@language, @glossary_name)
