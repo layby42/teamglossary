@@ -41,7 +41,7 @@ class Admin::UsersController < ApplicationController
 
     if @user.update_attributes(params_user)
       flash_to notice: 'Changes saved!'
-      redirect_to action: :edit
+      redirect_to action: :show
     else
       render action: :edit
     end
