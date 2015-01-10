@@ -44,6 +44,9 @@ class GeneralMenu < ActiveRecord::Base
 
   validates :cms_name, :name, :language_id, presence: true
 
+  SEARCH_COLUMNS = [:name, :remark, :additional_text, :cms_name, :full_cms_path]
+  SEARCH_TRANSLATION_COLUMNS = [:name, :notes, :additional_text]
+
   def term
     name
   end
@@ -56,7 +59,11 @@ class GeneralMenu < ActiveRecord::Base
     !synchronized
   end
 
-  def self.simple_search(language, query)
+  def self.search(language, query, options={})
+    columns = options[:columns].presence || SEARCH_COLUMNS
+    transaction_columns = options[:transaction_columns].presence || SEARCH_TRANSLATION_COLUMNS
+
+    query = query.to_s.strip.downcase
     if query.blank?
       if language.is_base_language?
         GeneralMenu.by_language(language.id).where(general_menu_id: nil).list_order.includes([:general_menu_actions])
@@ -64,21 +71,21 @@ class GeneralMenu < ActiveRecord::Base
         GeneralMenu.where(language_id: [language.id, Language.base_language.id], general_menu_id: nil).list_order.includes([:general_menu_translations, :general_menu_actions])
       end
     else
-      search_columns = [:name, :remark, :additional_text, :cms_name, :full_cms_path]
+      columns = SEARCH_COLUMNS if columns.empty?
       if language.is_base_language?
         GeneralMenu.by_language(language.id).search_order.includes([:general_menu_actions]).select do |item|
-          search_columns.collect{|field| item[field].to_s}.join(' ').downcase.include?(query)
+          columns.collect{|field| item.try(field).to_s}.join(' ').downcase.include?(query)
         end
       else
-        search_transaction_columns = [:name, :notes, :additional_text]
+        transaction_columns = SEARCH_TRANSLATION_COLUMNS if transaction_columns.empty?
         GeneralMenu.where(language_id: [language.id, Language.base_language.id]).search_order.includes([:general_menu_translations, :general_menu_actions]).select do |item|
-          search_columns.collect{|field| item[field].to_s}.join(' ').downcase.include?(query) ||
+          columns.collect{|field| item.try(field).to_s}.join(' ').downcase.include?(query) ||
           (
             (
               transaction = item.general_menu_translations.select{|t| t.language_id == language.id}.first
             ) &&
-              search_transaction_columns.collect do |field|
-                transaction[field].to_s
+              transaction_columns.collect do |field|
+                transaction.try(field).to_s
               end.join(' ').downcase.include?(query)
             )
         end

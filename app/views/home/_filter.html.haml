@@ -12,3 +12,13 @@
       .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6
         .input-group.col-xs-12
           = select_tag 'search[glossary_type_id]', glossary_type_options(@glossary_type.id), class: 'form-control', autocomplete: 'off'
+
+      - if current_user
+        .form-group.col-lg-6.col-md-6.col-sm-6.col-xs-12.col-sm-offset-3.col-md-offset-3.col-lg-offset-3
+          .input-group.col-xs-12
+            = check_box_tag 'search[advanced]', true, @advanced_search, autocomplete: 'off'
+            advanced search
+
+        .form-group.col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
+          .panel.panel-default.special-border.col-xs-12#advanced_search{style: "#{'display: none;' unless @advanced_search}"}
+            = render 'advanced'

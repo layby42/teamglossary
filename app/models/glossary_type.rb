@@ -39,4 +39,34 @@ class GlossaryType < ActiveRecord::Base
   def general_menu?
     code == 'GM'
   end
+
+  def glossary_search_columns
+    case code
+    when 'PPN'
+      GlossaryName::SEARCH_COLUMNS.map(&:to_s)
+    when 'THT'
+      GlossaryTerm::SEARCH_COLUMNS.map(&:to_s)
+    when 'TXT'
+      GlossaryTitle::SEARCH_COLUMNS.map(&:to_s)
+    when 'GM'
+      GeneralMenu::SEARCH_COLUMNS.map(&:to_s)
+    else
+      []
+    end
+  end
+
+  def glossary_search_translation_columns
+    case code
+    when 'PPN'
+      GlossaryName::SEARCH_TRANSLATION_COLUMNS.map(&:to_s)
+    when 'THT'
+      GlossaryTerm::SEARCH_TRANSLATION_COLUMNS.map(&:to_s)
+    when 'TXT'
+      GlossaryTitle::SEARCH_TRANSLATION_COLUMNS.map(&:to_s)
+    when 'GM'
+      GeneralMenu::SEARCH_TRANSLATION_COLUMNS.map(&:to_s)
+    else
+      []
+    end
+  end
 end

@@ -47,6 +47,16 @@ class GlossaryTitle < ActiveRecord::Base
   validates :term, uniqueness: {case_sensitive: false, scope: :language_id, message: 'term already exists'}
   validates :term, uniqueness: {case_sensitive: false, message: 'public term already exists'}, if: :is_public?
 
+  SEARCH_COLUMNS = [ :term, :author, :author_translit,
+      :tibetan_full, :tibetan_short,
+      :sanskrit_full, :sanskrit_short,
+      :sanskrit_full_diacrit, :sanskrit_short_diacrit,
+      :explanation, :alt_term1, :alt_term2,
+      :popular_term, :pali]
+
+  SEARCH_TRANSLATION_COLUMNS = [ :term, :author, :notes,
+        :alt_term1, :alt_term2, :alt_term3]
+
   def is_public?
     is_private == false
   end
@@ -55,24 +65,21 @@ class GlossaryTitle < ActiveRecord::Base
     true
   end
 
-  def self.simple_search(language, query)
-    search_columns = [ :term, :author, :author_translit,
-      :tibetan_full, :tibetan_short,
-      :sanskrit_full, :sanskrit_short,
-      :sanskrit_full_diacrit, :sanskrit_short_diacrit,
-      :explanation, :alt_term1, :alt_term2,
-      :popular_term, :pali]
+  def self.search(language, query, options={})
+    columns = options[:columns].presence || SEARCH_COLUMNS
+    transaction_columns = options[:transaction_columns].presence || SEARCH_TRANSLATION_COLUMNS
 
+    query = query.to_s.strip.downcase
+    columns = SEARCH_COLUMNS if columns.empty?
     if language.is_base_language?
       GlossaryTitle.where(%Q{
         (glossary_titles.language_id = ? OR
          NOT glossary_titles.is_private)
         }, language.id).list_order.select do |term|
-        search_columns.collect{|field| term[field].to_s}.join(' ').downcase.include?(query)
+        columns.collect{|field| term.try(field).to_s}.join(' ').downcase.include?(query)
       end
     else
-      search_transaction_columns = [ :term, :author, :notes,
-        :alt_term1, :alt_term2, :alt_term3]
+      transaction_columns = SEARCH_TRANSLATION_COLUMNS if transaction_columns.empty?
 
       GlossaryTitle.where(%Q{
         (glossary_titles.language_id = ? OR
@@ -81,12 +88,12 @@ class GlossaryTitle < ActiveRecord::Base
           )
         }, language.id, Language.base_language.id).list_order.includes([:glossary_title_translations]).select do |term|
 
-          search_columns.collect{|field| term[field].to_s}.join(' ').downcase.include?(query) ||
+          columns.collect{|field| term.try(field).to_s}.join(' ').downcase.include?(query) ||
           (
             (
               transaction = term.glossary_title_translations.select{|t| t.language_id == language.id}.first) &&
-              search_transaction_columns.collect do |field|
-                transaction[field].to_s
+              transaction_columns.collect do |field|
+                transaction.try(field).to_s
               end.join(' ').downcase.include?(query)
             )
       end

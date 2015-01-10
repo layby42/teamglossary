@@ -40,6 +40,8 @@ class GlossaryName < ActiveRecord::Base
   validates :term, uniqueness: {case_sensitive: false, scope: [:language_id, :proper_name_type_id], message: 'term already exists'}
   validates :term, uniqueness: {case_sensitive: false, scope: :proper_name_type_id, message: 'public term already exists'}, if: :is_public?
 
+  SEARCH_COLUMNS = [:term, :tibetan, :sanskrit, :explanation, :dates]
+  SEARCH_TRANSLATION_COLUMNS = [:term, :alt_term1, :alt_term2, :alt_term3, :notes]
   def is_public?
     is_private == false
   end
@@ -48,18 +50,21 @@ class GlossaryName < ActiveRecord::Base
     true
   end
 
-  def self.simple_search(language, query)
-    search_columns = [:term, :tibetan, :sanskrit, :explanation, :dates]
+  def self.search(language, query, options={})
+    columns = options[:columns].presence || SEARCH_COLUMNS
+    transaction_columns = options[:transaction_columns].presence || SEARCH_TRANSLATION_COLUMNS
 
+    query = query.to_s.strip.downcase
+    columns = SEARCH_COLUMNS if columns.empty?
     if language.is_base_language?
       GlossaryName.where(%Q{
         (glossary_names.language_id = ? OR
          NOT glossary_names.is_private)
         }, language.id).list_order.includes([:proper_name_type]).select do |term|
-        search_columns.collect{|field| term[field].to_s}.join(' ').downcase.include?(query)
+        columns.collect{|field| term.try(field).to_s}.join(' ').downcase.include?(query)
       end
     else
-      search_transaction_columns = [:term, :alt_term1, :alt_term2, :alt_term3, :notes]
+      transaction_columns = SEARCH_TRANSLATION_COLUMNS if transaction_columns.empty?
       GlossaryName.where(%Q{
         (glossary_names.language_id = ? OR
           ( glossary_names.language_id = ? AND
@@ -67,12 +72,12 @@ class GlossaryName < ActiveRecord::Base
           )
         }, language.id, Language.base_language.id).list_order.includes([:glossary_name_translations, :proper_name_type]).select do |term|
 
-          search_columns.collect{|field| term[field].to_s}.join(' ').downcase.include?(query) ||
+          columns.collect{|field| term.try(field).to_s}.join(' ').downcase.include?(query) ||
           (
             (
               transaction = term.glossary_name_translations.select{|t| t.language_id == language.id}.first) &&
-              search_transaction_columns.collect do |field|
-                transaction[field].to_s
+              transaction_columns.collect do |field|
+                transaction.try(field).to_s
               end.join(' ').downcase.include?(query)
             )
       end

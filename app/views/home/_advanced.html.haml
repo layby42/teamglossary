@@ -1,0 +1,36 @@
+- count = [true, !@language.is_base_language?, !@glossary_type.general_menu?].count(true)
+- css_class = (count == 3) ? 'col-xs-4' : ((count == 2) ? 'col-xs-6' : 'col-xs-6 col-xs-offset-3')
+%div{class: css_class}
+  %b Term Fields:
+  - @glossary_type.glossary_search_columns.each do |field|
+    .checkbox
+      %label
+        = check_box_tag "search[columns][]", field, @columns.include?(field), autocomplete: 'off', data: {default: true}
+        #{field.to_s.humanize}
+
+- unless @language.is_base_language?
+  %div{class: css_class}
+    %b Translation Fields:
+    - @glossary_type.glossary_search_translation_columns.each do |field|
+      .checkbox
+        %label
+          = check_box_tag "search[translation_columns][]", field, @translation_columns.include?(field), autocomplete: 'off', data: {default: true}
+          #{field.to_s.humanize}
+
+
+- unless @glossary_type.general_menu?
+  %div{class: css_class}
+    %b State (Coming soon...)
+    .checkbox
+      %label
+        = check_box_tag 'search[private]', true, @search_private, autocomplete: 'off', data: {default: true}, disabled: true
+        Private terms
+    .checkbox
+      %label
+        = check_box_tag 'search[public]', true, @search_public, autocomplete: 'off', data: {default: true}, disabled: true
+        Public terms
+    .checkbox
+      %label
+        = check_box_tag 'search[proposed]', true, @search_proposed, autocomplete: 'off', data: {default: true}, disabled: true
+        Proposed terms
+
