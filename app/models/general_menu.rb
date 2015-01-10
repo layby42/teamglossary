@@ -20,6 +20,7 @@
 #  full_cms_path       :string(255)
 #  online              :date
 #  updated_from_cms_at :datetime
+#  level               :integer          default(0), not null
 #
 
 class GeneralMenu < ActiveRecord::Base

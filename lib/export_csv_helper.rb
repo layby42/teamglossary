@@ -162,7 +162,6 @@ module ExportCsvHelper
         'SANSKRIT',
         'ALTERNATIVE_SANSKRIT',
         'PALI',
-        'ARABIC',
         'TERM_DEFINITION',
         'ADDITIONAL_EXPLANATION'
       ]
@@ -180,7 +179,6 @@ module ExportCsvHelper
         'Sanskrit',
         'Alternative Sanskrit',
         'Pali',
-        'Arabic',
         "#{language.iso_code} Definition",
         'Additional explanation'
       ]
@@ -199,7 +197,6 @@ module ExportCsvHelper
           term.sanskrit,
           term.alternative_sanskrit,
           term.pali,
-          term.arabic,
           term.definition,
           term.additional_explanation
         ]
@@ -225,7 +222,6 @@ module ExportCsvHelper
         'SANSKRIT',
         'ALTERNATIVE_SANSKRIT',
         'PALI',
-        'ARABIC',
         'TERM_TRANSLATION',
         'TERM_TRANSLATION_ALTERNATIVE_1',
         'TERM_TRANSLATION_ALTERNATIVE_2',
@@ -253,7 +249,6 @@ module ExportCsvHelper
         'Sanskrit',
         'Alternative Sanskrit',
         'Pali',
-        'Arabic',
         "#{language.english_name} (#{language.iso_code}) Term",
         "#{language.english_name} (#{language.iso_code}) Alternative Term #1",
         "#{language.english_name} (#{language.iso_code}) Alternative Term #2",
@@ -283,7 +278,6 @@ module ExportCsvHelper
           term.sanskrit,
           term.alternative_sanskrit,
           term.pali,
-          term.arabic,
           "#{translation.term if translation}",
           "#{translation.alt_term1 if translation}",
           "#{translation.alt_term2 if translation}",

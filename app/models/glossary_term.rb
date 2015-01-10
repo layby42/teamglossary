@@ -17,7 +17,6 @@
 #  created_at             :datetime
 #  updated_at             :datetime
 #  deleted                :boolean          default(FALSE)
-#  arabic                 :string(255)
 #  sanskrit_status_id     :integer          not null
 #  alternative_tibetan    :string(255)
 #  alternative_sanskrit   :string(255)
@@ -32,7 +31,7 @@
 class GlossaryTerm < ActiveRecord::Base
   include Approval
 
-  strip_attributes :only => [:term, :tibetan, :sanskrit, :pali, :arabic, :alternative_tibetan, :alternative_sanskrit, :additional_explanation, :sanskrit_gender, :pali_gender, :definition, :rejected_because]
+  strip_attributes :only => [:term, :tibetan, :sanskrit, :pali, :alternative_tibetan, :alternative_sanskrit, :additional_explanation, :sanskrit_gender, :pali_gender, :definition, :rejected_because]
   has_paper_trail :ignore => [:created_at, :updated_at]
 
   belongs_to :language
@@ -63,7 +62,7 @@ class GlossaryTerm < ActiveRecord::Base
   end
 
   def self.simple_search(language, query)
-    search_columns = [:term, :tibetan, :sanskrit, :pali, :arabic,
+    search_columns = [:term, :tibetan, :sanskrit, :pali,
       :alternative_tibetan, :alternative_sanskrit, :additional_explanation, :definition]
 
     if language.is_base_language?

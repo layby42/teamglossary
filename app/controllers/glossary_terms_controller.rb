@@ -149,7 +149,6 @@ class GlossaryTermsController < LanguagesController
       :sanscrit_gender,
       :pali,
       :pali_gender,
-      :arabic,
       :definition,
       :is_definition_private,
       :additional_explanation

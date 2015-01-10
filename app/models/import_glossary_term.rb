@@ -15,7 +15,6 @@
 #  tibetan                           :string(255)
 #  sanskrit                          :string(255)
 #  pali                              :string(255)
-#  arabic                            :string(255)
 #  term_created_at                   :string(255)
 #  term_updated_at                   :string(255)
 #  definition                        :text

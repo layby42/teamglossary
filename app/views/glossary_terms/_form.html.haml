@@ -41,12 +41,6 @@
       = f.select :pali_gender, gender_options(glossary_term.sanskrit_gender), {include_blank: true}, {class: 'form-control', autocomplete: 'off'}
 
   .form-group
-    %h4 ARABIC
-    %label.col-sm-3.control-label Main
-    .col-sm-9
-      = f.text_field :arabic, class: 'form-control', autocomplete: 'off', placeholder: 'Arabic'
-
-  .form-group
     %h4 DEFINITION
     .col-sm-12
       = f.text_area :definition, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Definition'
