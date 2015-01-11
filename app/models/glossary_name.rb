@@ -52,7 +52,7 @@ class GlossaryName < ActiveRecord::Base
 
   def self.search(language, query, options={})
     columns = options[:columns].presence || SEARCH_COLUMNS
-    transaction_columns = options[:transaction_columns].presence || SEARCH_TRANSLATION_COLUMNS
+    translation_columns = options[:translation_columns].presence || SEARCH_TRANSLATION_COLUMNS
 
     query = query.to_s.strip.downcase
     columns = SEARCH_COLUMNS if columns.empty?
@@ -64,7 +64,7 @@ class GlossaryName < ActiveRecord::Base
         columns.collect{|field| term.try(field).to_s}.join(' ').downcase.include?(query)
       end
     else
-      transaction_columns = SEARCH_TRANSLATION_COLUMNS if transaction_columns.empty?
+      translation_columns = SEARCH_TRANSLATION_COLUMNS if translation_columns.empty?
       GlossaryName.where(%Q{
         (glossary_names.language_id = ? OR
           ( glossary_names.language_id = ? AND
@@ -76,7 +76,7 @@ class GlossaryName < ActiveRecord::Base
           (
             (
               transaction = term.glossary_name_translations.select{|t| t.language_id == language.id}.first) &&
-              transaction_columns.collect do |field|
+              translation_columns.collect do |field|
                 transaction.try(field).to_s
               end.join(' ').downcase.include?(query)
             )
