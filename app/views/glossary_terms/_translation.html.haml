@@ -18,16 +18,20 @@
               %small
                 %i.fa.fa-times-circle
                 delete translation
-    %tr
-      %th Definition
-      %td= translation.definition
-    %tr
-      %th Notes
-      %td
-        - if request.xhr?
-          = truncate(translation.notes, length: 250, omission: ' ... (more)')
-        - else
-          = translation.notes
+
+    - if current_user || !item.is_definition_private?
+      %tr
+        %th Definition
+        %td= translation.definition
+
+    - if current_user
+      %tr
+        %th Notes
+        %td
+          - if request.xhr?
+            = truncate(translation.notes, length: 250, omission: ' ... (more)')
+          - else
+            = translation.notes
 
 - if can_edit_language_glossary
   %h4.title STATUS

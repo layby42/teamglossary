@@ -9,6 +9,7 @@
 #  is_default  :boolean          default(FALSE), not null
 #  created_at  :datetime
 #  updated_at  :datetime
+#  has_dates   :boolean          default(FALSE), not null
 #
 
 class ProperNameType < ActiveRecord::Base

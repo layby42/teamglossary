@@ -52,7 +52,12 @@ class Admin::ProperNameTypesController < ApplicationController
   end
 
   def proper_name_type_params
-    params.require(:proper_name_type).permit(:code, :name, :description, :is_default)
+    params.require(:proper_name_type).permit(
+      :code,
+      :name,
+      :description,
+      :is_default,
+      :has_dates)
   end
 
   def require_xhr

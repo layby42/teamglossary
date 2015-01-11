@@ -11,8 +11,7 @@ $(function(){
   });
 
   $(document).on('change', '#glossary_name_proper_name_type_id', function(){
-    if ($('#glossary_name_proper_name_type_id > option:selected').data('code') == 'P' ||
-        $('#glossary_name_proper_name_type_id > option:selected').data('code') == 'D'){
+    if ($('#glossary_name_proper_name_type_id > option:selected').data('has-dates')){
       $('#glossary_name_dates').prop('disabled', false);
     } else {
       $('#glossary_name_dates').val('');

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150110201721) do
+ActiveRecord::Schema.define(version: 20150111165221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -475,6 +475,7 @@ ActiveRecord::Schema.define(version: 20150110201721) do
     t.boolean  "is_default",               default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "has_dates",                default: false, null: false
   end
 
   add_index "proper_name_types", ["code"], name: "index_proper_name_types_on_code", unique: true, using: :btree

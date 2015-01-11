@@ -70,7 +70,11 @@ module ApplicationHelper
   end
 
   def model_to_select(model, selected=nil)
-    opts = model.all.collect{|m| ["#{m.code} - #{m.name}", m.id, {data: {code: m.code}}]}
+    if model == ProperNameType
+      opts = model.all.collect{|m| ["#{m.code} - #{m.name}", m.id, {data: {code: m.code, has_dates: m.has_dates}}]}
+    else
+      opts = model.all.collect{|m| ["#{m.code} - #{m.name}", m.id, {data: {code: m.code}}]}
+    end
     options_for_select(opts, selected)
   end
 end

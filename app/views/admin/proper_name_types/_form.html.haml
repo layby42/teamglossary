@@ -19,9 +19,15 @@
         %label.control-label Description
         = f.text_area :description, class: 'form-control', style: 'width:100%', autocomplete: 'off', maxlength: 2000
 
-      .col-sm-12{style: 'margin-top: 20px;'}
+      .col-sm-6{style: 'margin-top: 20px;'}
         = f.check_box :is_default, autocomplete: 'off'
         = label_tag :is_default, 'Default'
+
+      .col-sm-6{style: 'margin-top: 20px;'}
+        = f.check_box :has_dates, autocomplete: 'off'
+        = label_tag :has_dates, 'May have dates'
+        %br/
+        %span.help_text birth, death dates; foundation date; etc.
 
   .modal-footer
     %button#submit.btn.btn-primary Save changes

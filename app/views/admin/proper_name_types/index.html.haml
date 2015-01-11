@@ -15,6 +15,7 @@
       %th.text-center{width: 30} Code
       %th Name
       %th Description
+      %th.text-center Has Dates
       %th.text-center Default
       - if show_changes
         %th
@@ -28,6 +29,9 @@
           - else
             = proper_name_type.name
         %td= proper_name_type.description
+        %td.text-center
+          - if proper_name_type.has_dates
+            %i.fa.fa-check
         %td.text-center
           - if proper_name_type.is_default
             %i.fa.fa-check

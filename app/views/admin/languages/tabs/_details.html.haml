@@ -8,7 +8,7 @@
       %span.help-block.text-danger= validation_message_for_field(language, :iso_code)
     .form-group.col-xs-12.col-sm-4
       %label.control-label Name:
-      = f.text_field :name, class: 'form-control', required: true, placeholder: 'In section language', autocomplete: 'off'
+      = f.text_field :name, class: 'form-control', required: true, placeholder: 'In section language', autocomplete: 'off', disabled: non_admin
       %span.help-block.text-danger= validation_message_for_field(language, :name)
     .form-group.col-xs-12.col-sm-4
       %label.control-label English:
