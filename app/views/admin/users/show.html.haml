@@ -14,7 +14,8 @@
         %tr
           %th First Name
           %th Last Name
-          %th Email
+          - if current_user.admin?
+            %th Email
           %th Last seen
       %tbody
         %tr
@@ -23,7 +24,8 @@
               %i.fa.fa-graduation-cap{title: 'Site Administrator'}
             = @user.first_name
           %td= @user.last_name
-          %td= @user.email
+          - if current_user.admin?
+            %td= @user.email
           %td
             = time_ago(@user.last_request_at)
             - if current_user.admin?
