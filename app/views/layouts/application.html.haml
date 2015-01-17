@@ -60,9 +60,9 @@
       .row
         .col-sm-12
           #container_script_enabled{:style => 'display:none;'}
-          - unless Rails.env.production?
-            .alert.text-center
-              NOTE: this is #{Rails.env} version of application for testing purposes only.
+            - unless Rails.env.production?
+              .alert.text-center
+                NOTE: this is #{Rails.env} version of application for testing purposes only.
 
             = render 'shared/error'
             = render 'shared/notice'
