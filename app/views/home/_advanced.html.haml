@@ -26,19 +26,16 @@
 
 - unless @glossary_type.general_menu?
   %div{class: css_class}
-    %b State (Coming soon...)
     .checkbox
       %label
-        = check_box_tag 'search[private]', true, @search_private, autocomplete: 'off', data: {default: true}, disabled: true
-        Private terms
-    .checkbox
-      %label
-        = check_box_tag 'search[public]', true, @search_public, autocomplete: 'off', data: {default: true}, disabled: true
-        Public terms
-    .checkbox
-      %label
-        = check_box_tag 'search[proposed]', true, @search_proposed, autocomplete: 'off', data: {default: true}, disabled: true
-        Proposed terms
+        = check_box_tag 'search[all_states]', true, false, autocomplete: 'off'
+        %b Include:
+    - [:private, :public, :proposed].map(&:to_s).each do |state|
+      .checkbox
+        %label
+          = check_box_tag 'search[states][]', state, @search_states.include?(state), autocomplete: 'off', data: {default: true}
+          #{state.to_s.humanize}
+
 
 :javascript
   $(function() {

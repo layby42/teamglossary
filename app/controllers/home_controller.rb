@@ -10,24 +10,26 @@ class HomeController < ApplicationController
 
   PAGE_TITLE = 'Search'
 
+  include FormatHelper
+
   def index
     options = {
       columns: @columns,
       translation_columns: @translation_columns,
-      search_private: @search_private,
-      search_public: @search_public,
-      search_proposed: @search_proposed
+      states: @search_states
     }
-    @data = Kaminari.paginate_array(@glossary_type.glossary_class.search(@language, @query, options)).page(params[:page])
+    if @search_states.empty?
+      @data = Kaminari.paginate_array([]).page(params[:page])
+    else
+      @data = Kaminari.paginate_array(@glossary_type.glossary_class.search(@language, @query, options)).page(params[:page])
+    end
   end
 
   def download
     options = {
       columns: @columns,
       translation_columns: @translation_columns,
-      search_private: @search_private,
-      search_public: @search_public,
-      search_proposed: @search_proposed
+      states: @search_states
     }
     data = @glossary_type.glossary_class.search(@language, @query, options)
     csv_data = ExportCsvHelper::prepare(@glossary_type.glossary_class, @language, data, {query: @query, col_sep: params[:col_sep]})
@@ -141,7 +143,6 @@ class HomeController < ApplicationController
         @translation_columns = ['none'] if @translation_columns.empty?
       else
         Setting.update_value!(current_user, :glossary_translation_columns, nil)
-
         @translation_columns = @glossary_type.glossary_search_translation_columns
       end
     else
@@ -152,24 +153,20 @@ class HomeController < ApplicationController
   end
 
   def find_state
-    @search_private = @search_public = @search_proposed = true
+    @search_states = [:private, :public, :proposed].map(&:to_s)
     return unless current_user
     return if @glossary_type.general_menu?
 
     if params[:search].present?
       if @advanced_search
-        Setting.update_value!(current_user, :glossary_search_private, params[:search][:private])
-        @search_private = (params[:search][:private].to_s == 'true')
-
-        Setting.update_value!(current_user, :glossary_search_public, params[:search][:public])
-        @search_public = (params[:search][:public].to_s == 'true')
-
-        Setting.update_value!(current_user, :glossary_search_proposed, params[:search][:proposed])
-        @search_proposed = (params[:search][:proposed].to_s == 'true')
+        @search_states = @search_states && (params[:search][:states] || [])
+        Setting.update_value!(current_user, :glossary_search_states, @search_states.join(','))
       else
-        Setting.update_value!(current_user, :glossary_search_private, true)
-        Setting.update_value!(current_user, :glossary_search_public, true)
-        Setting.update_value!(current_user, :glossary_search_proposed, true)
+        Setting.update_value!(current_user, :glossary_search_states, nil)
+      end
+    else
+      if @advanced_search
+        @search_states = current_user.get_setting_value(:glossary_search_states).to_s.split(',')
       end
     end
   end

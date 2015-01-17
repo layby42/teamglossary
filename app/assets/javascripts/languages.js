@@ -12,6 +12,9 @@ $(function() {
 
     checked = ($('input:not(:checked)[type="checkbox"][id^="search_translation_columns_"]').length == 0);
     $('#search_all_translation_columns').prop('checked', checked);
+
+    checked = ($('input:not(:checked)[type="checkbox"][id^="search_states_"]').length == 0);
+    $('#search_all_states').prop('checked', checked);
   };
 
   $(document).on('change', '#search_glossary_type_id', function(){
@@ -68,11 +71,22 @@ $(function() {
     });
   });
 
+  $(document).on('click', '#search_all_states', function(){
+    var check = $(this).is(':checked');
+    $('#advanced_search').find('input[type="checkbox"][id^="search_states_"]').each(function(){
+      $(this).prop('checked', check);
+    });
+  });
+
   $(document).on('click', 'input[type="checkbox"][id^="search_columns_"]', function(){
     $.refreshAdvancedAllCheckboxes();
   });
 
   $(document).on('click', 'input[type="checkbox"][id^="search_translation_columns_"]', function(){
+    $.refreshAdvancedAllCheckboxes();
+  });
+
+  $(document).on('click', 'input[type="checkbox"][id^="search_states_"]', function(){
     $.refreshAdvancedAllCheckboxes();
   });
 });

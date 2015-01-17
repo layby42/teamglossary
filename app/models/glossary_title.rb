@@ -29,6 +29,7 @@
 
 class GlossaryTitle < ActiveRecord::Base
   include Approval
+  include Search
 
   strip_attributes :only => [:term, :alt_term1, :alt_term2, :popular_term, :author, :author_translit, :tibetan_full, :tibetan_short, :sanskrit_full, :sanskrit_short, :sanskrit_full_diacrit, :sanskrit_short_diacrit, :pali, :explanation, :rejected_because]
   has_paper_trail :ignore => [:created_at, :updated_at]
@@ -78,12 +79,17 @@ class GlossaryTitle < ActiveRecord::Base
     columns = SEARCH_COLUMNS if columns.empty?
     columns = columns.map(&:to_sym) & SEARCH_COLUMNS
 
+    states = (options[:states].presence || [:private, :public, :proposed]).map(&:to_sym)
+    return [] if states.empty?
+
     query = query.to_s.strip.downcase
+
     if language.is_base_language?
-      GlossaryTitle.where(%Q{
-        (glossary_titles.language_id = ? OR
-         NOT glossary_titles.is_private)
-        }, language.id).list_order.includes([:comments, :language]).select do |term|
+      return [] if columns.empty?
+
+      condition = GlossaryTitle.base_states_condition(language, states)
+
+      GlossaryTitle.where(condition).list_order.includes([:comments, :language]).select do |term|
         columns.collect{|field| term.try(field).to_s}.join(' ').downcase.include?(query)
       end
     else
@@ -91,12 +97,11 @@ class GlossaryTitle < ActiveRecord::Base
       translation_columns = SEARCH_TRANSLATION_COLUMNS if translation_columns.empty?
       translation_columns = translation_columns.map(&:to_sym) & SEARCH_TRANSLATION_COLUMNS
 
-      GlossaryTitle.where(%Q{
-        (glossary_titles.language_id = ? OR
-          ( glossary_titles.language_id = ? AND
-            NOT glossary_titles.is_private)
-          )
-        }, language.id, Language.base_language.id).list_order.includes([:glossary_title_translations, :comments, :language]).select do |term|
+      return [] if (columns + translation_columns).empty?
+
+      condition = GlossaryTitle.non_base_states_condition(language, states)
+
+      GlossaryTitle.where(condition).list_order.includes([:glossary_title_translations, :comments, :language]).select do |term|
 
           columns.collect{|field| term.try(field).to_s}.join(' ').downcase.include?(query) ||
           (

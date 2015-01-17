@@ -21,6 +21,7 @@
 
 class GlossaryName < ActiveRecord::Base
   include Approval
+  include Search
 
   strip_attributes :only => [:term, :tibetan, :sanskrit, :explanation, :dates, :rejected_because]
   has_paper_trail :ignore => [:created_at, :updated_at]
@@ -58,13 +59,17 @@ class GlossaryName < ActiveRecord::Base
     columns = SEARCH_COLUMNS if columns.empty?
     columns = columns.map(&:to_sym) & SEARCH_COLUMNS
 
+    states = (options[:states].presence || [:private, :public, :proposed]).map(&:to_sym)
+    return [] if states.empty?
+
     query = query.to_s.strip.downcase
 
     if language.is_base_language?
-      GlossaryName.where(%Q{
-        (glossary_names.language_id = ? OR
-         NOT glossary_names.is_private)
-        }, language.id).list_order.includes([:proper_name_type, :comments, :language]).select do |term|
+      return [] if columns.empty?
+
+      condition = GlossaryName.base_states_condition(language, states)
+
+      GlossaryName.where(condition).list_order.includes([:proper_name_type, :comments, :language]).select do |term|
         columns.collect{|field| term.try(field).to_s}.join(' ').downcase.include?(query)
       end
     else
@@ -72,12 +77,11 @@ class GlossaryName < ActiveRecord::Base
       translation_columns = SEARCH_TRANSLATION_COLUMNS if translation_columns.empty?
       translation_columns = translation_columns.map(&:to_sym) & SEARCH_TRANSLATION_COLUMNS
 
-      GlossaryName.where(%Q{
-        (glossary_names.language_id = ? OR
-          ( glossary_names.language_id = ? AND
-            NOT glossary_names.is_private)
-          )
-        }, language.id, Language.base_language.id).list_order.includes([:glossary_name_translations, :proper_name_type, :comments, :language]).select do |term|
+      return [] if (columns + translation_columns).empty?
+
+      condition = GlossaryName.non_base_states_condition(language, states)
+
+      GlossaryName.where(condition).list_order.includes([:glossary_name_translations, :proper_name_type, :comments, :language]).select do |term|
 
           columns.collect{|field| term.try(field).to_s}.join(' ').downcase.include?(query) ||
           (

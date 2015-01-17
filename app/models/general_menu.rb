@@ -76,6 +76,8 @@ class GeneralMenu < ActiveRecord::Base
       columns = columns.map(&:to_sym) & SEARCH_COLUMNS
 
       if language.is_base_language?
+        return [] if columns.empty?
+
         GeneralMenu.by_language(language.id).search_order.includes([:general_menu_actions, :language]).select do |item|
           columns.collect{|field| item.try(field).to_s}.join(' ').downcase.include?(query)
         end
@@ -83,6 +85,8 @@ class GeneralMenu < ActiveRecord::Base
         translation_columns = options[:translation_columns].presence || SEARCH_TRANSLATION_COLUMNS
         translation_columns = SEARCH_TRANSLATION_COLUMNS if translation_columns.empty?
         translation_columns = translation_columns.map(&:to_sym) & SEARCH_TRANSLATION_COLUMNS
+
+        return [] if (columns + translation_columns).empty?
 
         GeneralMenu.where(language_id: [language.id, Language.base_language.id]).search_order.includes([:general_menu_translations, :general_menu_actions, :language]).select do |item|
           columns.collect{|field| item.try(field).to_s}.join(' ').downcase.include?(query) ||
