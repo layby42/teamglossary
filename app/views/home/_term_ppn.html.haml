@@ -41,10 +41,11 @@
               %i.fa.fa-edit
               edit translation
 
-        - if translation.notes.present?
+        - if current_user && translation.notes.present?
           %br/
           %br/
           = translation.notes
+
       - elsif manager_or_editor_language_ids.include?(language.id)
         .text-right
           = link_to language_glossary_name_path(language, item), class: 'text-muted' do

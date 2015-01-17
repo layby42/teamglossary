@@ -19,10 +19,9 @@
                 %i.fa.fa-times-circle
                 delete translation
 
-    - if current_user || !item.is_definition_private?
-      %tr
-        %th Definition
-        %td= translation.definition
+    %tr
+      %th Definition
+      %td= translation.definition
 
     - if current_user
       %tr

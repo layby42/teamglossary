@@ -46,7 +46,7 @@
               %i.fa.fa-edit
               edit translation
 
-        - if translation.notes.present?
+        - if current_user && translation.notes.present?
           %br/
           %br/
           = translation.notes

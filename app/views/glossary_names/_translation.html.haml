@@ -16,9 +16,11 @@
               %small
                 %i.fa.fa-times-circle
                 delete translation
-    %tr
-      %th Notes
-      %td= translation.notes
+
+    - if current_user
+      %tr
+        %th Notes
+        %td= translation.notes
 
 - if can_edit_language_glossary
   %h4.title STATUS

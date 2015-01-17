@@ -101,8 +101,12 @@ class HomeController < ApplicationController
   end
 
   def find_columns
+    unless current_user
+      @columns = @glossary_type.glossary_search_default_columns
+      return
+    end
+
     @columns = []
-    return unless current_user
 
     if params[:search].present?
       if @advanced_search
@@ -122,8 +126,12 @@ class HomeController < ApplicationController
   end
 
   def find_translation_columns
+    unless current_user
+      @translation_columns = @glossary_type.glossary_search_default_translation_columns
+      return
+    end
+
     @translation_columns = []
-    return unless current_user
 
     if params[:search].present?
       if @advanced_search && !@language.is_base_language?

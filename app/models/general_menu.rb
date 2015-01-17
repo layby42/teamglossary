@@ -45,7 +45,9 @@ class GeneralMenu < ActiveRecord::Base
   validates :cms_name, :name, :language_id, presence: true
 
   SEARCH_COLUMNS = [:name, :remark, :additional_text, :cms_name, :full_cms_path]
+  SEARCH_DEFAULT_COLUMNS = [:name, :remark, :additional_text, :cms_name, :full_cms_path]
   SEARCH_TRANSLATION_COLUMNS = [:name, :notes, :additional_text]
+  SEARCH_DEFAULT_TRANSLATION_COLUMNS = [:name, :notes, :additional_text]
 
   def term
     name
@@ -60,25 +62,29 @@ class GeneralMenu < ActiveRecord::Base
   end
 
   def self.search(language, query, options={})
-    columns = options[:columns].presence || SEARCH_COLUMNS
-    translation_columns = options[:translation_columns].presence || SEARCH_TRANSLATION_COLUMNS
-
     query = query.to_s.strip.downcase
+
     if query.blank?
       if language.is_base_language?
-        GeneralMenu.by_language(language.id).where(general_menu_id: nil).list_order.includes([:general_menu_actions])
+        GeneralMenu.by_language(language.id).where(general_menu_id: nil).list_order.includes([:general_menu_actions, :language])
       else
-        GeneralMenu.where(language_id: [language.id, Language.base_language.id], general_menu_id: nil).list_order.includes([:general_menu_translations, :general_menu_actions])
+        GeneralMenu.where(language_id: [language.id, Language.base_language.id], general_menu_id: nil).list_order.includes([:general_menu_translations, :general_menu_actions, :language])
       end
     else
+      columns = options[:columns].presence || SEARCH_COLUMNS
       columns = SEARCH_COLUMNS if columns.empty?
+      columns = columns.map(&:to_sym) & SEARCH_COLUMNS
+
       if language.is_base_language?
-        GeneralMenu.by_language(language.id).search_order.includes([:general_menu_actions]).select do |item|
+        GeneralMenu.by_language(language.id).search_order.includes([:general_menu_actions, :language]).select do |item|
           columns.collect{|field| item.try(field).to_s}.join(' ').downcase.include?(query)
         end
       else
+        translation_columns = options[:translation_columns].presence || SEARCH_TRANSLATION_COLUMNS
         translation_columns = SEARCH_TRANSLATION_COLUMNS if translation_columns.empty?
-        GeneralMenu.where(language_id: [language.id, Language.base_language.id]).search_order.includes([:general_menu_translations, :general_menu_actions]).select do |item|
+        translation_columns = translation_columns.map(&:to_sym) & SEARCH_TRANSLATION_COLUMNS
+
+        GeneralMenu.where(language_id: [language.id, Language.base_language.id]).search_order.includes([:general_menu_translations, :general_menu_actions, :language]).select do |item|
           columns.collect{|field| item.try(field).to_s}.join(' ').downcase.include?(query) ||
           (
             (

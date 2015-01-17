@@ -4,7 +4,15 @@ $(function() {
       $.closeFolder($(this).data('id'));
     });
     $("tr[data-parent='" + parent_id + "']").remove();
-  }
+  };
+
+  $.refreshAdvancedAllCheckboxes = function(){
+    var checked = ($('input:not(:checked)[type="checkbox"][id^="search_columns_"]').length == 0);
+    $('#search_all_columns').prop('checked', checked);
+
+    checked = ($('input:not(:checked)[type="checkbox"][id^="search_translation_columns_"]').length == 0);
+    $('#search_all_translation_columns').prop('checked', checked);
+  };
 
   $(document).on('change', '#search_glossary_type_id', function(){
     $('#search_advanced').prop('checked', false);
@@ -31,15 +39,40 @@ $(function() {
   $(document).on('click', '#search_advanced', function(){
     if ($(this).is(':checked')){
       $('#advanced_search').show();
-
       $('#advanced_search').find('input[type="checkbox"]').each(function(){
         $(this).prop('checked', $(this).data('default'));
       });
+
+      $.refreshAdvancedAllCheckboxes();
     } else {
       $('#advanced_search').hide();
       $('#advanced_search').find('input[type="checkbox"]').each(function(){
         $(this).prop('checked', false);
       });
+      $('#search_all_columns').prop('checked', false);
+      $('#search_all_translation_columns').prop('checked', false);
     }
+  });
+
+  $(document).on('click', '#search_all_columns', function(){
+    var check = $(this).is(':checked');
+    $('#advanced_search').find('input[type="checkbox"][id^="search_columns_"]').each(function(){
+      $(this).prop('checked', check);
+    });
+  });
+
+  $(document).on('click', '#search_all_translation_columns', function(){
+    var check = $(this).is(':checked');
+    $('#advanced_search').find('input[type="checkbox"][id^="search_translation_columns_"]').each(function(){
+      $(this).prop('checked', check);
+    });
+  });
+
+  $(document).on('click', 'input[type="checkbox"][id^="search_columns_"]', function(){
+    $.refreshAdvancedAllCheckboxes();
+  });
+
+  $(document).on('click', 'input[type="checkbox"][id^="search_translation_columns_"]', function(){
+    $.refreshAdvancedAllCheckboxes();
   });
 });

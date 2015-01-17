@@ -41,32 +41,18 @@ class GlossaryType < ActiveRecord::Base
   end
 
   def glossary_search_columns
-    case code
-    when 'PPN'
-      GlossaryName::SEARCH_COLUMNS.map(&:to_s)
-    when 'THT'
-      GlossaryTerm::SEARCH_COLUMNS.map(&:to_s)
-    when 'TXT'
-      GlossaryTitle::SEARCH_COLUMNS.map(&:to_s)
-    when 'GM'
-      GeneralMenu::SEARCH_COLUMNS.map(&:to_s)
-    else
-      []
-    end
+    glossary_class::SEARCH_COLUMNS.map(&:to_s) rescue []
   end
 
   def glossary_search_translation_columns
-    case code
-    when 'PPN'
-      GlossaryName::SEARCH_TRANSLATION_COLUMNS.map(&:to_s)
-    when 'THT'
-      GlossaryTerm::SEARCH_TRANSLATION_COLUMNS.map(&:to_s)
-    when 'TXT'
-      GlossaryTitle::SEARCH_TRANSLATION_COLUMNS.map(&:to_s)
-    when 'GM'
-      GeneralMenu::SEARCH_TRANSLATION_COLUMNS.map(&:to_s)
-    else
-      []
-    end
+    glossary_class::SEARCH_TRANSLATION_COLUMNS.map(&:to_s) rescue []
+  end
+
+  def glossary_search_default_columns
+    glossary_class::SEARCH_DEFAULT_COLUMNS.map(&:to_s) rescue []
+  end
+
+  def glossary_search_default_translation_columns
+    glossary_class::SEARCH_DEFAULT_TRANSLATION_COLUMNS.map(&:to_s) rescue []
   end
 end

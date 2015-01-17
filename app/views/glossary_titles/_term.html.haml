@@ -60,14 +60,13 @@
       %th Pali
       %td= item.pali
 
-    - if current_user
-      %tr
-        %th Explanation
-        %td
-          - if request.xhr?
-            = truncate(item.explanation, length: 250, omission: ' ... (more)')
-          - else
-            = item.explanation
+    %tr
+      %th Explanation
+      %td
+        - if request.xhr?
+          = truncate(item.explanation, length: 250, omission: ' ... (more)')
+        - else
+          = item.explanation
 
 - if can_edit_language_glossary
   %h4.term STATUS
