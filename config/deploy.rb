@@ -1,9 +1,6 @@
 lock '3.3.5'
 
-set :application, 'teamglossary'
 set :repo_url, 'git@bitbucket.org:ogoutnik/teamglossary.git'
-
-set :deploy_to, "~/apps/#{fetch(:application)}"
 set :rvm_ruby_version, '2.1.3'
 
 # namespace :deploy do
