@@ -1,5 +1,5 @@
-- manager = current_user.manager?(language.id)
-- if manager
+- manager = manager_language_ids.include?(language.id)
+- if manager && !new_action
   .pull-right
     = render 'shared/add_new_button', url: new_language_general_menu_general_menu_action_path(language, item, show_tasks: true), remote: true, title: 'Add task'
 

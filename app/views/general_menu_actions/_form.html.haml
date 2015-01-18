@@ -36,7 +36,7 @@
   - if @show_tasks
     .row
       .col-xs-12
-        = render 'general_menu_actions/list', language: @language, item: @general_menu
+        = render 'general_menu_actions/list', language: @language, item: @general_menu, new_action: @general_menu_action.new_record?
 
 :javascript
   $(function() {

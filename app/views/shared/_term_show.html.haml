@@ -17,7 +17,7 @@
 - if current_user && item.is_a?(GeneralMenu) && !item.folder?
   .row
     .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
-      = render 'general_menu_actions/list', language: language, item: item
+      = render 'general_menu_actions/list', language: language, item: item, new_action: false
   %br/
 
 - if current_user
