@@ -1,0 +1,46 @@
+.row
+  .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
+    %h4
+      .pull-right
+        %h5
+          Period:
+          %small.text-primary
+            = "#{@from_date} - #{@to_date}"
+
+      Found
+      %span.badge #{@data.total_count}
+.row
+  .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
+    %table.table.table-striped.table-bordered
+      %thead
+        %tr
+          %th.col-xs-2 Who
+          %th.col-xs-2 Started (UTC)
+          %th.col-xs-2 Finished (UTC)
+          %th.col-xs-6 What
+      %tbody#works_table
+        - @data.each do |item|
+          %tr.works_table_row
+            %td
+              - if item.user_id.present?
+                = link_to item.user.name, admin_user_path(item.user_id)
+              - else
+                #{item.name}
+            %td= item.start_date
+            %td= item.end_date
+            %td
+              #{item.task.title}:
+              = link_to item.general_menu.name, language_general_menu_path(@language, item.general_menu)
+
+
+    - if @data.empty?
+      Sorry, nothing found
+
+.row
+  .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
+    .pagination.pagination-centered
+      - params.clear
+      = paginate @data, :params => {:controller => 'works', :action => 'index'}
+
+:javascript
+  #{ render :partial => 'infinitescroll.js' }

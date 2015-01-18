@@ -26,7 +26,14 @@ class GeneralMenuAction < ActiveRecord::Base
 
   scope :open, -> {where(end_date: nil)}
   scope :by_language, -> (language_id) { where(language_id: language_id) }
-  scope :list_order, -> { order('general_menu_actions.start_date DESC') }
+
+  scope :list_order, -> { order('general_menu_actions.start_date DESC, general_menu_actions.end_date DESC') }
+  scope :work_order, -> { order('COALESCE(general_menu_actions.end_date, general_menu_actions.start_date) DESC') }
+
+  scope :for_date_range, ->(from, to) { where(%q{
+    (general_menu_actions.start_date BETWEEN ? AND ?) OR
+    (general_menu_actions.end_date BETWEEN ? AND ?)
+    }, from.beginning_of_day, to.end_of_day, from.beginning_of_day, to.end_of_day) }
 
   before_validation :adjust_assignee
   validate :language_id, :general_menu_id, :start_date, :task_id, presence: true
@@ -39,4 +46,7 @@ class GeneralMenuAction < ActiveRecord::Base
     end
   end
 
+  def self.simple_search(language, from, to)
+    GeneralMenuAction.by_language(language.id).for_date_range(from, to).work_order.includes([:user, :task, :general_menu])
+  end
 end

@@ -28,6 +28,10 @@
       #navbar-main.navbar-collapse.collapse
         %ul.nav.navbar-nav.navbar-right
           - if current_user
+            - if current_user.admin? || current_user.manager?
+              %li
+                = link_to 'Work in Progress', works_path
+
             %li.dropdown
               = link_to('javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'}) do
                 - if current_user.admin?

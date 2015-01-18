@@ -1,0 +1,9 @@
+$('#works_table').infinitescroll({
+    navSelector: ".pagination",
+    nextSelector: ".pagination a[rel=next]",
+    itemSelector: ".works_table_row",
+    loading: {
+        msgText: "<em>Loading...</em>",
+        finishedMsg: "<em>All Tasks have been loaded.</em>"
+    }
+});

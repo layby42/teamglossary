@@ -1,0 +1,21 @@
+.row
+  = form_tag url_for(action: :index), method: :get, remote: true, id: :filter_form do
+    %fieldset
+      .form-group.col-lg-6.col-md-6.col-sm-6.col-xs-12.col-sm-offset-3.col-md-offset-3.col-lg-offset-3
+        .input-group.col-xs-12
+          = select_tag 'filter[language_id]', active_language_options(@language.id), class: 'form-control', autocomplete: 'off'
+          .input-group-btn
+            = submit_tag 'Find', class: 'btn btn-primary'
+      .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6.col-sm-offset-3.col-md-offset-3.col-lg-offset-3
+        .input-group.col-xs-12
+          = text_field_tag 'filter[from_date]', @from_date.to_date, class: 'form-control edit_date', autocomplete: 'off', placeholder: 'YYYY-MM-DD', data: {:'date-format' => "yyyy-mm-dd"}, required: true
+      .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6
+        .input-group.col-xs-12
+          = text_field_tag 'filter[to_date]', @to_date.to_date, class: 'form-control edit_date', autocomplete: 'off', placeholder: 'YYYY-MM-DD', data: {:'date-format' => "yyyy-mm-dd"}, required: true
+
+:javascript
+  $(function() {
+    $('.edit_date').datepicker().on('changeDate', function(ev){
+      $('.edit_date').datepicker('hide');
+    });
+  });

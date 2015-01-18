@@ -112,5 +112,7 @@ Rails.application.routes.draw do
     resources :comments, only: [:new, :create, :destroy]
   end
 
+  resources :works, only: [:index]
+
   root :to => 'home#index'
 end
