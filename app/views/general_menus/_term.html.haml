@@ -15,7 +15,12 @@
     - if item.additional_text.present?
       %tr
         %th Additional text
-        %td= item.additional_text
+        %td
+          - if request.xhr?
+            = truncate(item.additional_text, length: 250, omission: ' ... (more)')
+          - else
+            = item.additional_text
+
     %tr
       %th CMS
       %td
@@ -35,7 +40,39 @@
     %tr
       %th Online
       %td= item.online
+
     - if item.wiki_qa.present?
       %tr
         %th Wiki Q&A
-        %td= item.wiki_qa
+        %td= link_to 'go to wiki', item.wiki_qa, target: '_blank'
+
+
+%h4.title NAVIGATION
+%table.table.table-striped.table-bordered
+  %tbody
+    %tr
+      %th.col-xs-4 Parent
+      %td
+        - if item.general_menu_id.present?
+          - parent = item.general_menu
+          %i.fa.text-primary{class: parent.fa_icon, title: parent.item_type_name}
+          = link_to parent.name, language_general_menu_path(language, parent), remote: request.xhr?
+          %br/
+          %small
+            = (parent.full_cms_path.presence || parent.cms_name).gsub('/', '/ ')
+        - else
+          has no parent item
+
+    %tr
+      %th.col-xs-4 Children
+      %td
+        - children = item.children(item.language)
+        - if children.empty?
+          has no child items
+        - else
+          %ul.list-unstyled
+            - children.each do |child|
+              %li
+                %i.fa.text-primary{class: child.fa_icon, title: child.item_type_name}
+                = link_to child.name, language_general_menu_path(language, child), remote: request.xhr?
+                %small (#{child.cms_name})

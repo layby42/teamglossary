@@ -19,7 +19,11 @@
     - if translation.additional_text.present?
       %tr
         %th Additional text
-        %td= translation.additional_text
+        %td
+          - if request.xhr?
+            = truncate(translation.additional_text, length: 250, omission: ' ... (more)')
+          - else
+            = translation.additional_text
     %tr
       %th Notes
       %td

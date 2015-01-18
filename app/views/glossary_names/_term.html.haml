@@ -29,7 +29,11 @@
       %td= item.sanskrit
     %tr
       %th Explanation
-      %td= item.explanation
+      %td
+        - if request.xhr?
+          = truncate(item.explanation, length: 250, omission: ' ... (more)')
+        - else
+          = item.explanation
 
 - if can_edit_language_glossary
   %h4.title STATUS
