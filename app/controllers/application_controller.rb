@@ -24,15 +24,15 @@ class ApplicationController < ActionController::Base
   end
 
   def team_ids
-    @team_ids ||= current_user ? current_user.team_ids : []
+    @team_ids ||= (current_user ? current_user.team_ids : [])
   end
 
   def manager_or_editor_language_ids
-    @manager_or_editor_language_ids ||= current_user ? current_user.manager_or_editor_language_ids : []
+    @manager_or_editor_language_ids ||= (current_user ? current_user.manager_or_editor_language_ids : [])
   end
 
   def manager_language_ids
-    @manager_language_ids ||= current_user ? current_user.manager_language_ids : []
+    @manager_language_ids ||= (current_user ? current_user.manager_language_ids : [])
   end
 
   def require_ssl

@@ -1,6 +1,6 @@
 - search_result = @query.present?
 - level = item.level
-- bottom_link = manager_language_ids.include?(item.language_id) && !item.folder?
+- bottom_link = (manager_language_ids.include?(item.language_id) && !item.folder?)
 %tr{class: "#{'term_table_row' if search_result}", id: "general_menu_row_#{item.id}", data: {parent: item.general_menu_id.to_i, id: item.id}}
   %td{style: general_menu_left_and_bottom_link_style_helper(level, item.folder?, bottom_link)}
     %strong
@@ -18,10 +18,10 @@
         %i.fa{class: item.fa_icon} &nbsp; #{item.cms_name}
 
     - if bottom_link
-      = render 'shared/term_add_task', language: base_language, term: item
+      = render 'shared/term_add_task', language: item.language, term: item
 
   - unless language.is_base_language?
-    - bottom_link = manager_language_ids.include?(item.language_id) && !item.folder?
+    - bottom_link = (manager_language_ids.include?(language.id) && !item.folder?)
     %td{style: bottom_link_style_helper(bottom_link)}
       - translation = item.general_menu_translations.select{|t| t.language_id == language.id}.first
       - if translation.present?
