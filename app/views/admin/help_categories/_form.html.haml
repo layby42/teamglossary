@@ -1,0 +1,20 @@
+= form_for [:admin, help_category], :html => {:class => 'form-vertical'} do |f|
+  .modal-header
+    %button{:type => 'button', 'data-dismiss' => 'modal', :class => 'close', 'aria-hidden' => true}= '&times;'.html_safe
+    %h3= help_category.new_record? ? 'New Help Category' : 'Edit Help Category'
+
+  .modal-body
+    .alert.alert-danger.hide
+    .row
+      .col-sm-3
+        %label.control-label Type
+        = f.select :glossary_type_id, glossary_type_options(help_category.glossary_type_id, {include_blank: ['General', nil]}), {}, {class: 'form-control', autocomplete: 'off'}
+
+      .col-sm-9
+        %label.control-label Title
+        = f.text_field :title, class: 'form-control', style: 'width:100%', autocomplete: 'off', maxlength: 255, required: true
+
+
+  .modal-footer
+    %button#submit.btn.btn-primary Save changes
+

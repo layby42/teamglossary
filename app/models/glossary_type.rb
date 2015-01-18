@@ -15,6 +15,8 @@
 class GlossaryType < ActiveRecord::Base
   strip_attributes :only => [:code, :name, :description, :model_name]
 
+  has_many :help_categories
+
   scope :list_order, -> { order('glossary_types.sorting') }
   scope :except_menu, -> { where(code: ['PPN', 'THT', 'TXT'])}
 

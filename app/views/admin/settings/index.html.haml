@@ -13,6 +13,9 @@
       %li.list-group-item
         %span.badge= Task.count
         = link_to 'General Menu Tasks', admin_tasks_path
+      %li.list-group-item
+        %span.badge= HelpCategory.count
+        = link_to 'Help Categories', admin_help_categories_path
 
   .col-sm-6.col-xs-12
     %h4 GLOSSARIES

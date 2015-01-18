@@ -1,0 +1,33 @@
+%h3
+  = link_to admin_settings_path do
+    %i.fa.fa-angle-left
+    Help Categories
+    %span.badge #{@help_categories.count}
+
+  - if current_user.admin?
+    .pull-right
+      = render 'shared/add_new_button', url: new_admin_help_category_path, remote: true
+
+- show_changes = current_user.admin?
+%table.table.table-striped.table-bordered
+  %thead
+    %tr
+      %th Title
+      %th Type
+      - if show_changes
+        %th
+  %tbody
+    - show_changes = current_user.admin?
+    - @help_categories.each do |help_category|
+      %tr
+        %td
+          - if current_user.admin?
+            = link_to help_category.title, edit_admin_help_category_path(help_category), remote: true
+          - else
+            = help_category.title
+        %td
+          = help_category.glossary_type.try(:name) || 'General'
+
+        - if show_changes
+          %td
+            = render 'shared/changes_url', url: changes_admin_help_category_path(help_category)

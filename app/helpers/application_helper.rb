@@ -14,12 +14,13 @@ module ApplicationHelper
     options_for_select(opts, selected)
   end
 
-  def glossary_type_options(selected=nil)
+  def glossary_type_options(selected=nil, options={})
     if current_user
       opts = GlossaryType.list_order.map{|l| [l.name, l.id]}
     else
       opts = GlossaryType.except_menu.list_order.map{|l| [l.name, l.id]}
     end
+    opts = ([options[:include_blank]] + opts) if options[:include_blank].present?
     options_for_select(opts, selected)
   end
 

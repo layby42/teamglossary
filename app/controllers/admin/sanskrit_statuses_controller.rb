@@ -57,7 +57,7 @@ class Admin::SanskritStatusesController < ApplicationController
 
   def require_xhr
     unless request.xhr?
-      admin_sanskrit_statuses_path
+      redirect_to admin_sanskrit_statuses_path
     end
   end
 end

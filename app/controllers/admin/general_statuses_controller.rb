@@ -2,7 +2,7 @@ class Admin::GeneralStatusesController < ApplicationController
   before_action :require_admin_or_manager
   before_action :require_admin, only: [:new, :create, :edit, :update, :changes]
   before_action :find_general_status, only: [:edit, :update, :changes]
-  before_filter :require_xhr, :only => [:new, :create, :edit, :update, :changes]
+  before_filter :require_xhr, :only => [:new, :edit, :changes]
 
   def index
     @general_statuses = GeneralStatus.list_order
@@ -57,7 +57,7 @@ class Admin::GeneralStatusesController < ApplicationController
 
   def require_xhr
     unless request.xhr?
-      admin_general_statuses_path
+      redirect_to admin_general_statuses_path
     end
   end
 end

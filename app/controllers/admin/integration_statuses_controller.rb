@@ -57,7 +57,7 @@ class Admin::IntegrationStatusesController < ApplicationController
 
   def require_xhr
     unless request.xhr?
-      admin_integration_statuses_path
+      redirect_to admin_integration_statuses_path
     end
   end
 end

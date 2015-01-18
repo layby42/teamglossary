@@ -1,0 +1,13 @@
+%h3.text-center
+  Help Center
+
+.panel.panel-default
+  .panel-body
+    .row
+      .col-sm-4.col-sm-offset-4.col-xs-12
+        = form_tag url_for(action: :index), method: :get, remote: true, id: :help_form do
+          = select_tag 'help[glossary_type_id]', glossary_type_options(@glossary_type_id, {include_blank: ['General', nil]}), class: 'form-control col-xs-4', autocomplete: 'off'
+    %hr
+
+    #articles_result.row
+      = render 'articles'

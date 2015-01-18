@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150111165221) do
+ActiveRecord::Schema.define(version: 20150118205138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -257,6 +257,23 @@ ActiveRecord::Schema.define(version: 20150111165221) do
   end
 
   add_index "glossary_types", ["code"], name: "index_glossary_types_on_code", unique: true, using: :btree
+
+  create_table "help_articles", force: true do |t|
+    t.integer  "help_category_id", null: false
+    t.string   "title",            null: false
+    t.text     "body"
+    t.datetime "published_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "help_categories", force: true do |t|
+    t.string   "title",                        null: false
+    t.integer  "glossary_type_id"
+    t.integer  "sorting",          default: 0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "import_glossary_names", force: true do |t|
     t.integer  "import_id",                         null: false
@@ -617,6 +634,10 @@ ActiveRecord::Schema.define(version: 20150111165221) do
 
   add_foreign_key "glossary_titles", "integration_statuses", name: "fk_glossary_titles_integration_statuses", dependent: :restrict
   add_foreign_key "glossary_titles", "languages", name: "fk_glossary_titles_languages", dependent: :restrict
+
+  add_foreign_key "help_articles", "help_categories", name: "help_articles_help_category_id_fk"
+
+  add_foreign_key "help_categories", "glossary_types", name: "help_categories_glossary_type_id_fk", dependent: :nullify
 
   add_foreign_key "import_glossary_names", "glossary_names", name: "fk_import_glossary_names_glossary_names", dependent: :restrict
   add_foreign_key "import_glossary_names", "imports", name: "fk_import_glossary_names_imports", dependent: :restrict

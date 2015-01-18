@@ -92,7 +92,7 @@ class Admin::UsersController < ApplicationController
 
   def require_xhr
     unless request.xhr?
-      admin_user_path(@user)
+      redirect_to admin_user_path(@user)
     end
   end
 end

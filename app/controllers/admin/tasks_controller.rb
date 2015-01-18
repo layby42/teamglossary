@@ -54,7 +54,7 @@ class Admin::TasksController < ApplicationController
 
   def require_xhr
     unless request.xhr?
-      admin_tasks_path
+      redirect_to admin_tasks_path
     end
   end
 end

@@ -74,7 +74,7 @@ class Admin::LanguagesController < ApplicationController
 
   def require_xhr
     unless request.xhr?
-      admin_language_path(@language)
+      redirect_to admin_language_path(@language)
     end
   end
 end

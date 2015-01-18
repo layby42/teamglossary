@@ -89,4 +89,9 @@ $(function() {
   $(document).on('click', 'input[type="checkbox"][id^="search_states_"]', function(){
     $.refreshAdvancedAllCheckboxes();
   });
+
+  $(document).on('change', '#help_glossary_type_id', function(){
+    $(this).parents('form').submit();
+    $('#articles_result').html('<div class="text-center"><i class="fa fa-spinner fa-spin"></i> Searching...</div>');
+  });
 });

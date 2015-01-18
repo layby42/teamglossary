@@ -57,7 +57,7 @@ class Admin::ReferenceTypesController < ApplicationController
 
   def require_xhr
     unless request.xhr?
-      admin_reference_types_path
+      redirect_to admin_reference_types_path
     end
   end
 end

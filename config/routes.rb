@@ -4,8 +4,13 @@ Rails.application.routes.draw do
   match 'login' => 'user_sessions#create', :via => [:post, :patch]
   match 'logout' => 'user_sessions#destroy', :via => [:get, :delete]
   match 'download' => 'home#download', :via => [:get]
+  get 'help' => 'help/articles#index', :via => [:get]
 
   resources :password_resets, :only => [:new, :create, :edit, :update]
+
+  namespace :help do |admin|
+    resources :articles, only: [:index]
+  end
 
   namespace :admin do |admin|
     resources :settings, :only => [:index]
@@ -46,6 +51,10 @@ Rails.application.routes.draw do
 
     resources :imports, only: [:index] do
       post :general_menu, on: :collection
+    end
+
+    resources :help_categories, only: [:index, :new, :create, :edit, :update] do
+      get :changes, on: :member
     end
 
     resources :diagnostics, only: [:index]
