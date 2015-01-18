@@ -8,7 +8,7 @@
     .col-xs-12
       = form_for [@language, @general_menu, @general_menu_action], html: {class: 'form-horizontal',remote: true} do |f|
         .alert.alert-danger.hide
-        %fieldset
+        %fieldset.well.special-border
           = hidden_field_tag :show_tasks, @show_tasks
 
           .form-group.row
