@@ -7,8 +7,11 @@
     .alert.alert-danger.hide
     .row
       .col-sm-8.col-xs-12
-        %label.control-label Task Title
+        %label.control-label Title
         = f.text_field :title, class: 'form-control', style: 'width:100%', autocomplete: 'off', maxlength: 100
+
+        %label.control-label Title Complete
+        = f.text_field :title_complete, class: 'form-control', style: 'width:100%', autocomplete: 'off', maxlength: 100
 
       .col-sm-4.col-xs-12
         %label.control-label Applicable to:

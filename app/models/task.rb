@@ -2,13 +2,14 @@
 #
 # Table name: tasks
 #
-#  id         :integer          not null, primary key
-#  title      :string(255)      not null
-#  article    :boolean          default(FALSE), not null
-#  audio      :boolean          default(FALSE), not null
-#  video      :boolean          default(FALSE), not null
-#  created_at :datetime
-#  updated_at :datetime
+#  id             :integer          not null, primary key
+#  title          :string(255)      not null
+#  article        :boolean          default(FALSE), not null
+#  audio          :boolean          default(FALSE), not null
+#  video          :boolean          default(FALSE), not null
+#  created_at     :datetime
+#  updated_at     :datetime
+#  title_complete :string(255)      not null
 #
 
 class Task < ActiveRecord::Base
@@ -20,4 +21,5 @@ class Task < ActiveRecord::Base
   scope :list_order, -> { order('lower(tasks.title)') }
 
   validates :title, presence: true, uniqueness: {case_sensitive: false}
+  validates :title_complete, presence: true
 end

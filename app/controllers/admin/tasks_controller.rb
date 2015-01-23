@@ -2,7 +2,7 @@ class Admin::TasksController < ApplicationController
   before_action :require_admin_or_manager
   before_action :require_admin, only: [:new, :create, :update, :changes]
   before_action :find_task, only: [:edit, :update, :changes]
-  before_filter :require_xhr, :only => [:new, :create, :edit, :update, :changes]
+  before_filter :require_xhr, :only => [:new, :edit, :changes]
 
   def index
     @tasks = Task.list_order
@@ -49,7 +49,7 @@ class Admin::TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:title, :article, :audio, :video)
+    params.require(:task).permit(:title, :article, :audio, :video, :title_complete)
   end
 
   def require_xhr

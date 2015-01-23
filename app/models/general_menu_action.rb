@@ -28,7 +28,6 @@ class GeneralMenuAction < ActiveRecord::Base
   scope :by_language, -> (language_id) { where(language_id: language_id) }
 
   scope :list_order, -> { order('general_menu_actions.start_date DESC, general_menu_actions.end_date DESC') }
-  scope :work_order, -> { order('COALESCE(general_menu_actions.end_date, general_menu_actions.start_date) DESC') }
 
   scope :for_date_range, ->(from, to) { where(%q{
     (general_menu_actions.start_date BETWEEN ? AND ?) OR
@@ -47,6 +46,6 @@ class GeneralMenuAction < ActiveRecord::Base
   end
 
   def self.simple_search(language, from, to)
-    GeneralMenuAction.by_language(language.id).for_date_range(from, to).work_order.includes([:user, :task, :general_menu])
+    GeneralMenuAction.by_language(language.id).for_date_range(from, to).list_order.includes([:user, :task, :general_menu]).group_by{|a| a.general_menu}
   end
 end

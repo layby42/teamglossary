@@ -13,6 +13,7 @@
   %thead
     %tr
       %th Title
+      %th Complete
       %th Article
       %th Audio
       %th Video
@@ -27,6 +28,7 @@
             = link_to task.title, edit_admin_task_path(task), remote: true
           - else
             = task.title
+        %td= task.title_complete
         %td
           %i.fa{class: task.article ? 'fa-check text-success' : 'fa-times text-muted'}
         %td
