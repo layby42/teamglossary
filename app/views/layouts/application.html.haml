@@ -82,9 +82,6 @@
       .modal-dialog.modal-lg
         .modal-content#modal-content
 
-  - if Rails.env.production? && !!current_user
-    = render 'shared/analytics'
-
 :javascript
   $(function(){
     $('#container_script_enabled').show();

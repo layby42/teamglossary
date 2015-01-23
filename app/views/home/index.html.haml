@@ -2,3 +2,7 @@
 
 #search_result
   = render 'result'
+
+- if Rails.env.production?
+  - unless current_user
+    = render 'shared/analytics'
