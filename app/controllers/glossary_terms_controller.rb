@@ -11,6 +11,7 @@ class GlossaryTermsController < LanguagesController
   def new
     @glossary_term = GlossaryTerm.new_with_defaults
     @glossary_term.language = @language
+    @glossary_term.is_private = !@language.is_base_language?
   end
 
   def create

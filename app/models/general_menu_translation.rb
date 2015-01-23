@@ -33,6 +33,10 @@ class GeneralMenuTranslation < ActiveRecord::Base
     name
   end
 
+  def editable?
+    !synchronized
+  end
+
   def self.new_with_defaults
     GeneralMenuTranslation.new
   end
