@@ -2,7 +2,7 @@ class Admin::ReferenceTypesController < ApplicationController
   before_action :require_admin_or_manager
   before_action :require_admin, only: [:new, :create, :edit, :update, :changes]
   before_action :find_reference_type, only: [:edit, :update, :changes]
-  before_filter :require_xhr, :only => [:new, :create, :edit, :update, :changes]
+  before_filter :require_xhr, :only => [:new, :edit, :changes]
 
   def index
     @reference_types = ReferenceType.list_order

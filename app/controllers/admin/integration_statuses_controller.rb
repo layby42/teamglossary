@@ -2,7 +2,7 @@ class Admin::IntegrationStatusesController < ApplicationController
   before_action :require_admin_or_manager
   before_action :require_admin, only: [:new, :create, :edit, :update, :changes]
   before_action :find_integration_status, only: [:edit, :update, :changes]
-  before_filter :require_xhr, :only => [:new, :create, :edit, :update, :changes]
+  before_filter :require_xhr, :only => [:new, :edit, :changes]
 
   def index
     @integration_statuses = IntegrationStatus.list_order

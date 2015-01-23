@@ -2,7 +2,7 @@ class Admin::SanskritStatusesController < ApplicationController
   before_action :require_admin_or_manager
   before_action :require_admin, only: [:new, :create, :edit, :update, :changes]
   before_action :find_sanskrit_status, only: [:edit, :update, :changes]
-  before_filter :require_xhr, :only => [:new, :create, :edit, :update, :changes]
+  before_filter :require_xhr, :only => [:new, :edit, :changes]
 
   def index
     @sanskrit_statuses = SanskritStatus.list_order

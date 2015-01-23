@@ -2,7 +2,7 @@ class Admin::ProperNameTypesController < ApplicationController
   before_action :require_admin_or_manager
   before_action :require_admin, only: [:new, :create, :edit, :update, :changes]
   before_action :find_proper_name_type, only: [:edit, :update, :changes]
-  before_filter :require_xhr, :only => [:new, :create, :edit, :update, :changes]
+  before_filter :require_xhr, :only => [:new, :edit, :changes]
 
   def index
     @proper_name_types = ProperNameType.list_order
