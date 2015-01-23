@@ -82,7 +82,7 @@
       .modal-dialog.modal-lg
         .modal-content#modal-content
 
-  - if Rails.env.production?
+  - if Rails.env.production? && !!current_user
     = render 'shared/analytics'
 
 :javascript
