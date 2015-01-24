@@ -14,7 +14,7 @@ class WorksController < ApplicationController
       @data[general_menu.id] ||= {}
       parent = general_menu.general_menu
       if parent && parent.multipart?
-        @data[general_menu.id][:name] = "#{parent.name}: #{general_menu.name}"
+        @data[general_menu.id][:name] = [parent.name, general_menu.name].uniq.compact.join(': ')
       else
         @data[general_menu.id][:name] = general_menu.name
       end

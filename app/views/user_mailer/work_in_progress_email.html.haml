@@ -1,10 +1,10 @@
 %h3{style: "#{EmailHelper.h3_style}"}
   WORK IN PROGRESS
-  %br/
+%p{style: "#{EmailHelper.p_style}"}
   #{@language.english_name.upcase} TEAM
 
 %p{style: "#{EmailHelper.p_style} text-align: left;"}
-  Period: from #{@from_date.strftime('%b %-d, %Y')} to #{@to_date.strftime('%b %-d, %Y')}.
+  From #{@from_date.strftime('%b %-d, %Y')} to #{@to_date.strftime('%b %-d, %Y')}.
   - if @data.empty?
     %br/
     %br/
