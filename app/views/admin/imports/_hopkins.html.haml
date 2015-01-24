@@ -1,0 +1,16 @@
+%h4 JEFFREY HOPKINS TERMS
+%ul.list-group.special-border
+  %li.list-group-item
+    STEP 1: please obtain up-to-date files ("hopkins-terms.csv" and "hopkins.csv") used in Berzin Archives opencms
+  %li.list-group-item
+    STEP 2: please choose files
+    = form_tag hopkins_admin_imports_path, method: :post, :multipart => true do
+      %fieldset
+        .form-group
+          %label.control-label hopkins-terms.csv
+          = file_field_tag :file_large, :accept => 'text/csv', required: true, autocomplete: 'off'
+        .form-group
+          %label.control-label hopkins.csv
+          = file_field_tag :file_small, :accept => 'text/csv', required: true, autocomplete: 'off'
+        .text-right= submit_tag 'Import', class: 'btn btn-primary btn-sm', data:{confirm: 'Are you sure?'}
+

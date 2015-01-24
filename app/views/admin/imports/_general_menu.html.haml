@@ -1,0 +1,14 @@
+%h4 GENERAL MENU
+%ul.list-group.special-border
+  %li.list-group-item
+    STEP 1:
+    - title = 'Download up-to-date cms general menu and save it to your computer'
+    - url = 'http://www.berzinarchives.com/web/x/data/translation_state/original_resources_and_translations.json'
+    = link_to title, url, target: '_blank'
+  %li.list-group-item
+    STEP 2:
+    Choose the file you've just downloaded, then press Import button
+    = form_tag general_menu_admin_imports_path, method: :post, :multipart => true do
+      %fieldset
+        = file_field_tag :file, :accept => 'text/json', required: true, autocomplete: 'off'
+        .text-right= submit_tag 'Import', class: 'btn btn-primary btn-sm', data:{confirm: 'Are you sure?'}

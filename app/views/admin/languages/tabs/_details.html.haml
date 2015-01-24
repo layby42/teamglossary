@@ -4,7 +4,7 @@
   %fieldset
     .form-group.col-xs-12.col-sm-4
       %label.control-label Code:
-      = f.text_field :iso_code, class: 'form-control', required: true, placeholder: 'Unique code as in cms', autocomplete: 'off', disabled: language.is_base_language? || non_admin
+      = f.text_field :iso_code, class: 'form-control', required: true, placeholder: 'Unique code as in cms', autocomplete: 'off', disabled: (language.is_base_language? || language.hopkins? || non_admin)
       %span.help-block.text-danger= validation_message_for_field(language, :iso_code)
     .form-group.col-xs-12.col-sm-4
       %label.control-label Name:

@@ -43,6 +43,8 @@ class Language < ActiveRecord::Base
   scope :active, -> { where(is_active: true)}
   scope :list_order, -> { order('lower(languages.iso_code)') }
 
+  scope :hopkins, -> {where(iso_code: 'JH')}
+
   scope :except_languages, -> (language_ids) { where('id NOT IN (?)', language_ids) }
 
   validates :iso_code, presence: true, uniqueness: {case_sensitive: false}
@@ -56,7 +58,7 @@ class Language < ActiveRecord::Base
     @base_language = Language.base.first
   end
 
-  def arabic?
-    iso_code == 'AR'
+  def hopkins?
+    iso_code == 'JH'
   end
 end

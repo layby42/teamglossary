@@ -51,6 +51,7 @@ Rails.application.routes.draw do
 
     resources :imports, only: [:index] do
       post :general_menu, on: :collection
+      post :hopkins, on: :collection
     end
 
     resources :help_categories, only: [:index, :new, :create, :edit, :update] do
