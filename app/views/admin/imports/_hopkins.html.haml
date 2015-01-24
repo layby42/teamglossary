@@ -3,14 +3,18 @@
   %li.list-group-item
     STEP 1: please obtain up-to-date files ("hopkins-terms.csv" and "hopkins.csv") used in Berzin Archives opencms
   %li.list-group-item
-    STEP 2: please choose files
+    STEP 2: please specify csv files
     = form_tag hopkins_admin_imports_path, method: :post, :multipart => true do
       %fieldset
-        .form-group
-          %label.control-label Short file first (hopkins.csv)
+        .form-group.col-xs-6
+          %label.control-label hopkins.csv
           = file_field_tag :file_small, :accept => 'text/csv', required: true, autocomplete: 'off'
-        .form-group
-          %label.control-label And now long file (hopkins-terms.csv)
+          %p.help-block comma separated with two columns "Tibetan" and "JH-ENG"
+
+        .form-group.col-xs-6
+          %label.control-label hopkins-terms.csv
           = file_field_tag :file_large, :accept => 'text/csv', required: true, autocomplete: 'off'
+          %p.help-block comma separated with tree columns "TIBETAN", "ENGLISH" and "SANSKRIT"
+
         .text-right= submit_tag 'Import', class: 'btn btn-primary btn-sm', data:{confirm: 'Are you sure?'}
 

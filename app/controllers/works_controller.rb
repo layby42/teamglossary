@@ -2,7 +2,6 @@ class WorksController < ApplicationController
   before_action :find_language
   before_action :find_from_date
   before_action :find_to_date
-  before_action :require_xhr, :only => [:email]
 
   def index
     @data = Kaminari.paginate_array(GeneralMenuAction.simple_search(@language, @from_date, @to_date).to_a).page(params[:page])
@@ -25,6 +24,8 @@ class WorksController < ApplicationController
     end
     UserMailer.work_in_progress_email(current_user, @data, {language: @language, from_date: @from_date, to_date: @to_date}).deliver
     flash_to notice: "Work in progress sent to #{current_user.email}. Please check your mail."
+  ensure
+    redirect_to action: :index
   end
 
   private

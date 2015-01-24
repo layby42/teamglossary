@@ -3,13 +3,19 @@ module ImportHopkinsHelper
 
   def self.import!(file_large, file_small)
     hopkins = {}
+
+    file_attributes = {
+      '0' => { columns: 3},
+      '1' => { columns: 2}
+    }
     # collect terms
-    [file_large, file_small].each do |file|
+    [file_large, file_small].each_with_index do |file, idx|
 
       file_data = file.read
       file_data = file_data.encode("UTF-8", :invalid => :replace, :undef => :replace, :replace => "?")
 
       CSV.parse(file_data) do |row|
+        raise "Invalid CSV format: incorrect number of columns" if row.length != file_attributes[idx.to_s][:columns]
         hopkins[row[0]] = row[1]
       end
     end

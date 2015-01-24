@@ -17,7 +17,7 @@
           %th.col-xs-6
             Work done
             %small.pull-right
-              = link_to email_works_path, class: 'text-muted', data: {confirm: "Are you sure?"}, remote: true do
+              = link_to email_works_path, class: 'text-muted', data: {confirm: "Are you sure?"} do
                 %i.fa.fa-envelope
                 send report to #{current_user.email}
 

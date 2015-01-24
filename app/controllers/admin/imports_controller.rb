@@ -17,8 +17,11 @@ class Admin::ImportsController < ApplicationController
   end
 
   def hopkins
-    raise 'Import file can\'t be blank.' unless params[:file_large].present?
-    raise 'Import file can\'t be blank.' unless params[:file_small].present?
+    [:file_small, :file_large].each do |file_param|
+      raise 'Import file can\'t be blank.' unless params[file_param].present?
+      raise 'Only csv files accepted.' unless params[file_param].content_type == 'text/csv'
+    end
+
     ImportHopkinsHelper.import!(params[:file_large], params[:file_small])
     flash_to notice: 'General menu imported!'
   rescue Exception => ex
