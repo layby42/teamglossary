@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150123195757) do
+ActiveRecord::Schema.define(version: 20150124184343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,14 +47,14 @@ ActiveRecord::Schema.define(version: 20150123195757) do
   create_table "general_menu_translations", force: true do |t|
     t.integer  "language_id"
     t.integer  "general_menu_id"
-    t.string   "name",                limit: 500,                 null: false
+    t.string   "name",                limit: 1000,                 null: false
     t.date     "online"
     t.text     "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "additional_text"
     t.date     "cms_updated"
-    t.boolean  "synchronized",                    default: false, null: false
+    t.boolean  "synchronized",                     default: false, null: false
     t.datetime "updated_from_cms_at"
   end
 
@@ -62,15 +62,15 @@ ActiveRecord::Schema.define(version: 20150123195757) do
 
   create_table "general_menus", force: true do |t|
     t.integer  "general_menu_id"
-    t.string   "cms_name",                                        null: false
-    t.string   "name",                limit: 500,                 null: false
-    t.integer  "sequence",                                        null: false
+    t.string   "cms_name",                                         null: false
+    t.string   "name",                limit: 1000,                 null: false
+    t.integer  "sequence",                                         null: false
     t.text     "remark"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "item_type",                       default: "F",   null: false
-    t.integer  "language_id",                     default: 3,     null: false
-    t.boolean  "synchronized",                    default: false, null: false
+    t.string   "item_type",                        default: "F",   null: false
+    t.integer  "language_id",                      default: 3,     null: false
+    t.boolean  "synchronized",                     default: false, null: false
     t.string   "length_type"
     t.text     "additional_text"
     t.date     "cms_updated"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20150123195757) do
     t.string   "full_cms_path"
     t.date     "online"
     t.datetime "updated_from_cms_at"
-    t.integer  "level",                           default: 0,     null: false
+    t.integer  "level",                            default: 0,     null: false
   end
 
   add_index "general_menus", ["general_menu_id", "sequence", "name"], name: "index_general_menus_on_general_menu_id_and_sequence_and_name", using: :btree
@@ -99,13 +99,13 @@ ActiveRecord::Schema.define(version: 20150123195757) do
   add_index "general_statuses", ["is_private"], name: "index_general_statuses_on_is_private", using: :btree
 
   create_table "glossary_name_translations", force: true do |t|
-    t.integer  "language_id",           null: false
-    t.integer  "glossary_name_id",      null: false
-    t.integer  "integration_status_id", null: false
-    t.string   "term",                  null: false
-    t.string   "alt_term1"
-    t.string   "alt_term2"
-    t.string   "alt_term3"
+    t.integer  "language_id",                        null: false
+    t.integer  "glossary_name_id",                   null: false
+    t.integer  "integration_status_id",              null: false
+    t.string   "term",                  limit: 1000, null: false
+    t.string   "alt_term1",             limit: 1000
+    t.string   "alt_term2",             limit: 1000
+    t.string   "alt_term3",             limit: 1000
     t.text     "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -115,15 +115,15 @@ ActiveRecord::Schema.define(version: 20150123195757) do
   add_index "glossary_name_translations", ["language_id", "glossary_name_id"], name: "glossary_name_translations_language_glossary_name", unique: true, using: :btree
 
   create_table "glossary_names", force: true do |t|
-    t.integer  "language_id",                           null: false
-    t.integer  "proper_name_type_id",                   null: false
-    t.integer  "integration_status_id",                 null: false
-    t.string   "term",                                  null: false
+    t.integer  "language_id",                                        null: false
+    t.integer  "proper_name_type_id",                                null: false
+    t.integer  "integration_status_id",                              null: false
+    t.string   "term",                  limit: 1000,                 null: false
     t.string   "tibetan"
     t.string   "sanskrit"
     t.text     "explanation"
-    t.boolean  "is_private",            default: false, null: false
-    t.boolean  "deleted",               default: false, null: false
+    t.boolean  "is_private",                         default: false, null: false
+    t.boolean  "deleted",                            default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "dates"
@@ -154,15 +154,15 @@ ActiveRecord::Schema.define(version: 20150123195757) do
   add_index "glossary_term_definitions", ["glossary_term_id"], name: "index_glossary_term_definitions_on_glossary_term_id", using: :btree
 
   create_table "glossary_term_translations", force: true do |t|
-    t.integer  "language_id",           null: false
-    t.integer  "glossary_term_id",      null: false
-    t.integer  "integration_status_id", null: false
-    t.string   "term",                  null: false
+    t.integer  "language_id",                        null: false
+    t.integer  "glossary_term_id",                   null: false
+    t.integer  "integration_status_id",              null: false
+    t.string   "term",                  limit: 1000, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "alt_term1"
-    t.string   "alt_term2"
-    t.string   "alt_term3"
+    t.string   "alt_term1",             limit: 1000
+    t.string   "alt_term2",             limit: 1000
+    t.string   "alt_term3",             limit: 1000
     t.text     "notes"
     t.string   "term_gender"
     t.text     "definition"
@@ -172,27 +172,27 @@ ActiveRecord::Schema.define(version: 20150123195757) do
   add_index "glossary_term_translations", ["language_id", "glossary_term_id"], name: "glossary_term_translations_language_glossary_term", unique: true, using: :btree
 
   create_table "glossary_terms", force: true do |t|
-    t.integer  "language_id",                            null: false
-    t.integer  "reference_type_id",                      null: false
-    t.integer  "general_status_id",                      null: false
-    t.integer  "integration_status_id",                  null: false
+    t.integer  "language_id",                                         null: false
+    t.integer  "reference_type_id",                                   null: false
+    t.integer  "general_status_id",                                   null: false
+    t.integer  "integration_status_id",                               null: false
     t.integer  "glossary_term_id"
-    t.string   "term",                                   null: false
+    t.string   "term",                   limit: 1000,                 null: false
     t.string   "tibetan"
     t.string   "sanskrit"
     t.string   "pali"
-    t.boolean  "is_private",             default: false, null: false
+    t.boolean  "is_private",                          default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "deleted",                default: false
-    t.integer  "sanskrit_status_id",                     null: false
+    t.boolean  "deleted",                             default: false
+    t.integer  "sanskrit_status_id",                                  null: false
     t.string   "alternative_tibetan"
     t.string   "alternative_sanskrit"
     t.text     "additional_explanation"
     t.string   "sanskrit_gender"
     t.string   "pali_gender"
     t.text     "definition"
-    t.boolean  "is_definition_private",  default: false, null: false
+    t.boolean  "is_definition_private",               default: false, null: false
     t.text     "rejected_because"
   end
 
@@ -203,13 +203,13 @@ ActiveRecord::Schema.define(version: 20150123195757) do
   add_index "glossary_terms", ["language_id", "term"], name: "index_glossary_terms_on_language_id_and_term", unique: true, using: :btree
 
   create_table "glossary_title_translations", force: true do |t|
-    t.integer  "language_id",           null: false
-    t.integer  "glossary_title_id",     null: false
-    t.integer  "integration_status_id", null: false
-    t.string   "term",                  null: false
-    t.string   "alt_term1"
-    t.string   "alt_term2"
-    t.string   "alt_term3"
+    t.integer  "language_id",                        null: false
+    t.integer  "glossary_title_id",                  null: false
+    t.integer  "integration_status_id",              null: false
+    t.string   "term",                  limit: 1000, null: false
+    t.string   "alt_term1",             limit: 1000
+    t.string   "alt_term2",             limit: 1000
+    t.string   "alt_term3",             limit: 1000
     t.string   "author"
     t.text     "notes"
     t.datetime "created_at"
@@ -220,9 +220,9 @@ ActiveRecord::Schema.define(version: 20150123195757) do
   add_index "glossary_title_translations", ["language_id", "glossary_title_id"], name: "glossary_title_translations_language_glossary_title", unique: true, using: :btree
 
   create_table "glossary_titles", force: true do |t|
-    t.integer  "language_id",                            null: false
-    t.integer  "integration_status_id",                  null: false
-    t.string   "term",                                   null: false
+    t.integer  "language_id",                                         null: false
+    t.integer  "integration_status_id",                               null: false
+    t.string   "term",                   limit: 1000,                 null: false
     t.string   "author"
     t.string   "tibetan_full"
     t.string   "tibetan_short"
@@ -231,14 +231,14 @@ ActiveRecord::Schema.define(version: 20150123195757) do
     t.string   "sanskrit_full_diacrit"
     t.string   "sanskrit_short_diacrit"
     t.text     "explanation"
-    t.boolean  "is_private",             default: false, null: false
-    t.boolean  "deleted",                default: false, null: false
+    t.boolean  "is_private",                          default: false, null: false
+    t.boolean  "deleted",                             default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "author_translit"
-    t.string   "alt_term1"
-    t.string   "alt_term2"
-    t.string   "popular_term"
+    t.string   "alt_term1",              limit: 1000
+    t.string   "alt_term2",              limit: 1000
+    t.string   "popular_term",           limit: 1000
     t.string   "pali"
     t.text     "rejected_because"
   end

@@ -5,7 +5,7 @@
 #  id                  :integer          not null, primary key
 #  general_menu_id     :integer
 #  cms_name            :string(255)      not null
-#  name                :string(500)      not null
+#  name                :string(1000)     not null
 #  sequence            :integer          not null
 #  remark              :text
 #  created_at          :datetime

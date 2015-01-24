@@ -7,10 +7,10 @@
     = form_tag hopkins_admin_imports_path, method: :post, :multipart => true do
       %fieldset
         .form-group
-          %label.control-label hopkins-terms.csv
-          = file_field_tag :file_large, :accept => 'text/csv', required: true, autocomplete: 'off'
-        .form-group
-          %label.control-label hopkins.csv
+          %label.control-label Short file first (hopkins.csv)
           = file_field_tag :file_small, :accept => 'text/csv', required: true, autocomplete: 'off'
+        .form-group
+          %label.control-label And now long file (hopkins-terms.csv)
+          = file_field_tag :file_large, :accept => 'text/csv', required: true, autocomplete: 'off'
         .text-right= submit_tag 'Import', class: 'btn btn-primary btn-sm', data:{confirm: 'Are you sure?'}
 

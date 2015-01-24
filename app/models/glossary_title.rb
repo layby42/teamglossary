@@ -6,7 +6,7 @@
 #  id                     :integer          not null, primary key
 #  language_id            :integer          not null
 #  integration_status_id  :integer          not null
-#  term                   :string(255)      not null
+#  term                   :string(1000)     not null
 #  author                 :string(255)
 #  tibetan_full           :string(255)
 #  tibetan_short          :string(255)
@@ -20,9 +20,9 @@
 #  created_at             :datetime
 #  updated_at             :datetime
 #  author_translit        :string(255)
-#  alt_term1              :string(255)
-#  alt_term2              :string(255)
-#  popular_term           :string(255)
+#  alt_term1              :string(1000)
+#  alt_term2              :string(1000)
+#  popular_term           :string(1000)
 #  pali                   :string(255)
 #  rejected_because       :text
 #

@@ -9,7 +9,7 @@
 #  general_status_id      :integer          not null
 #  integration_status_id  :integer          not null
 #  glossary_term_id       :integer
-#  term                   :string(255)      not null
+#  term                   :string(1000)     not null
 #  tibetan                :string(255)
 #  sanskrit               :string(255)
 #  pali                   :string(255)
@@ -65,6 +65,14 @@ class GlossaryTerm < ActiveRecord::Base
 
   SEARCH_TRANSLATION_COLUMNS = [:term, :alt_term1, :alt_term2, :alt_term3, :notes, :definition]
   SEARCH_DEFAULT_TRANSLATION_COLUMNS = [:term, :alt_term1, :alt_term2, :alt_term3, :definition]
+
+  def tibetan=(value)
+    self[:tibetan] = (value ? value.gsub('‘', '''') : value)
+  end
+
+  def alternative_tibetan=(value)
+    self[:alternative_tibetan] = (value ? value.gsub('‘', '''') : value)
+  end
 
   def is_public?
     is_private == false

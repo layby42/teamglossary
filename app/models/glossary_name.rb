@@ -7,7 +7,7 @@
 #  language_id           :integer          not null
 #  proper_name_type_id   :integer          not null
 #  integration_status_id :integer          not null
-#  term                  :string(255)      not null
+#  term                  :string(1000)     not null
 #  tibetan               :string(255)
 #  sanskrit              :string(255)
 #  explanation           :text

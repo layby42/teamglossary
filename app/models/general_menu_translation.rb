@@ -5,7 +5,7 @@
 #  id                  :integer          not null, primary key
 #  language_id         :integer
 #  general_menu_id     :integer
-#  name                :string(500)      not null
+#  name                :string(1000)     not null
 #  online              :date
 #  notes               :text
 #  created_at          :datetime
