@@ -2,10 +2,29 @@ class WorksController < ApplicationController
   before_action :find_language
   before_action :find_from_date
   before_action :find_to_date
+  before_action :require_xhr, :only => [:email]
 
   def index
     @data = Kaminari.paginate_array(GeneralMenuAction.simple_search(@language, @from_date, @to_date).to_a).page(params[:page])
-    p @data
+  end
+
+  def email
+    @data = {}
+    GeneralMenuAction.simple_search(@language, @from_date, @to_date).each do |general_menu, general_menu_actions|
+      @data[general_menu.id] ||= {}
+      parent = general_menu.general_menu
+      if parent && parent.multipart?
+        @data[general_menu.id][:name] = "#{parent.name}: #{general_menu.name}"
+      else
+        @data[general_menu.id][:name] = general_menu.name
+      end
+      @data[general_menu.id][:work_done] = general_menu_actions.inject([]) do |result, action|
+        result << (action.end_date.present? ? action.task.title_complete.downcase : "sent for #{action.task.title.downcase}")
+        result
+      end.reverse.uniq.join(', ')
+    end
+    UserMailer.work_in_progress_email(current_user, @data, {language: @language, from_date: @from_date, to_date: @to_date}).deliver
+    flash_to notice: "Work in progress sent to #{current_user.email}. Please check your mail."
   end
 
   private
@@ -39,5 +58,11 @@ class WorksController < ApplicationController
       @to_date = Date.parse(current_user.get_setting_value(:work_to_date)) rescue nil
     end
     @to_date ||= Time.zone.now.end_of_week
+  end
+
+  def require_xhr
+    unless request.xhr?
+      redirect_to works_path
+    end
   end
 end

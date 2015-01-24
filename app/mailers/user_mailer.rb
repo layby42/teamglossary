@@ -31,4 +31,17 @@ class UserMailer < ActionMailer::Base
       :subject => 'Welcome to Team Glossary'
     )
   end
+
+  def work_in_progress_email(user, data, options={})
+    @user = user
+    @data = data
+    @language = options[:language]
+    @from_date = options[:from_date]
+    @to_date = options[:to_date]
+
+    mail(
+      :to => @user.email,
+      :subject => "work in progress (#{@to_date.strftime('%B %-d, %Y')})"
+    )
+  end
 end

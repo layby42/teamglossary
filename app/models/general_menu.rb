@@ -132,6 +132,10 @@ class GeneralMenu < ActiveRecord::Base
     item_type == 'F'
   end
 
+  def multipart?
+    folder? && length_type.to_s.include?(' + ')
+  end
+
   def item_type_name
     case item_type
     when 'F'

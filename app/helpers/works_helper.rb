@@ -10,6 +10,6 @@ module WorksHelper
     general_menu_actions.inject([]) do |result, action|
       result << (action.end_date.present? ? action.task.title_complete.downcase : "sent for #{action.task.title.downcase}")
       result
-    end.reverse.join(', ')
+    end.reverse.uniq.join(', ')
   end
 end

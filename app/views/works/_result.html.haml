@@ -6,22 +6,33 @@
           Period:
           %small.text-primary
             = "#{@from_date} - #{@to_date}"
-
       Found
       %span.badge #{@data.total_count}
+
 .row
   .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
     %table.table.table-striped.table-bordered
       %thead
         %tr
-          %th.col-xs-6 Work done
-          %th.col-xs-6 Details
+          %th.col-xs-6
+            Work done
+            %small.pull-right
+              = link_to email_works_path, class: 'text-muted', data: {confirm: "Are you sure?"}, remote: true do
+                %i.fa.fa-envelope
+                send report to #{current_user.email}
+
+          %th.col-xs-6
+            Details
+
       %tbody#works_table
         - period = (@from_date..@to_date)
         - @data.each do |item|
           %tr.works_table_row
             %td
               = link_to item[0].name, language_general_menu_path(@language, item[0])
+              - parent = item[0].general_menu
+              - if parent && parent.multipart?
+                of #{parent.name}
               %br/
               %b= work_in_progress_short_helper(item[1])
             %td

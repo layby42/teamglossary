@@ -1,0 +1,24 @@
+%h3{style: "#{EmailHelper.h3_style}"}
+  WORK IN PROGRESS
+  %br/
+  #{@language.english_name.upcase} TEAM
+
+%p{style: "#{EmailHelper.p_style} text-align: left;"}
+  Period: from #{@from_date.strftime('%b %-d, %Y')} to #{@to_date.strftime('%b %-d, %Y')}.
+  - if @data.empty?
+    %br/
+    %br/
+    Nothing was finished.
+  - else
+    - @data.each do |id, values|
+      %br/
+      %br/
+      #{values[:name]}
+      %br/
+      = "* #{values[:work_done]}"
+
+  %br/
+  %br/
+  Kind wishes,
+  %br/
+  Your Team Glossary
