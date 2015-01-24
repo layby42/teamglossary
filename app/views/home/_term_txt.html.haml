@@ -3,6 +3,12 @@
   %td{style: bottom_link_style_helper(item_language_team)}
     = render 'shared/term_marks', language: language, term: item
 
+    - if manager_or_editor_language_ids.include?(item.language_id)
+      .pull-right
+        = link_to edit_language_glossary_title_path(language, item), class: 'text-muted' do
+          %i.fa.fa-edit
+          edit term
+
     %strong
       = link_to item.term, language_glossary_title_path(item.language, item), remote: true
 
@@ -10,11 +16,10 @@
       .text-left
         %i -- #{item.author}
 
-    - if manager_or_editor_language_ids.include?(item.language_id)
-      .text-right
-        = link_to edit_language_glossary_title_path(language, item), class: 'text-muted' do
-          %i.fa.fa-edit
-          edit term
+    - tibetan_text = [item.tibetan_full, item.tibetan_short].compact.join('; ')
+    - if tibetan_text.present?
+      %br/
+      %small (#{tibetan_text})
 
     - if item.explanation.present?
       %br/

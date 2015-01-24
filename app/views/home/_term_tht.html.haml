@@ -3,14 +3,19 @@
   %td{style: bottom_link_style_helper(item_language_team)}
     = render 'shared/term_marks', language: language, term: item
 
-    %strong
-      = link_to item.term, language_glossary_term_path(item.language, item), remote: true
-
     - if manager_or_editor_language_ids.include?(item.language_id)
-      .text-right
+      .pull-right
         = link_to edit_language_glossary_term_path(language, item), class: 'text-muted' do
           %i.fa.fa-edit
           edit term
+
+    %strong
+      = link_to item.term, language_glossary_term_path(item.language, item), remote: true
+
+    - tibetan_text = [item.tibetan, item.alternative_tibetan].compact.join('; ')
+    - if tibetan_text.present?
+      %br/
+      %small (#{tibetan_text})
 
     - if item.definition.present?
       %br/

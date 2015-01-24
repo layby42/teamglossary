@@ -16,7 +16,7 @@
 #
 
 class GeneralMenuAction < ActiveRecord::Base
-  strip_attributes :only => [:name]
+  strip_attributes :only => [:name, :action]
   has_paper_trail :ignore => [:created_at, :updated_at]
 
   belongs_to :task

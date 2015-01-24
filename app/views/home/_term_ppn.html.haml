@@ -3,16 +3,20 @@
   %td{style: bottom_link_style_helper(item_language_team)}
     = render 'shared/term_marks', language: language, term: item
 
-    %strong
-      = link_to item.term, language_glossary_name_path(item.language, item), remote: true
-    - if item.dates.present?
-      (#{item.dates})
-
     - if manager_or_editor_language_ids.include?(item.language_id)
-      .text-right
+      .pull-right
         = link_to edit_language_glossary_name_path(language, item), class: 'text-muted' do
           %i.fa.fa-edit
           edit term
+
+    %strong
+      = link_to item.term, language_glossary_name_path(item.language, item), remote: true
+    - if item.tibetan.present?
+      %br/
+      %small (#{item.tibetan})
+    - if item.dates.present?
+      %br/
+      %small (#{item.dates})
 
     - if item.explanation.present?
       %br/
