@@ -40,7 +40,9 @@ class GeneralMenu < ActiveRecord::Base
   scope :search_order, -> { order('lower(general_menus.name)') }
   scope :list_order, -> { order('general_menus.sequence') }
 
-  scope :broken, -> { where('general_menus.updated_from_cms_at IS NULL AND general_menus.synchronized')}
+  scope :broken, -> { where(%q{
+    (general_menus.updated_from_cms_at IS NULL AND general_menus.synchronized)
+    })}
 
   validates :cms_name, :name, :language_id, presence: true
 
@@ -163,13 +165,13 @@ class GeneralMenu < ActiveRecord::Base
   end
 
 
-  def self.fix_level!(parent=nil)
-    GeneralMenu.where(general_menu_id: parent.try(:id)).each do |item|
-      level = parent ? (parent.level + 1) : 0
-      if item.level != level
-        item.update_attributes!(level: level)
-      end
-      GeneralMenu.fix_level!(item)
-    end
-  end
+  # def self.fix_level!(parent=nil)
+  #   GeneralMenu.where(general_menu_id: parent.try(:id)).each do |item|
+  #     level = parent ? (parent.level + 1) : 0
+  #     if item.level != level
+  #       item.update_attributes!(level: level)
+  #     end
+  #     GeneralMenu.fix_level!(item)
+  #   end
+  # end
 end
