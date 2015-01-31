@@ -1,4 +1,13 @@
 - @categories.each do |help_category|
+  - help_articles = current_user.admin? ? help_category.help_articles : help_category.help_articles.select{|a| a.published?}
+  - next unless help_articles.length > 0
   .col-sm-6.col-xs-12
-    %h5= help_category.title.upcase
-    TODO
+    %h5
+      = help_category.title.upcase
+
+    - help_articles.sort{|x, y| x.title <=> y.title}.each do |article|
+      - if article.draft?
+        %span.label.label-warning draft
+      = link_to help_article_path(article) do
+        #{article.title}
+      %br/

@@ -13,11 +13,20 @@
 
 class HelpArticle < ActiveRecord::Base
   strip_attributes :only => [:title, :body]
-  has_paper_trail :ignore => [:created_at, :updated_at]
+  # has_paper_trail :ignore => [:created_at, :updated_at]
 
   belongs_to :help_category
 
   scope :published, -> {where('help_articles.published_at IS NOT NULL')}
   scope :list_order, -> {order('help_articles.title')}
 
+  validates :help_category_id, :title, presence: true
+
+  def published?
+    published_at.present?
+  end
+
+  def draft?
+    !published?
+  end
 end

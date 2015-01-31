@@ -32,7 +32,8 @@ module TeamGlossary
       *.svg
       *.eot
       *.woff
-      *.ttf)
+      *.ttf,
+      teamglossary-ckeditor.js)
 
   end
 end

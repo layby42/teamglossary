@@ -13,6 +13,7 @@ gem 'jquery-rails'
 gem 'kaminari'
 gem 'paper_trail'
 gem 'exception_notification'
+gem 'ckeditor'
 
 group :assets do
   gem 'sass-rails', '~> 4.0.3'

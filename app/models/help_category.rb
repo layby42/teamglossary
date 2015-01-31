@@ -17,6 +17,7 @@ class HelpCategory < ActiveRecord::Base
   belongs_to :glossary_type
   has_many :help_articles
 
+  scope :general, -> { where(glossary_type_id: nil) }
   scope :list_order, -> {order('help_categories.sorting')}
 
   validates :title, presence: true

@@ -1,0 +1,25 @@
+- url = article.new_record? ? help_articles_path : help_article_path(article)
+= form_for article, url: url, :html => {:class => 'form-vertical'} do |f|
+  .form-group
+    %label.control-label Category
+    = f.select :help_category_id, help_category_options(article.help_category_id), {include_blank: true},  {:autocomplete => 'off', :class => 'form-control', required: true}
+    .text-right
+      %small= link_to 'Manage Help Categories', admin_help_categories_path
+
+  .form-group
+    %label.control-label Article Title
+    = f.text_field :title, :autocomplete => 'off', :class => 'form-control', required: true
+
+  .form-group
+    %label.control-label Article Content
+    = f.cktext_area :body, :value => raw(article.body), :class => 'form-control', ckeditor: {language: 'en'}
+
+  .form-group
+    .checkbox
+      %label
+        = check_box_tag 'do_publish_article', true, article.published_at.present?, autocomplete: 'off'
+        %b Save and Publish Article
+
+  .form-group
+    .text-right
+      = f.submit 'Save Changes', class: 'btn btn-primary'

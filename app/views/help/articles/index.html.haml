@@ -1,13 +1,19 @@
-%h3.text-center
-  Help Center
+.row
+  .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
+    %h3.text-center
+      Help Center
 
-.panel.panel-default
-  .panel-body
-    .row
-      .col-sm-4.col-sm-offset-4.col-xs-12
-        = form_tag url_for(action: :index), method: :get, remote: true, id: :help_form do
-          = select_tag 'help[glossary_type_id]', glossary_type_options(@glossary_type_id, {include_blank: ['General', nil]}), class: 'form-control col-xs-4', autocomplete: 'off'
-    %hr
+    .panel.panel-default
+      .panel-body
+        .row
+          .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
+            = form_tag url_for(action: :index), method: :get, remote: true, id: :help_form do
+              = select_tag 'help[glossary_type_id]', glossary_type_options(@glossary_type_id, {include_blank: ['General', nil]}), class: 'form-control col-xs-4', autocomplete: 'off'
 
-    #articles_result.row
-      = render 'articles'
+        %hr
+        - if current_user.admin?
+          .pull-right
+            = render 'shared/add_new_button', url: new_help_article_path, remote: false, title: 'Add article'
+
+        #articles_result.row
+          = render 'articles'

@@ -15,4 +15,4 @@
 //= require bootstrap
 //= require bootstrap-datepicker
 //= require jquery.infinitescroll
-//= require_tree .
+//= require_tree ./app

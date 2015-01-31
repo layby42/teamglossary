@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   resources :password_resets, :only => [:new, :create, :edit, :update]
 
   namespace :help do |admin|
-    resources :articles, only: [:index]
+    resources :articles
   end
 
   namespace :admin do |admin|
