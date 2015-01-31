@@ -29,10 +29,11 @@
         - @data.each do |item|
           %tr.works_table_row
             %td
-              = link_to item[0].name, language_general_menu_path(@language, item[0])
               - parent = item[0].general_menu
-              - if parent && parent.multipart?
-                of #{parent.name}
+              - if parent && parent.multipart? && (parent.name.downcase != item[0].name.downcase)
+                %small #{parent.name}
+                %br/
+              = link_to item[0].name, language_general_menu_path(@language, item[0])
               %br/
               %b= work_in_progress_short_helper(item[1])
             %td

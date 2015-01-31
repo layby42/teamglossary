@@ -12,8 +12,8 @@ class WorksController < ApplicationController
     GeneralMenuAction.simple_search(@language, @from_date, @to_date).each do |general_menu, general_menu_actions|
       @data[general_menu.id] ||= {}
       parent = general_menu.general_menu
-      if parent && parent.multipart?
-        @data[general_menu.id][:name] = [parent.name, general_menu.name].uniq.compact.join(': ')
+      if parent && parent.multipart? && (parent.name.downcase != general_menu.name.downcase)
+        @data[general_menu.id][:name] = [parent.name, general_menu.name].join(': ')
       else
         @data[general_menu.id][:name] = general_menu.name
       end

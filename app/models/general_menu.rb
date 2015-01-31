@@ -133,7 +133,7 @@ class GeneralMenu < ActiveRecord::Base
   end
 
   def multipart?
-    folder? && length_type.to_s.include?(' + ')
+    folder? && length_type.to_s.include?(' + ') || (length_type.to_s.downcase == 'multipart text')
   end
 
   def item_type_name
