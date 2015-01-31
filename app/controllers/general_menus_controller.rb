@@ -1,5 +1,6 @@
 class GeneralMenusController < LanguagesController
   before_filter :find_language
+  before_action :require_admin, only: [:destroy]
   before_filter :find_general_menu, only: [:show, :changes, :open, :destroy]
 
   before_filter :require_xhr, :only => [:changes]
@@ -21,10 +22,6 @@ class GeneralMenusController < LanguagesController
   def destroy
     if @general_menu.general_menus.count > 0
       raise 'Sorry, you cannot delete general menu item because it has nested general menu items.'
-    end
-
-    if @general_menu.general_menu_translations.count > 0
-      raise 'Sorry, you cannot delete general menu item because it has translations.'
     end
 
     if @general_menu.general_menu_actions.count > 0

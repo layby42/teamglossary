@@ -31,7 +31,7 @@ class GeneralMenu < ActiveRecord::Base
   belongs_to :general_menu
 
   has_many :general_menus
-  has_many :general_menu_translations
+  has_many :general_menu_translations, dependent: :destroy
   has_many :general_menu_actions
 
   has_many :comments, as: :commentable, dependent: :destroy
