@@ -1,0 +1,54 @@
+.row
+  .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
+    %h4
+      .pull-right
+        %h5
+          Period:
+          %small.text-primary
+            = "#{@from_date} - #{@to_date}"
+      Found
+      %span.badge #{@data.total_count}
+
+.row
+  .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
+    %table.table.table-striped.table-bordered
+      %thead
+        %tr
+          %th.col-xs-2
+            Date (UTC)
+          %th.col-xs-2
+            Who
+          %th.col-xs-5
+            Commented
+          %th.col-xs-3
+            What
+
+      %tbody#discussions_table
+        - item_language_team = team_ids.include?(@language.id)
+        - @data.each do |comment|
+          - item = comment.commentable
+          - next unless item
+          %tr.discussions_table_row
+            %td
+              %small= comment.created_at.strftime('%b %d, %Y %H:%M')
+            %td= comment.user.name
+            %td{style: bottom_link_style_helper(item_language_team)}
+              = comment.text
+              - if item_language_team
+                .div{style: 'position: absolute; bottom: 0; right: 8px;'}
+                  = link_to new_language_comment_path(@language, commentable_type: item.class.to_s, commentable_id: item.id), class: 'text-muted', remote: true do
+                    %i.fa.fa-reply-all
+                    reply
+            %td= item.term
+
+    - if @data.empty?
+      Sorry, no discussions found
+
+.row
+  .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
+    .pagination.pagination-centered
+      - params.clear
+      = paginate @data, :params => {:controller => 'comments', :action => 'index'}
+
+:javascript
+  #{ render :partial => 'infinitescroll.js' }

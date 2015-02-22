@@ -12,3 +12,8 @@
       %fieldset
         = file_field_tag :file, :accept => 'text/json', required: true, autocomplete: 'off'
         .text-right= submit_tag 'Import', class: 'btn btn-primary btn-sm', data:{confirm: 'Are you sure?'}
+  %li.list-group-item
+    STEP 3:
+    After import, please check
+    = link_to 'diagnostics', admin_diagnostics_path
+    for possible problems with genaral menu

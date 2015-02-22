@@ -1,0 +1,9 @@
+$('#discussions_table').infinitescroll({
+    navSelector: ".pagination",
+    nextSelector: ".pagination a[rel=next]",
+    itemSelector: ".discussions_table_row",
+    loading: {
+        msgText: "<em>Loading...</em>",
+        finishedMsg: "<em>All comments have been loaded.</em>"
+    }
+});

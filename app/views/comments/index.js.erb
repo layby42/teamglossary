@@ -1,0 +1,12 @@
+$('#discussion_result').html('<%=j render "result" %>');
+
+$('#discussions_table').each(function() {
+    var instance = $.data(this, 'infinitescroll');
+    if (instance) {
+        instance.unbind();
+        instance.destroy();
+        $.data(this, 'infinitescroll', null);
+    }
+});
+
+<%= render :partial => 'infinitescroll.js' %>

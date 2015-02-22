@@ -122,6 +122,8 @@ Rails.application.routes.draw do
     resources :comments, only: [:new, :create, :destroy]
   end
 
+  resources :comments, only: [:index]
+
   resources :works, only: [:index] do
     get :email, on: :collection
   end

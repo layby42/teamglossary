@@ -1,10 +1,18 @@
 class CommentsController < LanguagesController
-  before_filter :find_language
+  before_filter :find_language, except: [:index]
   before_filter :find_commentable, only: [:new, :create]
   before_filter :find_show_comments, only: [:new, :create]
   before_filter :find_comment, only: [:destroy]
 
-  before_filter :require_xhr
+  before_filter :find_list_language, only: [:index]
+  before_filter :find_list_from_date, only: [:index]
+  before_filter :find_list_to_date, only: [:index]
+
+  before_filter :require_xhr, except: [:index]
+
+  def index
+    @data = Kaminari.paginate_array(Comment.simple_search(@language, @from_date, @to_date)).page(params[:page])
+  end
 
   def new
     @comment = @commentable.comments.by_language(@language.id).new
@@ -77,6 +85,37 @@ class CommentsController < LanguagesController
     flash_to error: 'Sorry, comment not found'
     render action: :refresh
     return
+  end
+
+  def find_list_language
+    if params[:filter].present?
+      Setting.update_value!(current_user, :discussion_language, params[:filter][:language_id])
+      @language = Language.active.where(id: params[:filter][:language_id]).first
+    else
+      language_id = current_user.get_setting_value(:discussion_language)
+      @language = Language.active.where(id: language_id).first if language_id
+    end
+    @language ||= Language.active.first
+  end
+
+  def find_list_from_date
+    if params[:filter].present?
+      @from_date = Date.parse(params[:filter][:from_date]) rescue Time.zone.now.beginning_of_week.to_date
+      Setting.update_value!(current_user, :discussion_from_date, @from_date.to_date)
+    else
+      @from_date = Date.parse(current_user.get_setting_value(:discussion_from_date)) rescue nil
+    end
+    @from_date ||= Time.zone.now.beginning_of_week.to_date
+  end
+
+  def find_list_to_date
+    if params[:filter].present?
+      @to_date = Date.parse(params[:filter][:to_date]) rescue Time.zone.now.end_of_week.to_date
+      Setting.update_value!(current_user, :discussion_to_date, @to_date.to_date)
+    else
+      @to_date = Date.parse(current_user.get_setting_value(:discussion_to_date)) rescue nil
+    end
+    @to_date ||= Time.zone.now.end_of_week.to_date
   end
 
   def require_xhr
