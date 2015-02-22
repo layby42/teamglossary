@@ -39,7 +39,8 @@
                   = link_to new_language_comment_path(@language, commentable_type: item.class.to_s, commentable_id: item.id), class: 'text-muted', remote: true do
                     %i.fa.fa-reply-all
                     reply
-            %td= item.term
+            %td
+              = link_to item.term, show_glossary_term_url_helper(@language, item), remote: true
 
     - if @data.empty?
       Sorry, no discussions found
