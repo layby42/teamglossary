@@ -61,10 +61,10 @@ class GlossaryTerm < ActiveRecord::Base
 
   SEARCH_DEFAULT_COLUMNS = [
     :term, :tibetan, :sanskrit, :pali,
-    :alternative_tibetan, :alternative_sanskrit, :definition]
+    :alternative_tibetan, :alternative_sanskrit]
 
   SEARCH_TRANSLATION_COLUMNS = [:term, :alt_term1, :alt_term2, :alt_term3, :notes, :definition]
-  SEARCH_DEFAULT_TRANSLATION_COLUMNS = [:term, :alt_term1, :alt_term2, :alt_term3, :definition]
+  SEARCH_DEFAULT_TRANSLATION_COLUMNS = [:term, :alt_term1, :alt_term2, :alt_term3]
 
   def tibetan=(value)
     self[:tibetan] = (value ? value.gsub('‘', '''') : value)
