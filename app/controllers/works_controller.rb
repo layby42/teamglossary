@@ -4,7 +4,7 @@ class WorksController < ApplicationController
   before_action :find_to_date
 
   def index
-    @data = Kaminari.paginate_array(GeneralMenuAction.simple_search(@language, @from_date, @to_date)).page(params[:page])
+    @data = Kaminari.paginate_array(GeneralMenuAction.simple_search(@language, @from_date, @to_date).to_a).page(params[:page])
   end
 
   def email
