@@ -15,7 +15,7 @@
 
 :javascript
   $(function() {
-    $('.edit_date').datepicker().on('changeDate', function(ev){
+    $('.edit_date').datepicker({weekStart: 1}).on('changeDate', function(ev){
       $('.edit_date').datepicker('hide');
     });
   });
