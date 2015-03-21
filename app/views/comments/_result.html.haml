@@ -30,7 +30,11 @@
           - next unless item
           %tr.discussions_table_row
             %td
-              %small= comment.created_at.strftime('%b %d, %Y %H:%M')
+              %small
+                - if current_user.admin?
+                  = link_to comment.created_at.strftime('%b %d, %Y %H:%M'), edit_language_comment_path(comment.language_id, comment, show_comments: false), remote: true
+                - else
+                  = comment.created_at.strftime('%b %d, %Y %H:%M')
             %td= comment.user.name
             %td{style: bottom_link_style_helper(item_language_team)}
               = comment.text

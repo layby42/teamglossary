@@ -13,6 +13,12 @@
           = hidden_field_tag :commentable_id, @commentable.id
           = hidden_field_tag :show_comments, @show_comments
 
+          - if !@comment.new_record? && current_user.admin?
+            .form-group.row
+              %label.col-sm-12.control-label Move to Team
+              .col-sm-12
+                = select_tag :new_language_id, active_language_options(@language.id), class: 'form-control', autocomplete: 'off'
+
           .form-group.row
             %label.col-sm-12.control-label
               Comment
@@ -22,7 +28,7 @@
                 - else
                   (please use only #{base_language.english_name} or #{@language.english_name})
             .col-sm-12
-              = f.text_area :text, class: 'form-control', rows: 3, autocomplete: 'off', placeholder: 'Add your comment here', required: true
+              = f.text_area :text, class: 'form-control', rows: 3, autocomplete: 'off', placeholder: 'Add your comment here', required: true, disabled: !@comment.new_record?
 
           .form-group.row
             .col-sm-12.text-right

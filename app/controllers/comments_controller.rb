@@ -1,14 +1,15 @@
 class CommentsController < LanguagesController
   before_filter :find_language, except: [:index]
   before_filter :find_commentable, only: [:new, :create]
-  before_filter :find_show_comments, only: [:new, :create]
-  before_filter :find_comment, only: [:destroy]
+  before_filter :find_show_comments, only: [:new, :create, :edit, :update]
+  before_filter :find_comment, only: [:edit, :update, :destroy]
 
   before_filter :find_list_language, only: [:index]
   before_filter :find_list_from_date, only: [:index]
   before_filter :find_list_to_date, only: [:index]
 
   before_filter :require_xhr, except: [:index]
+  before_action :require_admin, only: [:edit, :update]
 
   def index
     @data = Kaminari.paginate_array(Comment.simple_search(@language, @from_date, @to_date)).page(params[:page])
@@ -27,6 +28,22 @@ class CommentsController < LanguagesController
     else
       flash_to error: @comment.errors.full_messages.first
       render action: :new
+    end
+  end
+
+  def update
+    if params[:new_language_id].to_i != @comment.language_id
+      new_language = Language.where(id: params[:new_language_id]).first
+      @comment.language_id = new_language.id
+      if @comment.save
+        flash_to notice: "Comment moved to #{new_language.english_name} team!"
+        render action: :refresh
+      else
+        flash_to error: @comment.errors.full_messages.first
+        render action: :edit
+      end
+    else
+      render action: :refresh
     end
   end
 
@@ -81,6 +98,7 @@ class CommentsController < LanguagesController
 
   def find_comment
     @comment = @language.comments.find(params[:id])
+    @commentable = @comment.commentable
   rescue
     flash_to error: 'Sorry, comment not found'
     render action: :refresh
