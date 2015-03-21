@@ -39,6 +39,11 @@
               %i.fa.fa-edit
               edit translation
 
+        - translation.alt_terms_as_array.each do |alt_term|
+          - next unless alt_term.present?
+          %br/
+          %small= alt_term
+
         - if translation.definition.present?
           %br/
           %br/

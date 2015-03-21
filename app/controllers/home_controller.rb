@@ -118,11 +118,13 @@ class HomeController < ApplicationController
         @columns = ['none'] if @columns.empty?
       else
         Setting.update_value!(current_user, :glossary_columns, nil)
-        @columns = @glossary_type.glossary_search_columns
+        @columns = @glossary_type.glossary_search_default_columns
       end
     else
       if @advanced_search
         @columns = current_user.get_setting_value(:glossary_columns).to_s.split(',')
+      else
+        @columns = @glossary_type.glossary_search_default_columns
       end
     end
   end
@@ -143,11 +145,13 @@ class HomeController < ApplicationController
         @translation_columns = ['none'] if @translation_columns.empty?
       else
         Setting.update_value!(current_user, :glossary_translation_columns, nil)
-        @translation_columns = @glossary_type.glossary_search_translation_columns
+        @translation_columns = @glossary_type.glossary_search_default_translation_columns
       end
     else
       if @advanced_search && !@language.is_base_language?
         @translation_columns = current_user.get_setting_value(:glossary_translation_columns).to_s.split(',')
+      else
+        @translation_columns = @glossary_type.glossary_search_default_translation_columns
       end
     end
   end

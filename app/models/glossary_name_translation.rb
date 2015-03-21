@@ -34,4 +34,8 @@ class GlossaryNameTranslation < ActiveRecord::Base
       integration_status: IntegrationStatus.default.first
     )
   end
+
+  def alt_terms_as_array
+    [alt_term1, alt_term2, alt_term3].compact
+  end
 end
