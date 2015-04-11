@@ -49,7 +49,7 @@ Rails.application.routes.draw do
       get :changes, on: :member
     end
 
-    resources :imports, only: [:index] do
+    resources :imports, only: [:index, :new, :create] do
       post :general_menu, on: :collection
       post :hopkins, on: :collection
     end

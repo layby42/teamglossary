@@ -14,6 +14,11 @@ module ApplicationHelper
     options_for_select(opts, selected)
   end
 
+  def glossary_type_except_menu_options(selected=nil)
+    opts = GlossaryType.except_menu.list_order.map{|l| [l.name, l.id]}
+    options_for_select(opts, selected)
+  end
+
   def glossary_type_options(selected=nil, options={})
     if current_user
       opts = GlossaryType.list_order.map{|l| [l.name, l.id]}

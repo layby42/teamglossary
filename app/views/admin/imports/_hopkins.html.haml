@@ -6,12 +6,12 @@
     STEP 2: please specify csv files
     = form_tag hopkins_admin_imports_path, method: :post, :multipart => true do
       %fieldset
-        .form-group.col-xs-6
+        .form-group.col-sm-6.col-xs-12
           %label.control-label hopkins.csv
           = file_field_tag :file_small, :accept => 'text/csv', required: true, autocomplete: 'off'
           %p.help-block comma separated with two columns "Tibetan" and "JH-ENG"
 
-        .form-group.col-xs-6
+        .form-group.col-sm-6.col-xs-12
           %label.control-label hopkins-terms.csv
           = file_field_tag :file_large, :accept => 'text/csv', required: true, autocomplete: 'off'
           %p.help-block comma separated with tree columns "TIBETAN", "ENGLISH" and "SANSKRIT"

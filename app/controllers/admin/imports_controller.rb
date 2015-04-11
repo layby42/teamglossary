@@ -5,6 +5,10 @@ class Admin::ImportsController < ApplicationController
   def index
   end
 
+  def new
+    @import = Import.new
+  end
+
   def general_menu
     raise 'Import file can\'t be blank.' unless params[:file].present?
     ImportGeneralMenuHelper.import!(params[:file])

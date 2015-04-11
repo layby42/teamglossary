@@ -1,0 +1,30 @@
+= form_for [:admin, import], html: {class: 'form-horizontal well'} do |f|
+  .form-group
+    %label.control-label.col-sm-4 Glossary Type
+    .col-sm-8
+      = f.select :glossary_type_id, glossary_type_except_menu_options(import.glossary_type_id), {}, {class: 'form-control', autocomplete: 'off', required: true}
+  .form-group
+    %h4 CSV
+    %label.control-label.col-sm-4 Choose File
+    .col-sm-8
+      = f.file_field :file, :accept => 'csv', required: true, autocomplete: 'off', class: 'form-control'
+  .form-group
+    %label.control-label.col-sm-4 Skip first
+    .col-sm-8
+      .input-group
+        = f.number_field :skip_rows, min: 0, class: 'form-control', autocomplete: 'off'
+        .input-group-addon rows
+
+  .form-group
+    %label.control-label.col-sm-4 Encoding
+    .col-sm-8
+      = f.text_field :encoding, class: 'form-control', autocomplete: 'off'
+  .form-group
+    %label.control-label.col-sm-4 Columns separator
+    .col-sm-8
+      = f.select :cols_separator, imports_csv_column_separator_options(import.cols_separator), {}, {class: 'form-control', autocomplete: 'off'}
+  .form-group
+    %label.control-label.col-sm-4 Date format
+    .col-sm-8
+      = f.text_field :date_format, class: 'form-control', autocomplete: 'off'
+      TODO: check old webglossary code

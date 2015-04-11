@@ -1,0 +1,12 @@
+%h3
+  = link_to admin_imports_path do
+    %i.fa.fa-angle-left
+    Import Glossary
+
+.panel.panel-default
+  .panel-body.special-border
+    .row
+      .col-sm-6.col-xs-12
+        = render 'form', import: @import
+      .col-sm-6.col-xs-12
+        IMPORT SETTINGS: TODO

@@ -1,11 +1,28 @@
-%h3 Imports
+%h3 Import
 
 .row
-  .col-sm-6.col-xs-12
-    %h4 GLOSSARIES
-    Coming soon...
+  .col-xs-12
+    %h4 GLOSSARY
+    %ul.list-group.special-border
+      %li.list-group-item
+        STEP 1: Please review terms that you would like to import into Team Glossary.
+        %br/
+        %br/
+        %ul
+          %li Does your Excel (or CSV) file contain ONLY same type of terms: only technicals terms, only proper names or only text titles?
+          %li Does your Excel (or CSV) file contain ONLY terms and translations in Singular form? Example: "karmic actions" - incorrect; "karmic action" - correct.
+        %br/
+        If the answer is 'Yes' to both questions, proceed to STEP 2. Otherwise please fix terms in your file.
 
-  - if current_user.admin?
+      %li.list-group-item
+        STEP 2: Please convert your Excel file into CSV format: columns in CSV file hould be separated with comma (,) or semicolon (;).
+      %li.list-group-item
+        STEP 3: You are ready to start
+        = link_to 'New Import', new_admin_import_path, class: 'btn btn-primary btn-xs'
+
+- if current_user.admin?
+  .row
     .col-sm-6.col-xs-12
       = render 'general_menu'
+    .col-sm-6.col-xs-12
       = render 'hopkins'

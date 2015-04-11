@@ -11,7 +11,9 @@
     = form_tag general_menu_admin_imports_path, method: :post, :multipart => true do
       %fieldset
         = file_field_tag :file, :accept => 'text/json', required: true, autocomplete: 'off'
-        .text-right= submit_tag 'Import', class: 'btn btn-primary btn-sm', data:{confirm: 'Are you sure?'}
+        .text-right
+          = submit_tag 'Import', class: 'btn btn-primary btn-sm', data:{confirm: 'Are you sure?'}
+
   %li.list-group-item
     STEP 3:
     After import, please check
