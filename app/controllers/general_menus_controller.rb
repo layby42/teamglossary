@@ -6,6 +6,7 @@ class GeneralMenusController < LanguagesController
   before_filter :require_xhr, :only => [:changes]
 
   def open
+    flash[:notice] = nil
     unless request.xhr?
       redirect_to root_path
       return
