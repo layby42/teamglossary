@@ -1,5 +1,7 @@
 - count = [true, !@language.is_base_language?, !@glossary_type.general_menu?].count(true)
 - css_class = (count == 3) ? 'col-xs-4' : ((count == 2) ? 'col-xs-6' : 'col-xs-6 col-xs-offset-3')
+- default_columns = @glossary_type.glossary_search_default_columns
+- default_translation_columns = @glossary_type.glossary_search_default_translation_columns
 %div{class: css_class}
   .checkbox
     %label
@@ -8,7 +10,7 @@
   - @glossary_type.glossary_search_columns.each do |field|
     .checkbox
       %label
-        = check_box_tag 'search[columns][]', field, @columns.include?(field), autocomplete: 'off', data: {default: true}
+        = check_box_tag 'search[columns][]', field, @columns.include?(field), autocomplete: 'off', data: {default: default_columns.include?(field)}
         #{field.to_s.humanize}
 
 - unless @language.is_base_language?
@@ -20,7 +22,7 @@
     - @glossary_type.glossary_search_translation_columns.each do |field|
       .checkbox
         %label
-          = check_box_tag 'search[translation_columns][]', field, @translation_columns.include?(field), autocomplete: 'off', data: {default: true}
+          = check_box_tag 'search[translation_columns][]', field, @translation_columns.include?(field), autocomplete: 'off', data: {default: default_translation_columns.include?(field)}
           #{field.to_s.humanize}
 
 

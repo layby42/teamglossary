@@ -1,2 +1,8 @@
 $("#modal").modal('hide');
- window.location.reload();
+if (<%= @general_menu.general_menu_id.present? %>){
+  var row = $('tr#general_menu_row_<%= @general_menu.general_menu_id %>');
+  row.find('.close_folder_link').click();
+  row.find('.open_folder_link').click();
+} else {
+  window.location.reload();
+}

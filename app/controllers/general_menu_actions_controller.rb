@@ -38,7 +38,6 @@ class GeneralMenuActionsController < GeneralMenusController
     @general_menu_action.destroy
     flash_to notice: 'Task removed!'
     render action: :refresh
-
   rescue Exception => ex
     flash_to error: ex.message
     render action: :refresh
