@@ -22,4 +22,8 @@ class Task < ActiveRecord::Base
 
   validates :title, presence: true, uniqueness: {case_sensitive: false}
   validates :title_complete, presence: true
+
+  def show_assignee_in_email?
+    ['transcribing', 'translation', 'proofreading'].include?(title.downcase)
+  end
 end

@@ -18,7 +18,15 @@ class WorksController < ApplicationController
         @data[general_menu.id][:name] = general_menu.name
       end
       @data[general_menu.id][:work_done] = general_menu_actions.inject([]) do |result, action|
-        result << (action.end_date.present? ? action.task.title_complete.downcase : "sent for #{action.task.title.downcase}")
+        name = action.user.try(:name).presence || action.name
+
+        if action.end_date.present?
+          person_name = action.task.show_assignee_in_email? ? " by #{name}" : nil
+          result << "#{action.task.title_complete.downcase}#{person_name}"
+        else
+          person_name = action.task.show_assignee_in_email? ? " to #{name}" : nil
+          result << "sent for #{action.task.title.downcase}#{person_name}"
+        end
         result
       end.reverse.uniq.join(', ')
     end
