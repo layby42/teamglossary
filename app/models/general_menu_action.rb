@@ -27,7 +27,7 @@ class GeneralMenuAction < ActiveRecord::Base
   scope :open, -> {where(end_date: nil)}
   scope :by_language, -> (language_id) { where(language_id: language_id) }
 
-  scope :list_order, -> { order('general_menu_actions.start_date DESC, general_menu_actions.end_date DESC') }
+  scope :list_order, -> { order('general_menu_actions.start_date DESC, general_menu_actions.end_date DESC, general_menu_actions.id DESC') }
 
   scope :for_date_range, ->(from, to) { where(%q{
     (general_menu_actions.start_date BETWEEN ? AND ?) OR
