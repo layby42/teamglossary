@@ -38,6 +38,18 @@
           = check_box_tag 'search[states][]', state, @search_states.include?(state), autocomplete: 'off', data: {default: true}
           #{state.to_s.humanize}
 
+- unless @language.is_base_language?
+  %div{class: css_class}
+    .checkbox
+      %label
+        = check_box_tag 'search[all_extra]', true, false, autocomplete: 'off'
+        %b Having:
+    - @glossary_type.glossary_search_extra.each do |extra|
+      .checkbox
+        %label
+          = check_box_tag 'search[extra][]', extra, @search_extra.include?(extra), autocomplete: 'off', data: {default: false}
+          #{extra.to_s.humanize}
+
 
 :javascript
   $(function() {

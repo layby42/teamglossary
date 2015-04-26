@@ -66,6 +66,8 @@ class GlossaryTitle < ActiveRecord::Base
         :alt_term1, :alt_term2, :alt_term3]
   SEARCH_DEFAULT_TRANSLATION_COLUMNS = [:term, :author, :alt_term1, :alt_term2, :alt_term3]
 
+  SEARCH_EXTRA = [:title_translated, :author_translated, :translation_notes]
+
   def is_public?
     is_private == false
   end
@@ -81,6 +83,8 @@ class GlossaryTitle < ActiveRecord::Base
 
     states = (options[:states].presence || [:private, :public, :proposed]).map(&:to_sym)
     return [] if states.empty?
+
+    extra = (options[:extra].presence || []).map(&:to_sym)
 
     query = query.to_s.strip.downcase
 
@@ -100,8 +104,9 @@ class GlossaryTitle < ActiveRecord::Base
       return [] if (columns + translation_columns).empty?
 
       condition = GlossaryTitle.non_base_states_condition(language, states)
+      extra_condition = GlossaryTitle.extra_condition(language, extra)
 
-      GlossaryTitle.where(condition).list_order.includes([:glossary_title_translations, :comments, :language]).select do |term|
+      GlossaryTitle.where(condition).where(extra_condition).list_order.includes([:glossary_title_translations, :comments, :language]).select do |term|
 
           columns.collect{|field| term.try(field).to_s}.join(' ').downcase.include?(query) ||
           (
@@ -113,6 +118,32 @@ class GlossaryTitle < ActiveRecord::Base
             )
       end
     end
+  end
+
+  def self.extra_condition(language, extra=[])
+    return 'TRUE' unless extra.present?
+    return 'TRUE' if (extra & [:title_translated, :author_translated, :translation_notes]) == 0
+
+    conditions = [%q{
+        glossary_title_translations.glossary_title_id = glossary_titles.id AND
+        glossary_title_translations.language_id = ?
+      }]
+
+    if extra.include?(:author_translated)
+      conditions << 'glossary_title_translations.author IS NOT NULL'
+    end
+
+    if extra.include?(:translation_notes)
+      conditions << 'glossary_title_translations.notes IS NOT NULL'
+    end
+
+    [
+      %Q{
+        EXISTS( SELECT glossary_title_translations.id
+          FROM glossary_title_translations
+          WHERE #{conditions.join(' AND ')})
+      }, language.id
+    ]
   end
 
   def last_comment(language_id=nil)

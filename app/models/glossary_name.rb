@@ -46,6 +46,8 @@ class GlossaryName < ActiveRecord::Base
   SEARCH_TRANSLATION_COLUMNS = [:term, :alt_term1, :alt_term2, :alt_term3, :notes]
   SEARCH_DEFAULT_TRANSLATION_COLUMNS = [:term, :alt_term1, :alt_term2, :alt_term3]
 
+  SEARCH_EXTRA = [:name_translated, :translation_notes]
+
   def is_public?
     is_private == false
   end
@@ -61,6 +63,8 @@ class GlossaryName < ActiveRecord::Base
 
     states = (options[:states].presence || [:private, :public, :proposed]).map(&:to_sym)
     return [] if states.empty?
+
+    extra = (options[:extra].presence || []).map(&:to_sym)
 
     query = query.to_s.strip.downcase
 
@@ -80,8 +84,9 @@ class GlossaryName < ActiveRecord::Base
       return [] if (columns + translation_columns).empty?
 
       condition = GlossaryName.non_base_states_condition(language, states)
+      extra_condition = GlossaryName.extra_condition(language, extra)
 
-      GlossaryName.where(condition).list_order.includes([:glossary_name_translations, :proper_name_type, :comments, :language]).select do |term|
+      GlossaryName.where(condition).where(extra_condition).list_order.includes([:glossary_name_translations, :proper_name_type, :comments, :language]).select do |term|
 
           columns.collect{|field| term.try(field).to_s}.join(' ').downcase.include?(query) ||
           (
@@ -93,6 +98,28 @@ class GlossaryName < ActiveRecord::Base
             )
       end
     end
+  end
+
+  def self.extra_condition(language, extra=[])
+    return 'TRUE' unless extra.present?
+    return 'TRUE' if (extra & [:name_translated, :translation_notes]) == 0
+
+    conditions = [%q{
+        glossary_name_translations.glossary_name_id = glossary_names.id AND
+        glossary_name_translations.language_id = ?
+      }]
+
+    if extra.include?(:translation_notes)
+      conditions << 'glossary_name_translations.notes IS NOT NULL'
+    end
+
+    [
+      %Q{
+        EXISTS( SELECT glossary_name_translations.id
+          FROM glossary_name_translations
+          WHERE #{conditions.join(' AND ')})
+      }, language.id
+    ]
   end
 
   def last_comment(language_id=nil)

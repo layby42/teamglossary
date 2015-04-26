@@ -51,6 +51,8 @@ class GeneralMenu < ActiveRecord::Base
   SEARCH_TRANSLATION_COLUMNS = [:name, :notes, :additional_text]
   SEARCH_DEFAULT_TRANSLATION_COLUMNS = [:name, :notes, :additional_text]
 
+  SEARCH_EXTRA = [:name_translated, :translation_notes]
+
   def term
     name
   end
@@ -66,7 +68,9 @@ class GeneralMenu < ActiveRecord::Base
   def self.search(language, query, options={})
     query = query.to_s.strip.downcase
 
-    if query.blank?
+    extra = (options[:extra].presence || []).map(&:to_sym)
+
+    if query.blank? && extra.empty?
       if language.is_base_language?
         GeneralMenu.by_language(language.id).where(general_menu_id: nil).list_order.includes([:general_menu_actions, :language])
       else
@@ -90,7 +94,10 @@ class GeneralMenu < ActiveRecord::Base
 
         return [] if (columns + translation_columns).empty?
 
-        GeneralMenu.where(language_id: [language.id, Language.base_language.id]).search_order.includes([:general_menu_translations, :general_menu_actions, :language]).select do |item|
+        condition = {language_id: [language.id, Language.base_language.id]}
+        extra_condition = GeneralMenu.extra_condition(language, extra)
+
+        GeneralMenu.where(condition).where(extra_condition).search_order.includes([:general_menu_translations, :general_menu_actions, :language]).select do |item|
           columns.collect{|field| item.try(field).to_s}.join(' ').downcase.include?(query) ||
           (
             (
@@ -103,6 +110,28 @@ class GeneralMenu < ActiveRecord::Base
         end
       end
     end
+  end
+
+  def self.extra_condition(language, extra=[])
+    return 'TRUE' unless extra.present?
+    return 'TRUE' if (extra & [:name_translated, :translation_notes]) == 0
+
+    conditions = [%q{
+        general_menu_translations.general_menu_id = general_menus.id AND
+        general_menu_translations.language_id = ?
+      }]
+
+    if extra.include?(:translation_notes)
+      conditions << 'general_menu_translations.notes IS NOT NULL'
+    end
+
+    [
+      %Q{
+        EXISTS( SELECT general_menu_translations.id
+          FROM general_menu_translations
+          WHERE #{conditions.join(' AND ')})
+      }, language.id
+    ]
   end
 
   def children(language)

@@ -57,4 +57,8 @@ class GlossaryType < ActiveRecord::Base
   def glossary_search_default_translation_columns
     glossary_class::SEARCH_DEFAULT_TRANSLATION_COLUMNS.map(&:to_s) rescue []
   end
+
+  def glossary_search_extra
+    glossary_class::SEARCH_EXTRA.map(&:to_s) rescue []
+  end
 end

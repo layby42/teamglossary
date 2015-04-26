@@ -15,7 +15,7 @@
             %li= link_to 'column separator: comma(\',\')', download_path, target: '_blank'
             %li= link_to 'column separator: semicolon(\';\')', download_path(col_sep: ';'), target: '_blank'
 
-      - if @query.present? || !@glossary_type.general_menu?
+      - if @query.present? || !@search_extra.empty? || !@glossary_type.general_menu?
         Found
         %span.badge #{@data.total_count}
 .row

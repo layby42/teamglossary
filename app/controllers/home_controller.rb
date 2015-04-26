@@ -7,6 +7,7 @@ class HomeController < ApplicationController
   before_action :find_columns
   before_action :find_translation_columns
   before_action :find_state
+  before_action :find_extra
 
   PAGE_TITLE = 'Search'
 
@@ -16,7 +17,8 @@ class HomeController < ApplicationController
     options = {
       columns: @columns,
       translation_columns: @translation_columns,
-      states: @search_states
+      states: @search_states,
+      extra: @search_extra
     }
     if @search_states.empty?
       @data = Kaminari.paginate_array([]).page(params[:page])
@@ -163,7 +165,7 @@ class HomeController < ApplicationController
 
     if params[:search].present?
       if @advanced_search
-        @search_states = @search_states && (params[:search][:states] || [])
+        @search_states = @search_states & (params[:search][:states] || [])
         Setting.update_value!(current_user, :glossary_search_states, @search_states.join(','))
       else
         Setting.update_value!(current_user, :glossary_search_states, nil)
@@ -171,6 +173,24 @@ class HomeController < ApplicationController
     else
       if @advanced_search
         @search_states = current_user.get_setting_value(:glossary_search_states).to_s.split(',')
+      end
+    end
+  end
+
+  def find_extra
+    @search_extra = []
+    return unless current_user
+
+    if params[:search].present?
+      if @advanced_search && !@language.is_base_language?
+        @search_extra = @glossary_type.glossary_search_extra & (params[:search][:extra] || [])
+        Setting.update_value!(current_user, :glossary_search_extra, @search_extra.join(','))
+      else
+        Setting.update_value!(current_user, :glossary_search_extra, nil)
+      end
+    else
+      if @advanced_search && !@language.is_base_language?
+        @search_extra = current_user.get_setting_value(:glossary_search_extra).to_s.split(',')
       end
     end
   end
