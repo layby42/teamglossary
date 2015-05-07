@@ -87,110 +87,143 @@ class HomeController < ApplicationController
         session[:glossary_query] = params[:search][:query]
       end
       @query = params[:search][:query]
+    elsif current_user.present?
+      @query = current_user.get_setting_value(:glossary_query)
     else
-      @query = current_user ? current_user.get_setting_value(:glossary_query) : session[:glossary_query]
+      @query = session[:glossary_query]
     end
   end
 
   def find_advanced
-    @advanced_search = false
-    return unless current_user
-
     if params[:search].present?
       @advanced_search = (params[:search][:advanced].to_s == 'true')
-      Setting.update_value!(current_user, :glossary_advanced, params[:search][:advanced])
-    else
+      if current_user
+        Setting.update_value!(current_user, :glossary_advanced, params[:search][:advanced])
+      else
+        session[:glossary_advanced] = params[:search][:advanced]
+      end
+    elsif current_user.present?
       @advanced_search = (current_user.get_setting_value(:glossary_advanced).to_s == 'true')
+    else
+      @advanced_search = (session[:glossary_advanced].to_s == 'true')
     end
   end
 
   def find_columns
-    unless current_user
-      @columns = @glossary_type.glossary_search_default_columns
-      return
-    end
-
     @columns = []
 
     if params[:search].present?
       if @advanced_search
         @columns = @glossary_type.glossary_search_columns && (params[:search][:columns] || [])
-        Setting.update_value!(current_user, :glossary_columns, @columns.join(','))
-
+        if current_user
+          Setting.update_value!(current_user, :glossary_columns, @columns.join(','))
+        else
+          session[:glossary_columns] = @columns.join(',')
+        end
         @columns = ['none'] if @columns.empty?
       else
-        Setting.update_value!(current_user, :glossary_columns, nil)
+        if current_user
+          Setting.update_value!(current_user, :glossary_columns, nil)
+        else
+          session[:glossary_columns] = nil
+        end
         @columns = @glossary_type.glossary_search_default_columns
       end
-    else
-      if @advanced_search
+    elsif @advanced_search
+      if current_user.present?
         @columns = current_user.get_setting_value(:glossary_columns).to_s.split(',')
       else
-        @columns = @glossary_type.glossary_search_default_columns
+        @columns = session[:glossary_columns].to_s.split(',')
       end
+    else
+      @columns = @glossary_type.glossary_search_default_columns
     end
   end
 
   def find_translation_columns
-    unless current_user
-      @translation_columns = @glossary_type.glossary_search_default_translation_columns
-      return
-    end
-
     @translation_columns = []
 
     if params[:search].present?
       if @advanced_search && !@language.is_base_language?
         @translation_columns = @glossary_type.glossary_search_translation_columns && (params[:search][:translation_columns] || [])
-        Setting.update_value!(current_user, :glossary_translation_columns, @translation_columns.join(','))
-
+        if current_user
+          Setting.update_value!(current_user, :glossary_translation_columns, @translation_columns.join(','))
+        else
+          session[:glossary_translation_columns] = @translation_columns.join(',')
+        end
         @translation_columns = ['none'] if @translation_columns.empty?
       else
-        Setting.update_value!(current_user, :glossary_translation_columns, nil)
+        if current_user
+          Setting.update_value!(current_user, :glossary_translation_columns, nil)
+        else
+          session[:glossary_translation_columns] = nil
+        end
         @translation_columns = @glossary_type.glossary_search_default_translation_columns
       end
-    else
-      if @advanced_search && !@language.is_base_language?
+    elsif @advanced_search && !@language.is_base_language?
+      if current_user.present?
         @translation_columns = current_user.get_setting_value(:glossary_translation_columns).to_s.split(',')
       else
-        @translation_columns = @glossary_type.glossary_search_default_translation_columns
+        @translation_columns = session[:glossary_translation_columns].to_s.split(',')
       end
+    else
+      @translation_columns = @glossary_type.glossary_search_default_translation_columns
     end
   end
 
   def find_state
     @search_states = [:private, :public, :proposed].map(&:to_s)
-    return unless current_user
     return if @glossary_type.general_menu?
 
     if params[:search].present?
       if @advanced_search
-        @search_states = @search_states & (params[:search][:states] || [])
-        Setting.update_value!(current_user, :glossary_search_states, @search_states.join(','))
+        @search_states = @search_states && (params[:search][:states] || [])
+        if current_user
+          Setting.update_value!(current_user, :glossary_search_states, @search_states.join(','))
+        else
+          session[:glossary_search_states] = @search_states.join(',')
+        end
       else
-        Setting.update_value!(current_user, :glossary_search_states, nil)
+        if current_user
+          Setting.update_value!(current_user, :glossary_search_states, nil)
+        else
+          session[:glossary_search_states] = nil
+        end
+      end
+    elsif @advanced_search
+      if current_user
+        @search_states = current_user.get_setting_value(:glossary_search_states).to_s.split(',')
+      else
+        @search_states = session[:glossary_search_states].to_s.split(',')
       end
     else
-      if @advanced_search
-        @search_states = current_user.get_setting_value(:glossary_search_states).to_s.split(',')
-      end
+      @search_states = [:private, :public, :proposed].map(&:to_s)
     end
   end
 
   def find_extra
     @search_extra = []
-    return unless current_user
 
     if params[:search].present?
       if @advanced_search && !@language.is_base_language?
         @search_extra = @glossary_type.glossary_search_extra & (params[:search][:extra] || [])
-        Setting.update_value!(current_user, :glossary_search_extra, @search_extra.join(','))
+        if current_user
+          Setting.update_value!(current_user, :glossary_search_extra, @search_extra.join(','))
+        else
+          session[:glossary_search_extra] = @search_extra.join(',')
+        end
       else
-        Setting.update_value!(current_user, :glossary_search_extra, nil)
+        if current_user
+          Setting.update_value!(current_user, :glossary_search_extra, nil)
+        else
+          session[:glossary_search_extra] = nil
+        end
       end
-    else
-      if @advanced_search && !@language.is_base_language?
+    elsif @advanced_search && !@language.is_base_language?
+      if current_user
         @search_extra = current_user.get_setting_value(:glossary_search_extra).to_s.split(',')
+      else
+        @search_extra = session[:glossary_search_extra].to_s.split(',')
       end
     end
   end

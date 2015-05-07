@@ -22,7 +22,7 @@
     - if item.explanation.present?
       %br/
       %br/
-      = item.explanation
+      = truncate(item.explanation, length: 250, omission: ' ... (more)')
 
     - if item_language_team
       = render 'shared/term_add_comment', language: item.language, term: item
@@ -49,7 +49,7 @@
         - if current_user && translation.notes.present?
           %br/
           %br/
-          = translation.notes
+          = truncate(translation.notes, length: 250, omission: ' ... (more)')
 
       - elsif manager_or_editor_language_ids.include?(language.id)
         .text-right

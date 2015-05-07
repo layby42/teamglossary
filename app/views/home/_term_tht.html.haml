@@ -20,7 +20,7 @@
     - if item.definition.present?
       %br/
       %br/
-      = item.definition
+      = truncate(item.definition, length: 250, omission: ' ... (more)')
 
     - if item_language_team
       = render 'shared/term_add_comment', language: item.language, term: item
@@ -47,7 +47,8 @@
         - if translation.definition.present?
           %br/
           %br/
-          = translation.definition
+          = truncate(translation.definition, length: 250, omission: ' ... (more)')
+
       - elsif manager_or_editor_language_ids.include?(language.id)
         .text-right
           = link_to language_glossary_term_path(language, item), class: 'text-muted' do
