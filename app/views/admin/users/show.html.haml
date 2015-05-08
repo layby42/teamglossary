@@ -73,3 +73,24 @@
               %td= task.start_date
               %td= link_to task.language.english_name, admin_language_path(task.language_id)
               %td= link_to task.general_menu.name, language_general_menu_path(task.language_id, task.general_menu_id)
+
+    - past_tasks = @user.general_menu_actions.finished.list_order.includes([:language, :task, :general_menu])
+    - if past_tasks.count > 0
+      %h3
+        Past Tasks
+        %span.badge= past_tasks.count
+
+      %table.table.table-striped.table-bordered
+        %thead
+          %tr
+            %th Task
+            %th Finished
+            %th Team
+            %th Article
+        %tbody
+          - past_tasks.each do |task|
+            %tr
+              %td= task.task.title
+              %td= task.end_date
+              %td= link_to task.language.english_name, admin_language_path(task.language_id)
+              %td= link_to task.general_menu.name, language_general_menu_path(task.language_id, task.general_menu_id)

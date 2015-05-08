@@ -227,4 +227,8 @@ class HomeController < ApplicationController
       end
     end
   end
+
+  def set_action_title
+    @action_title = 'Glossary' if current_user
+  end
 end

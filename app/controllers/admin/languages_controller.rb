@@ -77,4 +77,8 @@ class Admin::LanguagesController < ApplicationController
       redirect_to admin_language_path(@language)
     end
   end
+
+  def set_action_title
+    @action_title = 'Teams'
+  end
 end

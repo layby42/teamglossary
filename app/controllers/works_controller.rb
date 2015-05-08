@@ -74,4 +74,8 @@ class WorksController < ApplicationController
       redirect_to works_path
     end
   end
+
+  def set_action_title
+    @action_title = 'Task Management'
+  end
 end

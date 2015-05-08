@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :require_ssl
+  before_action :set_action_title
 
   helper_method :base_language
   helper_method :team_ids
@@ -39,5 +40,9 @@ class ApplicationController < ActionController::Base
     if Rails.env.production? || Rails.env.staging?
       redirect_to :protocol => 'https://' unless request.ssl?
     end
+  end
+
+  def set_action_title
+    @action_title = 'Team Glossary'
   end
 end

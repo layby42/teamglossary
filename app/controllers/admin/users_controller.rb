@@ -95,4 +95,8 @@ class Admin::UsersController < ApplicationController
       redirect_to admin_user_path(@user)
     end
   end
+
+  def set_action_title
+    @action_title = 'Users'
+  end
 end

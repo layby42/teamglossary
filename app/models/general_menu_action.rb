@@ -25,6 +25,7 @@ class GeneralMenuAction < ActiveRecord::Base
   belongs_to :general_menu
 
   scope :open, -> {where(end_date: nil)}
+  scope :finished, -> {where('general_menu_actions.end_date IS NOT NULL')}
   scope :by_language, -> (language_id) { where(language_id: language_id) }
 
   scope :list_order, -> { order('general_menu_actions.start_date DESC, general_menu_actions.end_date DESC, general_menu_actions.id DESC') }

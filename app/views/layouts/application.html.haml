@@ -19,7 +19,7 @@
   .navbar.navbar-default.navbar-fixed-top
     .container-fluid
       .navbar-header
-        = link_to 'Team Glossary', root_path, class: 'navbar-brand'
+        = link_to (@action_title.presence || 'Team Glossary'), root_path, class: 'navbar-brand'
         %button.navbar-toggle{data: {target: '#navbar-main', toggle: 'collapse', type: 'button'}}
           %span.icon-bar
           %span.icon-bar
@@ -33,15 +33,17 @@
             -#     %i.fa.fa-question-circle
             -#     Help
 
-            %li
-              = link_to comments_path do
-                %i.fa.fa-comments-o
-                Discussions
+            %li= link_to 'Glossary', root_path
             - if current_user.admin? || current_user.manager?
-              %li
-                = link_to works_path do
-                  %i.fa.fa-dashboard
-                  Work in Progress
+              %li= link_to 'Task Management', works_path
+              %li= link_to 'Invoices', '#'
+
+            %li= link_to 'Discussions', comments_path
+
+            - if current_user.admin? || current_user.manager?
+              %li= link_to 'Users', admin_users_path
+              %li= link_to 'Teams', admin_languages_path
+
             %li.dropdown
               = link_to('javascript:void(0);', class: 'dropdown-toggle', data: {toggle: 'dropdown'}) do
                 - if current_user.admin?

@@ -156,4 +156,8 @@ class CommentsController < LanguagesController
   def comment_params
     params.require(:comment).permit(:text)
   end
+
+  def set_action_title
+    @action_title = 'Discussions'
+  end
 end
