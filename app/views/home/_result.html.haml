@@ -27,7 +27,7 @@
             %td.col-xs-12 Term
           - else
             %td.col-xs-6 Term
-            %td.col-xs-6 Translation
+            %td.col-xs-6 Translation of Term / Title
       %tbody#terms_table
         - @data.each do |item|
           = render "term_#{@glossary_type.code.downcase}", language: @language, item:item
