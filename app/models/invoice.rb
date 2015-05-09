@@ -17,7 +17,7 @@
 
 class Invoice < ActiveRecord::Base
   strip_attributes :only => [:status, :description]
-  has_paper_trail :only => [:user_id, :month, :year, :sent_at, :status]
+  has_paper_trail :only => [:user_id, :month, :year, :sent_at, :status, :amount, :hours, :description]
 
   belongs_to :user
 
