@@ -1,0 +1,12 @@
+$('#invoices_result').html('<%=j render "result" %>');
+
+$('#invoices_table').each(function() {
+    var instance = $.data(this, 'infinitescroll');
+    if (instance) {
+        instance.unbind();
+        instance.destroy();
+        $.data(this, 'infinitescroll', null);
+    }
+});
+
+<%= render :partial => 'infinitescroll.js' %>

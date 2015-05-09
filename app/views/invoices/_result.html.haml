@@ -1,0 +1,40 @@
+%h3
+  Found
+  %span.badge #{@invoices.count}
+
+  - if current_user.paid?
+    .pull-right
+      = render 'shared/add_new_button', url: new_invoice_path, remote: false
+
+%table.table.table-striped.table-bordered#invoices_table
+  %thead
+    %tr
+      %th Period
+      %th Name
+      %th Words
+      %th Hours
+      %th.col-xs-5 Description
+      %th Status
+  %tbody
+    - @invoices.each do |invoice|
+      %tr.invoices_table_row
+        %td= link_to invoice.period, invoice_path(invoice)
+        %td= invoice.user.name
+        %td= invoice.hours? ? 0 : invoice.amount
+        %td= invoice.hours? ? invoice.amount : 0
+        %td= invoice.description
+        %td
+          = invoice.status.capitalize
+          = render 'shared/changes_url', url: changes_invoice_path(invoice)
+
+- if @invoices.empty?
+  Sorry, nothing found
+
+.row
+  .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
+    .pagination.pagination-centered
+      - params.clear
+      = paginate @invoices, :params => {:controller => 'invoices', :action => 'index'}
+
+:javascript
+  #{ render :partial => 'infinitescroll.js' }

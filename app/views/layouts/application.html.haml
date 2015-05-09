@@ -36,7 +36,8 @@
             %li= link_to 'Glossary', root_path
             - if current_user.admin? || current_user.manager?
               %li= link_to 'Task Management', works_path
-              %li= link_to 'Invoices', '#'
+            - if current_user.paid? || current_user.admin? || current_user.manager?
+              %li= link_to 'Invoices', invoices_path
 
             %li= link_to 'Discussions', comments_path
 

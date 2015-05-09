@@ -44,4 +44,16 @@ class UserMailer < ActionMailer::Base
       :subject => "work in progress (#{@to_date.strftime('%B %-d, %Y')})"
     )
   end
+
+  def invoice_email(user, invoice, options={})
+    @user = user
+    @invoice = invoice
+    @invoice_url = options[:invoice_url]
+
+    to = Rails.env.production? ? 'invoices@berzinarchives.org' : 'goxana.a@gmail.com'
+    mail(
+      :to => to,
+      :subject => "Invoice for #{user.name} #{invoice.period_for_email}"
+    )
+  end
 end

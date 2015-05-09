@@ -1,0 +1,40 @@
+- content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to 'Invoices', invoices_path
+    %li= link_to @invoice.period, invoice_path(@invoice)
+
+%h3
+  #{@invoice.status.capitalize}
+  - if @invoice.owned_by?(current_user)
+    .pull-right
+      = link_to edit_invoice_path(@invoice), class: 'pull-right btn btn-primary btn-sm' do
+        %i.fa.fa-edit
+        Edit
+
+.panel.panel-default
+  .panel-body
+    %h4.text-center Invoice
+    %br/
+    .row
+      .col-xs-6.text-right
+        %strong Name
+      .col-xs-6 #{@invoice.user.name}
+    .row
+      .col-xs-6.text-right
+        %strong Period
+      .col-xs-6 #{@invoice.period}
+    .row
+      .col-xs-6.text-right
+        %strong Amount of #{@invoice.unit}
+      .col-xs-6 #{@invoice.amount}
+    - if @invoice.description.present?
+      .row
+        .col-xs-6.text-right
+          %strong Description
+        .col-xs-6 #{@invoice.description}
+
+    - if @invoice.owned_by?(current_user)
+      %br/
+      .row
+        .col-xs-12.text-center
+          = link_to 'Send Invoice', email_invoice_path(@invoice), method: :put, class: 'btn btn-success', data: { confirm: 'Are you sure invoice is ready to be sent?'}

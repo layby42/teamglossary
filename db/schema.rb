@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150509143945) do
+ActiveRecord::Schema.define(version: 20150509155051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -432,6 +432,21 @@ ActiveRecord::Schema.define(version: 20150509143945) do
   add_index "integration_statuses", ["code"], name: "index_integration_statuses_on_code", unique: true, using: :btree
   add_index "integration_statuses", ["is_default"], name: "index_integration_statuses_on_is_default", using: :btree
 
+  create_table "invoices", force: true do |t|
+    t.integer  "user_id",                    null: false
+    t.integer  "month",                      null: false
+    t.integer  "year",                       null: false
+    t.boolean  "hours",       default: true, null: false
+    t.integer  "amount",      default: 0,    null: false
+    t.string   "description"
+    t.datetime "sent_at"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "invoices", ["user_id"], name: "index_invoices_on_user_id", using: :btree
+
   create_table "language_import_settings", force: true do |t|
     t.integer  "language_id",                       null: false
     t.integer  "import_setting_id",                 null: false
@@ -666,6 +681,8 @@ ActiveRecord::Schema.define(version: 20150509143945) do
   add_foreign_key "imports", "languages", name: "fk_imports_languages", dependent: :restrict
   add_foreign_key "imports", "users", name: "fk_imports_imports_committed_users", column: "committer_id", dependent: :restrict
   add_foreign_key "imports", "users", name: "fk_imports_imports_users", dependent: :restrict
+
+  add_foreign_key "invoices", "users", name: "invoices_user_id_fk"
 
   add_foreign_key "language_import_settings", "import_settings", name: "fk_language_imports_settings_imports_settings", dependent: :restrict
   add_foreign_key "language_import_settings", "languages", name: "fk_language_imports_settings_languages", dependent: :restrict

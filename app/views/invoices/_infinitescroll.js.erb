@@ -1,0 +1,9 @@
+$('#invoices_table').infinitescroll({
+    navSelector: ".pagination",
+    nextSelector: ".pagination a[rel=next]",
+    itemSelector: ".invoices_table_row",
+    loading: {
+        msgText: "<em>Loading...</em>",
+        finishedMsg: "<em>All invoices have been loaded.</em>"
+    }
+});

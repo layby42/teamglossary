@@ -1,0 +1,10 @@
+- content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to 'Invoices', invoices_path
+    %li= link_to @invoice.period, invoice_path(@invoice)
+    %li= link_to 'Edit Invoice', edit_invoice_path(@invoice)
+
+%h3 New Invoice
+.panel.panel-default
+  .panel-body
+    = render 'form', invoice: @invoice

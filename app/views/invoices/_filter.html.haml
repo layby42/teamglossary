@@ -1,0 +1,9 @@
+.row
+  = form_tag url_for(action: :index), method: :get, remote: true, id: :filter_form do
+    %fieldset
+      .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6.col-sm-offset-3.col-md-offset-3.col-lg-offset-3
+        .input-group.col-xs-12
+          = select_tag 'filter[month]', month_to_select(@month), class: 'form-control', autocomplete: 'off', required: true
+      .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6
+        .input-group.col-xs-12
+          = select_tag 'filter[year]', year_to_select(@year), class: 'form-control', autocomplete: 'off', required: true

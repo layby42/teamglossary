@@ -75,4 +75,21 @@ module ApplicationHelper
     end
     options_for_select(opts, selected)
   end
+
+  def month_to_select(selected=nil)
+    p '!!!!!!!!!!!!!!!!'
+    p selected
+    opts = (1..12).collect {|m| [Date::MONTHNAMES[m], m]}
+    options_for_select(opts, selected)
+  end
+
+  def year_to_select(selected=nil)
+    opts = (2000..Time.zone.now.year).to_a
+    options_for_select(opts, selected)
+  end
+
+  def hours_words_to_select(selected=nil)
+    opts = [['Hours', true], ['Words', false]]
+    options_for_select(opts, selected)
+  end
 end

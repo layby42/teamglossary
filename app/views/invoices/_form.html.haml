@@ -1,0 +1,23 @@
+= form_for invoice, :html => {:class => 'form-horizontal'} do |f|
+  .form-group
+    %label.col-sm-2.col-xs-12.control-label Name
+    .col-sm-10.col-xs-12
+      %p.form-control-static= current_user.name
+  .form-group
+    %label.col-sm-2.col-xs-12.control-label Work Period
+    .col-sm-4.col-xs-8
+      = f.select :month, month_to_select(invoice.month), {}, {class: 'form-control', autocomplete: 'off', required: true}
+    .col-sm-2.col-xs-4
+      = f.select :year, year_to_select(invoice.year), {}, {class: 'form-control', autocomplete: 'off', required: true}
+  .form-group
+    %label.col-sm-2.col-xs-12.control-label Amount
+    .col-sm-4.col-xs-8
+      = f.number_field :amount, min: 0, class: 'form-control', autocomplete: 'off', required: true
+    .col-sm-2.col-xs-4
+      = f.select :hours, hours_words_to_select(invoice.hours), {}, {class: 'form-control', autocomplete: 'off', required: true}
+  .form-group
+    .col-sm-6.col-xs-12.col-sm-offset-2
+      = f.text_field :description, class: 'form-control', autocomplete: 'off', placeholder: 'Description (optional)'
+
+    .form-group.col-xs-12.text-right
+      = f.submit 'Save Invoice', :class => 'btn btn-primary', :data => {:submit => true}

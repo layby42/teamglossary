@@ -24,6 +24,7 @@
 #  current_login_ip    :string(255)
 #  last_login_ip       :string(255)
 #  admin               :boolean          default(FALSE), not null
+#  paid                :boolean          default(FALSE), not null
 #
 
 class User < ActiveRecord::Base
@@ -36,7 +37,7 @@ class User < ActiveRecord::Base
   end
 
   strip_attributes :only => [:email, :first_name, :last_name, :about]
-  has_paper_trail :only => [:first_name, :last_name, :email, :admin, :about]
+  has_paper_trail :only => [:first_name, :last_name, :email, :admin, :about, :paid]
 
   has_many :language_users, dependent: :destroy
   has_and_belongs_to_many :languages, join_table: :language_users
@@ -45,8 +46,11 @@ class User < ActiveRecord::Base
 
   has_many :settings, :as => :configurable, :dependent => :destroy
 
+  has_many :invoices
+
   validates :email, presence: true, uniqueness: {case_sensitive: false}
 
+  scope :by_language_ids, ->(language_ids) { joins(:language_users).where('language_users.language_id' => language_ids) }
   scope :list_order, -> { order('lower(users.first_name), lower(users.last_name)') }
 
   def email=(value)
@@ -67,6 +71,10 @@ class User < ActiveRecord::Base
 
   def manager_language_ids
     self.language_users.where({role: :manager}).pluck(:language_id)
+  end
+
+  def manager_user_ids
+    User.by_language_ids(manager_language_ids).pluck(:id)
   end
 
   def manager?(language_id=nil)

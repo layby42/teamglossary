@@ -128,5 +128,10 @@ Rails.application.routes.draw do
     get :email, on: :collection
   end
 
+  resources :invoices, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
+    put :email, on: :member
+    get :changes, on: :member
+  end
+
   root :to => 'home#index'
 end

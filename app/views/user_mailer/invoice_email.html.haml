@@ -1,0 +1,21 @@
+%h3{style: "#{EmailHelper.h3_style}"} INVOICE
+%p{style: 'font-size:16px; font-weight:100;'}
+  #{@user.name} #{@invoice.period_for_email}
+
+%p{style: "#{EmailHelper.p_style}"}
+  Amount of #{@invoice.unit}: #{@invoice.amount}
+  %br/
+  %br/
+  - if @invoice.description.present?
+    Description: #{@invoice.description}
+    %br/
+    %br/
+  %br/
+  Please follow the link below to view invoice in browser.
+  %br/
+  %br/
+  If you are having trouble, copy and paste the entire link into your browser.
+
+%p{style: "#{EmailHelper.p_style} padding: 10px 0 20px;"}
+  %a{href: "#{@invoice_url}", style: 'color: #333333;'}
+    %span{style: 'color: #333333;'}= "#{@invoice_url}"

@@ -1,0 +1,9 @@
+- content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to 'Invoices', invoices_path
+    %li= link_to 'Add New Invoice', new_invoice_path
+
+%h3 New Invoice
+.panel.panel-default
+  .panel-body
+    = render 'form', invoice: @invoice
