@@ -57,4 +57,8 @@ class Admin::TasksController < ApplicationController
       redirect_to admin_tasks_path
     end
   end
+
+  def set_action_title
+    @action_title = 'Tasks'
+  end
 end

@@ -1,7 +1,10 @@
+- content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to 'Users', admin_users_path
+    %li= link_to @user.name, admin_user_path(@user)
+
 %h3
-  = link_to admin_users_path do
-    %i.fa.fa-angle-left
-    = @user.name
+  = @user.name
 
   = link_to edit_admin_user_path(@user), class: 'pull-right btn btn-primary btn-sm' do
     %i.fa.fa-edit
@@ -16,6 +19,7 @@
           %th Last Name
           - if current_user.admin?
             %th Email
+            %th Paid
           %th Last seen
       %tbody
         %tr
@@ -26,6 +30,7 @@
           %td= @user.last_name
           - if current_user.admin?
             %td= @user.email
+            %td= @user.paid? ? 'Yes' : 'No'
           %td
             = time_ago(@user.last_request_at)
             - if current_user.admin?

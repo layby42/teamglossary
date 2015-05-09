@@ -1,7 +1,9 @@
-%h3
-  = link_to admin_languages_path do
-    %i.fa.fa-angle-left
-    New Language Section
+- content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to 'Teams', admin_languages_path
+    %li= link_to 'Add New Team', new_admin_language_path
+
+%h3 New Team
 
 %ul.nav.nav-tabs
   = tab_for 'details' do

@@ -1,8 +1,6 @@
 %h3
-  = link_to admin_settings_path do
-    %i.fa.fa-angle-left
-    Language Sections
-    %span.badge #{@languages.count}
+  Found
+  %span.badge #{@languages.count}
 
   - if current_user.admin?
     .pull-right

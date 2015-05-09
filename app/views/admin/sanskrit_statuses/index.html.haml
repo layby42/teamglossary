@@ -1,8 +1,11 @@
+- content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to 'Settings', admin_settings_path
+    %li= link_to 'Sanskrit & Tibetan Statuses', admin_sanskrit_statuses_path
+
 %h3
-  = link_to admin_settings_path do
-    %i.fa.fa-angle-left
-    Sanskrit Statuses
-    %span.badge #{@sanskrit_statuses.count}
+  Found
+  %span.badge #{@sanskrit_statuses.count}
 
   - if current_user.admin?
     .pull-right

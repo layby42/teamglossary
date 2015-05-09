@@ -1,7 +1,9 @@
-%h3
-  = link_to admin_users_path do
-    %i.fa.fa-angle-left
-    New User
+- content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to 'Users', admin_users_path
+    %li= link_to 'Add New User Account', new_admin_user_path
+
+%h3 New User
 
 %ul.nav.nav-tabs
   = tab_for 'details' do

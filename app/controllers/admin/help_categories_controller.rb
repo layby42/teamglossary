@@ -56,4 +56,8 @@ class Admin::HelpCategoriesController < ApplicationController
       redirect_to admin_help_categories_path
     end
   end
+
+  def set_action_title
+    @action_title = 'Help Categories'
+  end
 end

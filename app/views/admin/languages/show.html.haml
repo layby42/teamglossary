@@ -1,7 +1,10 @@
+- content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to 'Teams', admin_languages_path
+    %li= link_to @language.full_name, admin_language_path(@language)
+
 %h3
-  = link_to admin_languages_path do
-    %i.fa.fa-angle-left
-    = @language.full_name
+  = @language.full_name
 
   - if current_user.admin? || current_user.manager?(@language.id)
     = link_to edit_admin_language_path(@language), class: 'pull-right btn btn-primary btn-sm' do

@@ -60,4 +60,8 @@ class Admin::GeneralStatusesController < ApplicationController
       redirect_to admin_general_statuses_path
     end
   end
+
+  def set_action_title
+    @action_title = 'General Statuses'
+  end
 end

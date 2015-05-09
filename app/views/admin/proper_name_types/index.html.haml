@@ -1,8 +1,11 @@
+- content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to 'Settings', admin_settings_path
+    %li= link_to 'Proper Name Types', admin_proper_name_types_path
+
 %h3
-  = link_to admin_settings_path do
-    %i.fa.fa-angle-left
-    Proper Name Types
-    %span.badge #{@proper_name_types.count}
+  Found
+  %span.badge #{@proper_name_types.count}
 
   - if current_user.admin?
     .pull-right

@@ -60,4 +60,8 @@ class Admin::ReferenceTypesController < ApplicationController
       redirect_to admin_reference_types_path
     end
   end
+
+  def set_action_title
+    @action_title = 'Reference Types'
+  end
 end

@@ -60,4 +60,8 @@ class Admin::IntegrationStatusesController < ApplicationController
       redirect_to admin_integration_statuses_path
     end
   end
+
+  def set_action_title
+    @action_title = 'Integration Statuses'
+  end
 end

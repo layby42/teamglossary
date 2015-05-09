@@ -19,7 +19,7 @@
   .navbar.navbar-default.navbar-fixed-top
     .container-fluid
       .navbar-header
-        = link_to (@action_title.presence || 'Team Glossary'), root_path, class: 'navbar-brand'
+        .navbar-brand #{@action_title.presence || 'Glossary'}
         %button.navbar-toggle{data: {target: '#navbar-main', toggle: 'collapse', type: 'button'}}
           %span.icon-bar
           %span.icon-bar
@@ -72,10 +72,7 @@
       .row
         .col-sm-12
           #container_script_enabled{:style => 'display:none;'}
-            - unless Rails.env.production?
-              .alert.text-center
-                NOTE: this is #{Rails.env} version of application for testing purposes only.
-
+            = yield :breadcrumb
             = render 'shared/error'
             = render 'shared/notice'
             = yield :page_buttons

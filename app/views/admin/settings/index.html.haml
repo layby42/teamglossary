@@ -1,15 +1,7 @@
-%h3 Team Glossary Settings
-
 .row
   .col-sm-6.col-xs-12
     %h4 GENERAL
     %ul.list-group
-      %li.list-group-item
-        %span.badge= Language.count
-        = link_to 'Language Sections', admin_languages_path
-      %li.list-group-item
-        %span.badge= User.count
-        = link_to 'Team Glossary Users', admin_users_path
       %li.list-group-item
         %span.badge= Task.count
         = link_to 'General Menu Tasks', admin_tasks_path
@@ -29,7 +21,7 @@
         = link_to 'Reference Types', admin_reference_types_path
       %li.list-group-item
         %span.badge= SanskritStatus.count
-        = link_to 'Skt/Tib Statuses', admin_sanskrit_statuses_path
+        = link_to 'Sanskrit & Tibetan Statuses', admin_sanskrit_statuses_path
       %li.list-group-item
         %span.badge= IntegrationStatus.count
         = link_to 'Integration Statuses', admin_integration_statuses_path

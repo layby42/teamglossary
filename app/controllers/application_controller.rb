@@ -43,6 +43,6 @@ class ApplicationController < ActionController::Base
   end
 
   def set_action_title
-    @action_title = 'Team Glossary'
+    @action_title = 'Glossary'
   end
 end

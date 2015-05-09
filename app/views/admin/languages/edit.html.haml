@@ -1,7 +1,10 @@
-%h3
-  = link_to admin_language_path(@language) do
-    %i.fa.fa-angle-left
-    = @language.full_name
+- content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to 'Teams', admin_languages_path
+    %li= link_to @language.full_name, admin_language_path(@language)
+    %li= link_to 'Edit', edit_admin_language_path(@language)
+
+%h3= @language.full_name
 
 %ul.nav.nav-tabs
   = tab_for 'details' do

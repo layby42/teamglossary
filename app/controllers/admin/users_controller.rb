@@ -82,7 +82,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def params_user
-    keys = [:first_name, :last_name, :email, :about, :admin]
+    keys = [:first_name, :last_name, :email, :about, :admin, :paid]
     if current_user.admin?
       params.require(:user).permit(keys)
     else

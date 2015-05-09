@@ -65,4 +65,8 @@ class Admin::ProperNameTypesController < ApplicationController
       redirect_to admin_proper_name_types_path
     end
   end
+
+  def set_action_title
+    @action_title = 'Proper Name Types'
+  end
 end

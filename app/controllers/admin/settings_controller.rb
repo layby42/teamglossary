@@ -3,4 +3,8 @@ class Admin::SettingsController < ApplicationController
 
   def index
   end
+
+  def set_action_title
+    @action_title = 'Settings'
+  end
 end

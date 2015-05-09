@@ -1,8 +1,6 @@
 %h3
-  = link_to admin_settings_path do
-    %i.fa.fa-angle-left
-    Users
-    %span.badge #{@users.count}
+  Found
+  %span.badge #{@users.count}
 
   .pull-right
     = render 'shared/add_new_button', url: new_admin_user_path, remote: false
@@ -13,6 +11,7 @@
       %th Name
       %th Team(s)
       %th Last seen
+      %th Paid
   %tbody
     - @users.each do |user|
       %tr
@@ -31,6 +30,6 @@
           - else
             = link_to "#{teams_count} teams", admin_user_path(user)
             (#{user.language_users.pluck(:role).uniq.map(&:to_s).map(&:humanize).join(', ')})
-        %td
-          = time_ago(user.last_request_at)
+        %td= time_ago(user.last_request_at)
+        %td #{'Paid' if user.paid?}
 

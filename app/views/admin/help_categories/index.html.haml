@@ -1,8 +1,11 @@
+- content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to 'Settings', admin_settings_path
+    %li= link_to 'Help Categories', admin_help_categories_path
+
 %h3
-  = link_to admin_settings_path do
-    %i.fa.fa-angle-left
-    Help Categories
-    %span.badge #{@help_categories.count}
+  Found
+  %span.badge #{@help_categories.count}
 
   - if current_user.admin?
     .pull-right

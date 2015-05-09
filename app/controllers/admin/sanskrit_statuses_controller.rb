@@ -60,4 +60,8 @@ class Admin::SanskritStatusesController < ApplicationController
       redirect_to admin_sanskrit_statuses_path
     end
   end
+
+  def set_action_title
+    @action_title = 'Sanskrit Statuses'
+  end
 end

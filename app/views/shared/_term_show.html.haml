@@ -1,9 +1,11 @@
+- content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to 'Glossary', root_path
+    %li= link_to item.term, show_glossary_term_url_helper(language, item)
+
 .row
   .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
-    %h3
-      = link_to root_path do
-        %i.fa.fa-angle-left
-        = item.term
+    %h3= item.term
 
     .panel.panel-default
       .panel-body.special-border

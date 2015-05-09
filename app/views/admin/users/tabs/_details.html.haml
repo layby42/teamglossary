@@ -23,6 +23,11 @@
       = f.check_box :admin, autocomplete: 'off', disabled: !current_user.admin?
       = label_tag :admin, 'Site Administrator'
 
+    - if current_user.admin?
+      .form-group.col-xs-12
+        = f.check_box :paid, autocomplete: 'off'
+        = label_tag :paid, 'Paid and can issue invoices'
+
     - unless read_only
       .form-group.col-xs-12.text-right
         = f.submit 'Save Changes', :class => 'btn btn-primary', :data => {:submit => true}
