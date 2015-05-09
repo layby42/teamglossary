@@ -77,8 +77,6 @@ module ApplicationHelper
   end
 
   def month_to_select(selected=nil)
-    p '!!!!!!!!!!!!!!!!'
-    p selected
     opts = (1..12).collect {|m| [Date::MONTHNAMES[m], m]}
     options_for_select(opts, selected)
   end

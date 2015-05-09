@@ -7,12 +7,15 @@ class InvoicesController < ApplicationController
   before_filter :require_xhr, :only => [:changes]
 
   def index
+    conditions = {year: @year}
+    conditions[:month] = @month if @month.present?
     if current_user.admin?
-      @invoices = Invoice.by_period(@month, @year).list_order.includes([:user]).page(params[:page])
+      @invoices = Invoice.where(conditions).list_order.includes([:user]).page(params[:page])
     elsif current_user.manager?
-      @invoices = Invoice.where(user_id: current_user.manager_user_ids + [current_user.id]).by_period(@month, @year).list_order.includes([:user]).page(params[:page])
+      conditions[:user_id] = current_user.manager_user_ids + [current_user.id]
+      @invoices = Invoice.where(conditions).list_order.includes([:user]).page(params[:page])
     else
-      @invoices = current_user.invoices.by_period(@month, @year).list_order.includes([:user]).page(params[:page])
+      @invoices = current_user.invoices.where(conditions).list_order.includes([:user]).page(params[:page])
     end
   end
 
@@ -95,8 +98,9 @@ class InvoicesController < ApplicationController
     if params[:filter].present?
       @month = params[:filter][:month].to_i if (1..12).include?(params[:filter][:month].to_i)
       @year = params[:filter][:year].to_i if (2000..Time.zone.now.year).include?(params[:filter][:year].to_i)
+    else
+      @month = Time.zone.now.month
     end
-    @month ||= Time.zone.now.month
     @year ||= Time.zone.now.year
   end
 

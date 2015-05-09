@@ -3,7 +3,14 @@
     %fieldset
       .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6.col-sm-offset-3.col-md-offset-3.col-lg-offset-3
         .input-group.col-xs-12
-          = select_tag 'filter[month]', month_to_select(@month), class: 'form-control', autocomplete: 'off', required: true
+          = select_tag 'filter[month]', month_to_select(@month), include_blank: true, class: 'form-control', autocomplete: 'off'
       .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6
         .input-group.col-xs-12
           = select_tag 'filter[year]', year_to_select(@year), class: 'form-control', autocomplete: 'off', required: true
+
+:javascript
+  $(function() {
+    $('#filter_form select').change(function(){
+      $(this).parents('form').submit();
+    });
+  });
