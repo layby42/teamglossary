@@ -27,6 +27,7 @@
       %tbody#works_table
         - period = (@from_date..@to_date)
         - @data.each do |item|
+          - bottom_link = manager_language_ids.include?(@language.id)
           %tr.works_table_row
             %td
               - parent = item[0].general_menu
@@ -36,7 +37,7 @@
               = link_to item[0].name, language_general_menu_path(@language, item[0])
               %br/
               %b= work_in_progress_short_helper(item[1])
-            %td
+            %td{style: bottom_link_style_helper(bottom_link)}
               - item[1].each do |general_menu_action|
                 - if period.cover?(general_menu_action.end_date)
                   #{general_menu_action.end_date}: #{work_in_progress_user_name_helper(general_menu_action)} finished #{general_menu_action.task.title.downcase}
@@ -44,6 +45,8 @@
                 - if period.cover?(general_menu_action.start_date)
                   #{general_menu_action.start_date}: #{work_in_progress_user_name_helper(general_menu_action)} started #{general_menu_action.task.title.downcase}
                   %br/
+              - if bottom_link
+                = render 'shared/term_add_task', language: @language, term: item[0]
 
     - if @data.empty?
       Sorry, nothing found

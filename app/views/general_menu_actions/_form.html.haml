@@ -2,8 +2,13 @@
   %button{:type => 'button', 'data-dismiss' => 'modal', :class => 'close', 'aria-hidden' => true}= '&times;'.html_safe
   %h4
     = @general_menu_action.new_record? ? 'Add task for' : 'Edit task for'
-    = link_to @general_menu.name, show_glossary_term_url_helper(@language, @general_menu)
+    #{@language.english_name} Team
 .modal-body
+  .row
+    .col-xs-12
+      Article:
+      = link_to @general_menu.name, show_glossary_term_url_helper(@language, @general_menu)
+  %br/
   .row
     .col-xs-12
       = form_for [@language, @general_menu, @general_menu_action], html: {class: 'form-horizontal',remote: true} do |f|

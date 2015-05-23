@@ -1,8 +1,4 @@
-- open_task_count = term.general_menu_actions.select{|g| g.language_id == language.id}.count
 .div{style: 'position: absolute; bottom: 0; right: 8px;'}
   = link_to new_language_general_menu_general_menu_action_path(language, term, show_tasks: true), class: 'text-muted', remote: true do
     %i.fa.fa-plus-circle
-    add task
-
-    - if open_task_count > 0
-      (#{open_task_count})
+    edit task list

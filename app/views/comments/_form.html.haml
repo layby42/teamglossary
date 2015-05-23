@@ -1,9 +1,14 @@
 .modal-header
   %button{:type => 'button', 'data-dismiss' => 'modal', :class => 'close', 'aria-hidden' => true}= '&times;'.html_safe
   %h4
-    Comments for
-    = link_to @commentable.term, show_glossary_term_url_helper(@language, @commentable)
+    #{@language.english_name} Team Comments
 .modal-body
+  .row
+    .col-xs-12
+      You are about to add comment for
+      = link_to @commentable.term, show_glossary_term_url_helper(@language, @commentable)
+      %br/
+      %br/
   .row
     .col-xs-12
       = form_for [@language, @comment], html: {class: 'form-vertical', remote: true} do |f|
@@ -21,12 +26,10 @@
 
           .form-group.row
             %label.col-sm-12.control-label
-              Comment
-              %small
-                - if @language.is_base_language?
-                  (please use only #{@language.english_name})
-                - else
-                  (please use only #{base_language.english_name} or #{@language.english_name})
+              - if @language.is_base_language?
+                Please write in #{@language.english_name}
+              - else
+                Please write in #{base_language.english_name} or in #{@language.english_name}, so #{@language.english_name} Team can understand you
             .col-sm-12
               = f.text_area :text, class: 'form-control', rows: 3, autocomplete: 'off', placeholder: 'Add your comment here', required: true, disabled: !@comment.new_record?
 
