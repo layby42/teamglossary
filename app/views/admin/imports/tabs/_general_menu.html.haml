@@ -1,6 +1,9 @@
 .row
   .col-xs-12.text-center
-    Last update from CMS was done #{GeneralMenu.last_update_from_cms_at}
+    - last_update_from_cms_at = GeneralMenu.last_update_from_cms_at
+    Last update from Berzin Archives OpenCms was done #{last_update_from_cms_at}
+    %br/
+    (#{time_ago(last_update_from_cms_at)})
     %br/
     %br/
 .row

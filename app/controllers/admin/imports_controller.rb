@@ -25,9 +25,8 @@ class Admin::ImportsController < ApplicationController
       raise 'Import file can\'t be blank.' unless params[file_param].present?
       raise 'Only csv files accepted.' unless params[file_param].content_type == 'text/csv'
     end
-
     ImportHopkinsHelper.import!(params[:file_large], params[:file_small])
-    flash_to notice: 'General menu imported!'
+    flash_to notice: 'Jefrey Hopkins Terms imported!'
   rescue Exception => ex
     p ex.backtrace
     flash_to error: ex.message
