@@ -1,6 +1,7 @@
 class Admin::ImportsController < ApplicationController
   before_action :require_admin_or_manager
   before_action :require_admin, only: [:general_menu, :hopkins]
+  before_action :find_tab, only: [:index, :new]
 
   def index
   end
@@ -10,14 +11,13 @@ class Admin::ImportsController < ApplicationController
   end
 
   def general_menu
-    raise 'Import file can\'t be blank.' unless params[:file].present?
-    ImportGeneralMenuHelper.import!(params[:file])
-    flash_to notice: 'General menu imported!'
+    ImportGeneralMenuHelper.import!
+    flash_to notice: 'General Menu updated with data from CMS!'
   rescue Exception => ex
     p ex.backtrace
     flash_to error: ex.message
   ensure
-    redirect_to admin_imports_path
+    redirect_to admin_imports_path(tab: :general_menu)
   end
 
   def hopkins
@@ -32,6 +32,12 @@ class Admin::ImportsController < ApplicationController
     p ex.backtrace
     flash_to error: ex.message
   ensure
-    redirect_to admin_imports_path
+    redirect_to admin_imports_path(tab: :hopkins)
+  end
+
+  private
+
+  def find_tab
+    @tab = params[:tab].presence || 'glossary'
   end
 end

@@ -1,3 +1,8 @@
+- content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to_empty 'Task Management'
+    %li= link_to 'Work in Progress', works_path
+
 = render 'filter'
 
 #work_result

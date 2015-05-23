@@ -1,29 +1,13 @@
 %h3 Import
 
-.row
-  .col-xs-12
-    %h4 GLOSSARY
-    %ul.list-group.special-border
-      %li.list-group-item
-        STEP 1: Please review terms that you would like to import into Team Glossary.
-        %br/
-        %br/
-        %ul
-          %li Does your Excel (or CSV) file contain ONLY same type of terms: only technicals terms, only proper names or only text titles?
-          %li Does your Excel (or CSV) file contain ONLY terms and translations in Singular form? Example: "karmic actions" - incorrect; "karmic action" - correct.
-        %br/
-        If the answer is 'Yes' to both questions, proceed to STEP 2. Otherwise please fix terms in your file.
+%ul.nav.nav-tabs
+  = tab_for 'glossary' do
+    = link_to 'Glossary', admin_imports_path(tab: :glossary)
+  - if current_user.admin?
+    = tab_for 'general_menu' do
+      = link_to 'General Menu', admin_imports_path(tab: :general_menu)
+    = tab_for 'hophins' do
+      = link_to 'Jefrey Hopkins', admin_imports_path(tab: :hopkins)
 
-      %li.list-group-item
-        STEP 2: Please convert your Excel file into CSV format: columns in CSV file hould be separated with comma (,) or semicolon (;).
-      %li.list-group-item
-        STEP 3: You are ready to start
-        -# = link_to 'New Import', new_admin_import_path, class: 'btn btn-primary btn-xs'
-        = link_to 'New Import - coming soon', '#', class: 'btn btn-primary btn-xs'
-
-- if current_user.admin?
-  .row
-    .col-sm-6.col-xs-12
-      = render 'general_menu'
-    .col-sm-6.col-xs-12
-      = render 'hopkins'
+#import_content.tab-content
+  = render "admin/imports/tabs/#{@tab}"

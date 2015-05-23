@@ -65,6 +65,10 @@ class GeneralMenu < ActiveRecord::Base
     !synchronized
   end
 
+  def self.last_update_from_cms_at
+    GeneralMenu.where('updated_from_cms_at IS NOT NULL').order('updated_from_cms_at DESC').limit(1).first.try(:updated_from_cms_at)
+  end
+
   def self.search(language, query, options={})
     query = query.to_s.strip.downcase
 

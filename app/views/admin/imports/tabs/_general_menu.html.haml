@@ -1,0 +1,25 @@
+.row
+  .col-xs-12.text-center
+    Last update from CMS was done #{GeneralMenu.last_update_from_cms_at}
+    %br/
+    %br/
+.row
+  .col-sm-8.col-sm-offset-2.col-xs-12
+    = form_tag general_menu_admin_imports_path, method: :post, id: 'import-general-menu-form' do
+      = submit_tag 'Update General Menu with data from CMS', data: {confirm: 'Are you sure?'}, class: 'btn btn-primary btn-block', style: 'white-space: normal'
+    %br/
+.row
+  .col-xs-12.text-center
+    Check
+    = link_to 'after import diagnostics', admin_diagnostics_path
+    for possible problems with imported data
+    %br/
+    %br/
+
+:javascript
+  $(function() {
+    $('#import-general-menu-form').on('submit', function(){
+      $('#import-general-menu-form > input[type="submit"]').prop('disabled', 'disabled');
+      $('#import-general-menu-form > input[type="submit"]').val('Please wait. Importing...')
+    });
+  });

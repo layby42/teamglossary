@@ -1,9 +1,13 @@
 require 'json'
+require "open-uri"
 
 module ImportGeneralMenuHelper
 
-  def self.import!(file)
-    file_data = file.read
+  def self.import!()
+    url = 'http://www.berzinarchives.com/web/x/data/translation_state/original_resources_and_translations.json'
+    file_data = open(url).read()
+
+    # file_data = file.read
 
     options = { updated_from_cms_at: Time.zone.now }
 
