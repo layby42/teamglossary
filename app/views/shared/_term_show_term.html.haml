@@ -18,6 +18,7 @@
 
 %h4{class: (!request.xhr? && can_edit ? 'term_title' : 'title')}
   = "#{title_helper(item)} DETAILS"
+  %small.text-primary (#{item.language.english_name})
 
 #term-container.clearfix
   = render 'term', language: language, item: item

@@ -22,7 +22,7 @@
 
     %h4{class: (!request.xhr? && can_edit ? 'term_title' : 'title')}
       TRANSLATION
-      %small.text-primary (#{language.full_name})
+      %small.text-primary (#{language.english_name})
 
     #term-translation-container.clearfix
       -if translation.new_record?
