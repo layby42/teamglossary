@@ -1,3 +1,8 @@
+- content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to_empty 'Team Management'
+    %li= link_to 'Users', admin_users_path
+
 %h3
   Found
   %span.badge #{@users.count}
