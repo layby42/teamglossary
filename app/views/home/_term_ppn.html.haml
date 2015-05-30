@@ -14,7 +14,12 @@
 
     - if item.tibetan.present?
       %br/
-      %small (#{item.tibetan})
+      %small Tib: #{item.tibetan}
+
+    - if item.sanskrit.present?
+      %br/
+      %small Skt: #{item.sanskrit}
+
     - if item.dates.present?
       %br/
       %small (#{item.dates})

@@ -19,7 +19,16 @@
     - tibetan_text = [item.tibetan_full, item.tibetan_short].compact.join('; ')
     - if tibetan_text.present?
       %br/
-      %small (#{tibetan_text})
+      %small Tib: #{tibetan_text}
+
+    - sanskrit_text = [item.sanskrit_full, item.sanskrit_short, item.sanskrit_full_diacrit, item.sanskrit_short_diacrit].compact.join('; ')
+    - if sanskrit_text.present?
+      %br/
+      %small Skt: #{sanskrit_text}
+
+    - if item.pali.present?
+      %br/
+      %small Pali: #{item.pali}
 
     - if item.explanation.present?
       %br/
