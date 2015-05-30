@@ -12,8 +12,15 @@
             Download as CSV
             %span.caret
           %ul.dropdown-menu
-            %li= link_to 'column separator: comma(\',\')', download_path, target: '_blank'
-            %li= link_to 'column separator: semicolon(\';\')', download_path(col_sep: ';'), target: '_blank'
+            %li
+              .text-center LIGHT VERSION
+            %li= link_to 'columns separated with comma(\',\')', download_path(mode: :light), target: '_blank'
+            %li= link_to 'columns separated with semicolon(\';\')', download_path(mode: :light, col_sep: ';'), target: '_blank'
+            %li.divider
+            %li
+              .text-center COMPLETE VERSION
+            %li= link_to 'columns separated with comma(\',\')', download_path, target: '_blank'
+            %li= link_to 'columns separated with semicolon(\';\')', download_path(col_sep: ';'), target: '_blank'
 
       - if @query.present? || !@search_extra.empty? || !@glossary_type.general_menu?
         Found

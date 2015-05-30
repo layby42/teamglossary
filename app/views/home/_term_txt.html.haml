@@ -12,6 +12,14 @@
     %strong
       = link_to item.term, language_glossary_title_path(item.language, item), remote: true
 
+    - alternatives = [item.alt_term1, item.alt_term2, item.popular_term].compact
+    - if alternatives.length > 0
+      %ul
+        - alternatives.compact.each do |alt|
+          - next unless alt.present?
+          %li
+            %small= alt
+
     - if item.author.present?
       .text-left
         %i -- #{item.author}
@@ -45,6 +53,14 @@
       - if translation.present?
         %strong
           = link_to translation.term, language_glossary_title_path(language, item), remote: true
+        - alternatives = translation.alt_terms_as_array
+        - if alternatives.length > 0
+          %ul
+            - alternatives.compact.each do |alt|
+              - next unless alt.present?
+              %li
+                %small= alt
+
         - if translation.author.present?
           .text-left
             %i -- #{translation.author}
@@ -54,11 +70,6 @@
             = link_to edit_language_glossary_title_glossary_title_translation_path(language, item, translation), class: 'text-muted' do
               %i.fa.fa-edit
               edit translation
-
-        - translation.alt_terms_as_array.each do |alt_term|
-          - next unless alt_term.present?
-          %br/
-          %snall= alt_term
 
         - if current_user && translation.notes.present?
           %br/

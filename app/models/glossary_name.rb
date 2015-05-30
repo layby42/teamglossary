@@ -42,7 +42,7 @@ class GlossaryName < ActiveRecord::Base
   validates :term, uniqueness: {case_sensitive: false, scope: :proper_name_type_id, message: 'public term already exists'}, if: :is_public?
 
   SEARCH_COLUMNS = [:term, :tibetan, :sanskrit, :explanation, :dates]
-  SEARCH_DEFAULT_COLUMNS = [:term, :tibetan, :sanskrit, :dates]
+  SEARCH_DEFAULT_COLUMNS = [:term]
   SEARCH_TRANSLATION_COLUMNS = [:term, :alt_term1, :alt_term2, :alt_term3, :notes]
   SEARCH_DEFAULT_TRANSLATION_COLUMNS = [:term, :alt_term1, :alt_term2, :alt_term3]
 

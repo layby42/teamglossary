@@ -59,9 +59,7 @@ class GlossaryTerm < ActiveRecord::Base
       :alternative_tibetan, :alternative_sanskrit,
       :additional_explanation, :definition]
 
-  SEARCH_DEFAULT_COLUMNS = [
-    :term, :tibetan, :sanskrit, :pali,
-    :alternative_tibetan, :alternative_sanskrit]
+  SEARCH_DEFAULT_COLUMNS = [:term]
 
   SEARCH_TRANSLATION_COLUMNS = [:term, :alt_term1, :alt_term2, :alt_term3, :notes, :definition]
   SEARCH_DEFAULT_TRANSLATION_COLUMNS = [:term, :alt_term1, :alt_term2, :alt_term3]

@@ -31,12 +31,14 @@ class HomeController < ApplicationController
 
   def download
     options = {
+      search_contains: (@search_method.presence == 'contains'),
       columns: @columns,
       translation_columns: @translation_columns,
-      states: @search_states
+      states: @search_states,
+      extra: @search_extra
     }
     data = @glossary_type.glossary_class.search(@language, @query, options)
-    csv_data = ExportCsvHelper::prepare(@glossary_type.glossary_class, @language, data, {query: @query, col_sep: params[:col_sep]})
+    csv_data = ExportCsvHelper::prepare(@glossary_type.glossary_class, @language, data, {query: @query, search_options: options, col_sep: params[:col_sep], mode: params[:mode]})
     file_name = @glossary_type.csv_file_name(@language)
     send_data csv_data,
             :filename => file_name,

@@ -55,12 +55,9 @@ class GlossaryTitle < ActiveRecord::Base
       :explanation, :alt_term1, :alt_term2,
       :popular_term, :pali]
 
-  SEARCH_DEFAULT_COLUMNS = [:term, :author, :author_translit,
-      :tibetan_full, :tibetan_short,
-      :sanskrit_full, :sanskrit_short,
-      :sanskrit_full_diacrit, :sanskrit_short_diacrit,
+  SEARCH_DEFAULT_COLUMNS = [:term,
       :alt_term1, :alt_term2,
-      :popular_term, :pali]
+      :popular_term]
 
   SEARCH_TRANSLATION_COLUMNS = [ :term, :author, :notes,
         :alt_term1, :alt_term2, :alt_term3]
