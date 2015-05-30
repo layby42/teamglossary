@@ -20,6 +20,11 @@ $(function() {
     $('#search_all_extra').prop('checked', checked);
   };
 
+  $(document).on('click', 'a.search-method-choice', function(){
+    $('#search_method').val($(this).data('value'));
+    $('#search-method-title').html($(this).data('title'));
+  });
+
   $(document).on('change', '#search_glossary_type_id', function(){
     $('#search_advanced').prop('checked', false);
     $('#advanced_search').hide();

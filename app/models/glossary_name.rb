@@ -65,8 +65,9 @@ class GlossaryName < ActiveRecord::Base
     return [] if states.empty?
 
     extra = (options[:extra].presence || []).map(&:to_sym)
+    search_contains = (options[:search_contains] == true)
 
-    query = query.to_s.strip.downcase
+    query = query.to_s.mb_chars.downcase.to_s.strip
 
     if language.is_base_language?
       return [] if columns.empty?
@@ -74,7 +75,11 @@ class GlossaryName < ActiveRecord::Base
       condition = GlossaryName.base_states_condition(language, states)
 
       GlossaryName.where(condition).list_order.includes([:proper_name_type, :comments, :language]).select do |term|
-        columns.collect{|field| term.try(field).to_s}.join(' ').downcase.include?(query)
+        if search_contains
+          columns.any?{|field| term.try(field).to_s.mb_chars.downcase.to_s.include?(query) }
+        else
+          columns.any?{|field| term.try(field).to_s.mb_chars.downcase.to_s.index(query) == 0 }
+        end
       end
     else
       translation_columns = options[:translation_columns].presence || SEARCH_TRANSLATION_COLUMNS
@@ -87,15 +92,19 @@ class GlossaryName < ActiveRecord::Base
       extra_condition = GlossaryName.extra_condition(language, extra)
 
       GlossaryName.where(condition).where(extra_condition).list_order.includes([:glossary_name_translations, :proper_name_type, :comments, :language]).select do |term|
+        transaction = term.glossary_name_translations.select{|t| t.language_id == language.id}.first
 
-          columns.collect{|field| term.try(field).to_s}.join(' ').downcase.include?(query) ||
+        if search_contains
+          columns.any?{|field| term.try(field).to_s.mb_chars.downcase.to_s.include?(query) } ||
           (
-            (
-              transaction = term.glossary_name_translations.select{|t| t.language_id == language.id}.first) &&
-              translation_columns.collect do |field|
-                transaction.try(field).to_s
-              end.join(' ').downcase.include?(query)
-            )
+            transaction && translation_columns.any?{|field| transaction.try(field).to_s.mb_chars.downcase.to_s.include?(query) }
+          )
+        else
+          columns.any?{|field| term.try(field).to_s.mb_chars.downcase.to_s.index(query) == 0 } ||
+          (
+            transaction && translation_columns.any?{|field| transaction.try(field).to_s.mb_chars.downcase.to_s.index(query) == 0 }
+          )
+        end
       end
     end
   end

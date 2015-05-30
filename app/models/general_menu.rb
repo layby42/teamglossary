@@ -70,9 +70,10 @@ class GeneralMenu < ActiveRecord::Base
   end
 
   def self.search(language, query, options={})
-    query = query.to_s.strip.downcase
-
     extra = (options[:extra].presence || []).map(&:to_sym)
+    search_contains = (options[:search_contains] == true)
+
+    query = query.to_s.mb_chars.downcase.to_s.strip
 
     if query.blank? && extra.empty?
       if language.is_base_language?
@@ -88,8 +89,12 @@ class GeneralMenu < ActiveRecord::Base
       if language.is_base_language?
         return [] if columns.empty?
 
-        GeneralMenu.by_language(language.id).search_order.includes([:general_menu_actions, :language]).select do |item|
-          columns.collect{|field| item.try(field).to_s}.join(' ').downcase.include?(query)
+        GeneralMenu.by_language(language.id).search_order.includes([:general_menu_actions, :language]).select do |term|
+          if search_contains
+            columns.any?{|field| term.try(field).to_s.mb_chars.downcase.to_s.include?(query) }
+          else
+            columns.any?{|field| term.try(field).to_s.mb_chars.downcase.to_s.index(query) == 0 }
+          end
         end
       else
         translation_columns = options[:translation_columns].presence || SEARCH_TRANSLATION_COLUMNS
@@ -101,16 +106,20 @@ class GeneralMenu < ActiveRecord::Base
         condition = {language_id: [language.id, Language.base_language.id]}
         extra_condition = GeneralMenu.extra_condition(language, extra)
 
-        GeneralMenu.where(condition).where(extra_condition).search_order.includes([:general_menu_translations, :general_menu_actions, :language]).select do |item|
-          columns.collect{|field| item.try(field).to_s}.join(' ').downcase.include?(query) ||
-          (
+        GeneralMenu.where(condition).where(extra_condition).search_order.includes([:general_menu_translations, :general_menu_actions, :language]).select do |term|
+          transaction = term.general_menu_translations.select{|t| t.language_id == language.id}.first
+
+          if search_contains
+            columns.any?{|field| term.try(field).to_s.downcase.include?(query) } ||
             (
-              transaction = item.general_menu_translations.select{|t| t.language_id == language.id}.first
-            ) &&
-              translation_columns.collect do |field|
-                transaction.try(field).to_s
-              end.join(' ').downcase.include?(query)
+              transaction && translation_columns.any?{|field| transaction.try(field).to_s.mb_chars.downcase.to_s.include?(query) }
             )
+          else
+            columns.any?{|field| term.try(field).to_s.downcase.index(query) == 0 } ||
+            (
+              transaction && translation_columns.any?{|field| transaction.try(field).to_s.mb_chars.downcase.to_s.index(query) == 0 }
+            )
+          end
         end
       end
     end

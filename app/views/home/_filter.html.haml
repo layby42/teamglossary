@@ -13,10 +13,20 @@
         .input-group.col-xs-12
           = select_tag 'search[glossary_type_id]', glossary_type_options(@glossary_type.id), class: 'form-control', autocomplete: 'off'
 
-      .form-group.col-lg-6.col-md-6.col-sm-6.col-xs-12.col-sm-offset-3.col-md-offset-3.col-lg-offset-3
+      .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6.col-sm-offset-3.col-md-offset-3.col-lg-offset-3
         .input-group.col-xs-12
           = check_box_tag 'search[advanced]', true, @advanced_search, autocomplete: 'off'
           advanced search
+      .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6.text-right
+        .btn-group
+          = hidden_field_tag 'search[method]', @search_method
+          %button.btn.btn-link.text-muted.search-method-dropdown.dropdown-toggle.text-primary{data: {toggle: 'dropdown'}, 'aria-expanded' => false}
+            %span#search-method-title #{@search_method == 'contains' ? 'contains' : 'starting with'} search query
+            %span.caret
+          %ul.dropdown-menu
+            %li= link_to_empty 'starting with search query', data: {value: 'start', title: 'starting with search query'}, class: 'search-method-choice'
+            %li= link_to_empty 'contains search query', data: {value: 'contains', title: 'contains search query'}, class: 'search-method-choice'
+
 
       .form-group.col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1
         .panel.panel-default.special-border.col-xs-12#advanced_search{style: "#{'display: none;' unless @advanced_search}"}

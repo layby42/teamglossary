@@ -3,6 +3,7 @@ class HomeController < ApplicationController
   before_action :find_language
   before_action :find_glossary
   before_action :find_query
+  before_action :find_method
   before_action :find_advanced
   before_action :find_columns
   before_action :find_translation_columns
@@ -15,6 +16,7 @@ class HomeController < ApplicationController
 
   def index
     options = {
+      search_contains: (@search_method.presence == 'contains'),
       columns: @columns,
       translation_columns: @translation_columns,
       states: @search_states,
@@ -92,6 +94,24 @@ class HomeController < ApplicationController
     else
       @query = session[:glossary_query]
     end
+  end
+
+  def find_method
+    if params[:search].present?
+      @search_method = (params[:search][:method].to_s.presence || 'start')
+      @search_method = 'start' unless ['start', 'contains'].include?(@search_method)
+      if current_user
+        Setting.update_value!(current_user, :glossary_search_method, @search_method)
+      else
+        session[:glossary_search_method] = @search_method
+      end
+    elsif current_user.present?
+      @search_method = current_user.get_setting_value(:glossary_search_method).to_s
+    else
+      @search_method = session[:glossary_search_method].to_s
+    end
+
+    @search_method = @search_method.to_s.presence || 'start'
   end
 
   def find_advanced
