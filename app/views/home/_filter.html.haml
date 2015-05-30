@@ -13,19 +13,19 @@
         .input-group.col-xs-12
           = select_tag 'search[glossary_type_id]', glossary_type_options(@glossary_type.id), class: 'form-control', autocomplete: 'off'
 
-      .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6.col-sm-offset-3.col-md-offset-3.col-lg-offset-3
+      .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6.col-md-offset-3.col-lg-offset-3
+        .input-group.col-xs-12
+          = hidden_field_tag 'search[method]', @search_method
+          - start_with = (@search_method != 'contains')
+          = check_box_tag 'search[start_with]', true, start_with, autocomplete: 'off', data: {true_value: 'start', true_title: 'starts with search query', false_value: 'contains', false_title: 'contains search query'}
+          &nbsp;
+          %span#search-method-title #{start_with ? 'starts with' : 'contains'} search query
+
+      .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6.text-right
         .input-group.col-xs-12
           = check_box_tag 'search[advanced]', true, @advanced_search, autocomplete: 'off'
+          &nbsp;
           advanced search
-      .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6.text-right
-        .btn-group
-          = hidden_field_tag 'search[method]', @search_method
-          %button.btn.btn-link.text-muted.search-method-dropdown.dropdown-toggle.text-primary{data: {toggle: 'dropdown'}, 'aria-expanded' => false}
-            %span#search-method-title #{@search_method == 'contains' ? 'contains' : 'starting with'} search query
-            %span.caret
-          %ul.dropdown-menu
-            %li= link_to_empty 'starting with search query', data: {value: 'start', title: 'starting with search query'}, class: 'search-method-choice'
-            %li= link_to_empty 'contains search query', data: {value: 'contains', title: 'contains search query'}, class: 'search-method-choice'
 
 
       .form-group.col-xs-12.col-sm-12.col-md-10.col-lg-10.col-md-offset-1.col-lg-offset-1

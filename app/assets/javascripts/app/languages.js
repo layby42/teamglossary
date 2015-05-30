@@ -20,9 +20,14 @@ $(function() {
     $('#search_all_extra').prop('checked', checked);
   };
 
-  $(document).on('click', 'a.search-method-choice', function(){
-    $('#search_method').val($(this).data('value'));
-    $('#search-method-title').html($(this).data('title'));
+  $(document).on('click', '#search_start_with', function(){
+    if ($(this).is(':checked')){
+      $('#search_method').val($(this).data('true-value'));
+      $('#search-method-title').html($(this).data('true-title'));
+    } else {
+      $('#search_method').val($(this).data('false-value'));
+      $('#search-method-title').html($(this).data('false-title'));
+    }
   });
 
   $(document).on('change', '#search_glossary_type_id', function(){
