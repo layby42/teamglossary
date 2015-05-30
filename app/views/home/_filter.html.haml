@@ -13,7 +13,7 @@
         .input-group.col-xs-12
           = select_tag 'search[glossary_type_id]', glossary_type_options(@glossary_type.id), class: 'form-control', autocomplete: 'off'
 
-      .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6.col-md-offset-3.col-lg-offset-3
+      .form-group.col-lg-3.col-md-3.col-sm-3.col-xs-6.col-sm-offset-3.col-md-offset-3.col-lg-offset-3
         .input-group.col-xs-12
           = hidden_field_tag 'search[method]', @search_method
           - start_with = (@search_method != 'contains')

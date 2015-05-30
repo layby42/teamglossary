@@ -594,7 +594,7 @@ module ExportCsvHelper
     columns = (options[:search_options][:columns].presence || []).map{|h| h.to_s.humanize}.join(', ')
     search_query = if options[:query].present?
       [
-        (options[:search_options][:search_contains] ? 'contains' : 'starting with'),
+        (options[:search_options][:search_contains] ? 'contains' : 'starts with'),
         options[:query]
       ].join(' ')
     else
