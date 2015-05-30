@@ -62,6 +62,6 @@ class Admin::GeneralStatusesController < ApplicationController
   end
 
   def set_action_title
-    @action_title = 'General Statuses'
+    @action_title = :settings
   end
 end

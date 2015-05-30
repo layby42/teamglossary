@@ -79,6 +79,6 @@ class Admin::LanguagesController < ApplicationController
   end
 
   def set_action_title
-    @action_title = 'Teams'
+    @action_title = :teams
   end
 end

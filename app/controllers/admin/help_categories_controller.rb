@@ -58,6 +58,6 @@ class Admin::HelpCategoriesController < ApplicationController
   end
 
   def set_action_title
-    @action_title = 'Help Categories'
+    @action_title = :settings
   end
 end

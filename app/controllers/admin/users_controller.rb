@@ -97,6 +97,6 @@ class Admin::UsersController < ApplicationController
   end
 
   def set_action_title
-    @action_title = 'Users'
+    @action_title = :users
   end
 end

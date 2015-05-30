@@ -19,7 +19,7 @@
   .navbar.navbar-default.navbar-fixed-top
     .container-fluid
       .navbar-header
-        .navbar-brand #{@action_title.presence || 'Glossary'}
+        .navbar-header= navbar_header_link_helper(@action_title)
         %button.navbar-toggle{data: {target: '#navbar-main', toggle: 'collapse', type: 'button'}}
           %span.icon-bar
           %span.icon-bar

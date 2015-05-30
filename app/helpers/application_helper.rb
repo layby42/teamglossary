@@ -90,4 +90,25 @@ module ApplicationHelper
     opts = [['Hours', true], ['Words', false]]
     options_for_select(opts, selected)
   end
+
+  def navbar_header_link_helper(code)
+    case code.to_s.to_sym
+    when :root
+      link_to('Glossary', root_path, :class => 'navbar-brand')
+    when :work
+      link_to('Task Management', works_path, :class => 'navbar-brand')
+    when :invoices
+      link_to('Invoices', invoices_path, :class => 'navbar-brand')
+    when :comments
+      link_to('Discussion', comments_path, :class => 'navbar-brand')
+    when :teams
+      link_to('Team Management', admin_languages_path, :class => 'navbar-brand')
+    when :users
+      link_to('Team Management', admin_users_path, :class => 'navbar-brand')
+    when :settings
+      link_to('Settings', admin_settings_path, :class => 'navbar-brand')
+    else
+      link_to('Glossary', root_path, :class => 'navbar-brand')
+    end
+  end
 end

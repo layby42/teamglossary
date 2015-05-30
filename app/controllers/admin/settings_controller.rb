@@ -5,6 +5,6 @@ class Admin::SettingsController < ApplicationController
   end
 
   def set_action_title
-    @action_title = 'Settings'
+    @action_title = :settings
   end
 end

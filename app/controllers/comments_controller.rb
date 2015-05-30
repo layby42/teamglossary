@@ -158,6 +158,6 @@ class CommentsController < LanguagesController
   end
 
   def set_action_title
-    @action_title = 'Discussions'
+    @action_title = :comments
   end
 end

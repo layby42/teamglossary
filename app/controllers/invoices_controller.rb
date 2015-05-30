@@ -111,6 +111,6 @@ class InvoicesController < ApplicationController
   end
 
   def set_action_title
-    @action_title = 'Invoices'
+    @action_title = :invoices
   end
 end

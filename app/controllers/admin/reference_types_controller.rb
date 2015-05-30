@@ -62,6 +62,6 @@ class Admin::ReferenceTypesController < ApplicationController
   end
 
   def set_action_title
-    @action_title = 'Reference Types'
+    @action_title = :settings
   end
 end

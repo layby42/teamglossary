@@ -67,6 +67,6 @@ class Admin::ProperNameTypesController < ApplicationController
   end
 
   def set_action_title
-    @action_title = 'Proper Name Types'
+    @action_title = :settings
   end
 end

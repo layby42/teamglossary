@@ -62,6 +62,6 @@ class Admin::IntegrationStatusesController < ApplicationController
   end
 
   def set_action_title
-    @action_title = 'Integration Statuses'
+    @action_title = :settings
   end
 end

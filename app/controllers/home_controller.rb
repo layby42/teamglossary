@@ -249,6 +249,6 @@ class HomeController < ApplicationController
   end
 
   def set_action_title
-    @action_title = 'Glossary' if current_user
+    @action_title = :root
   end
 end

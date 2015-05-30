@@ -59,6 +59,6 @@ class Admin::TasksController < ApplicationController
   end
 
   def set_action_title
-    @action_title = 'Tasks'
+    @action_title = :settings
   end
 end

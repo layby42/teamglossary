@@ -76,6 +76,6 @@ class WorksController < ApplicationController
   end
 
   def set_action_title
-    @action_title = 'Task Management'
+    @action_title = :work
   end
 end

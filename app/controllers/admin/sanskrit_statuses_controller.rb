@@ -62,6 +62,6 @@ class Admin::SanskritStatusesController < ApplicationController
   end
 
   def set_action_title
-    @action_title = 'Sanskrit Statuses'
+    @action_title = :settings
   end
 end
