@@ -40,16 +40,18 @@
         %strong
           = link_to translation.term, language_glossary_name_path(language, item), remote: true
 
+        - alternatives = translation.alt_terms_as_array
+        - if alternatives.compact.length > 0
+          %ul
+            - alternatives.each do |alt|
+              - next unless alt.present?
+              %li.small= alt
+
         - if manager_or_editor_language_ids.include?(language.id)
           .text-right
             = link_to edit_language_glossary_name_glossary_name_translation_path(language, item, translation), class: 'text-muted' do
               %i.fa.fa-edit
               edit translation
-
-        - translation.alt_terms_as_array.each do |alt_term|
-          - next unless alt_term.present?
-          %br/
-          %snall= alt_term
 
         - if current_user && translation.notes.present?
           %br/

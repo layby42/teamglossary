@@ -47,10 +47,10 @@ class GeneralMenu < ActiveRecord::Base
 
   validates :cms_name, :name, :language_id, presence: true
 
-  SEARCH_COLUMNS = [:name, :remark, :additional_text, :cms_name, :full_cms_path]
-  SEARCH_DEFAULT_COLUMNS = [:name, :remark, :additional_text, :cms_name, :full_cms_path]
-  SEARCH_TRANSLATION_COLUMNS = [:name, :notes, :additional_text]
-  SEARCH_DEFAULT_TRANSLATION_COLUMNS = [:name, :notes, :additional_text]
+  SEARCH_COLUMNS = [:name, :new_name, :remark, :additional_text, :cms_name, :full_cms_path]
+  SEARCH_DEFAULT_COLUMNS = [:name, :new_name]
+  SEARCH_TRANSLATION_COLUMNS = [:name, :new_name, :notes, :additional_text]
+  SEARCH_DEFAULT_TRANSLATION_COLUMNS = [:name, :new_name]
 
   SEARCH_EXTRA = [:name_translated, :translation_notes]
 

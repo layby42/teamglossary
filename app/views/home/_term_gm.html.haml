@@ -6,6 +6,10 @@
     %strong
       = link_to item.name, language_general_menu_path(item.language, item), remote: true
 
+    - if item.new_name.present?
+      %ul
+        %li.small= item.new_name
+
     - if item.folder?
       .div{style: "position: absolute; top: 5px; left: #{8 * (level + 1) }px;"}
         = link_to open_language_general_menu_path(language, item), class: 'text-primary open_folder_link', remote: true do
@@ -27,6 +31,10 @@
       - if translation.present?
         %strong
           = link_to translation.name, language_general_menu_path(language, item), remote: true
+        - if translation.new_name.present?
+          %ul
+            %li.small= translation.new_name
+
       - elsif manager_or_editor_language_ids.include?(language.id)
         .text-right
           = link_to language_general_menu_path(language, item), class: 'text-muted' do

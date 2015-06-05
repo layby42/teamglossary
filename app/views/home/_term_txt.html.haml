@@ -17,8 +17,7 @@
       %ul
         - alternatives.compact.each do |alt|
           - next unless alt.present?
-          %li
-            %small= alt
+          %li.small= alt
 
     - if item.author.present?
       .text-left
@@ -53,13 +52,13 @@
       - if translation.present?
         %strong
           = link_to translation.term, language_glossary_title_path(language, item), remote: true
+
         - alternatives = translation.alt_terms_as_array
-        - if alternatives.length > 0
+        - if alternatives.compact.length > 0
           %ul
             - alternatives.compact.each do |alt|
               - next unless alt.present?
-              %li
-                %small= alt
+              %li.small= alt
 
         - if translation.author.present?
           .text-left

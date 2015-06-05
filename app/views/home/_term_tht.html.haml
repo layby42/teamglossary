@@ -42,16 +42,17 @@
         %strong
           = link_to translation.term, language_glossary_term_path(language, item), remote: true
 
+        - if translation.alt_terms_as_array.length > 0
+          %ul
+            - translation.alt_terms_as_array.each do |alt_term|
+              - next unless alt_term.present?
+              %li.small= alt_term
+
         - if manager_or_editor_language_ids.include?(language.id)
           .text-right
             = link_to edit_language_glossary_term_glossary_term_translation_path(language, item, translation), class: 'text-muted' do
               %i.fa.fa-edit
               edit translation
-
-        - translation.alt_terms_as_array.each do |alt_term|
-          - next unless alt_term.present?
-          %br/
-          %small= alt_term
 
         - if translation.definition.present?
           %br/
