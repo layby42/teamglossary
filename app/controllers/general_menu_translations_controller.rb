@@ -22,10 +22,10 @@ class GeneralMenuTranslationsController < GeneralMenusController
   end
 
   def update
-    if @general_menu_translation.editable?
-      update_attributes = nil
+    update_attributes = if @general_menu_translation.synchronized?
+      {notes: general_menu_translation_params[:notes], new_name: general_menu_translation_params[:new_name]}
     else
-      update_attributes = {notes: general_menu_translation_params[:notes]}
+      nil
     end
 
     if @general_menu_translation.update_attributes!(update_attributes || general_menu_translation_params)
@@ -69,6 +69,7 @@ class GeneralMenuTranslationsController < GeneralMenusController
   def general_menu_translation_params
     params.require(:general_menu_translation).permit(
       :name,
+      :new_name,
       :additional_text,
       :online,
       :notes

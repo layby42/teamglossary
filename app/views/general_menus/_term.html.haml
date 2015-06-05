@@ -5,6 +5,10 @@
       %td.col-xs-8
         = link_to item.name, language_general_menu_path(item.language, item), remote: request.xhr?
     %tr
+      %th.col-xs-4 New Site Title
+      %td.col-xs-8
+        = item.new_name.presence || item.name
+    %tr
       %th Type
       %td= item.item_type_name
     - if item.length_type.present?

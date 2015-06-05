@@ -21,10 +21,11 @@
 #  online              :date
 #  updated_from_cms_at :datetime
 #  level               :integer          default(0), not null
+#  new_name            :string(1000)
 #
 
 class GeneralMenu < ActiveRecord::Base
-  strip_attributes :only => [:cms_name, :name, :remark, :item_type, :length_type, :additional_text, :wiki_qa, :full_cms_path, :online]
+  strip_attributes :only => [:cms_name, :name, :remark, :item_type, :length_type, :additional_text, :wiki_qa, :full_cms_path, :online, :new_name]
   has_paper_trail :ignore => [:created_at, :updated_at, :updated_from_cms_at]
 
   belongs_to :language
@@ -59,10 +60,6 @@ class GeneralMenu < ActiveRecord::Base
 
   def is_private?
     false
-  end
-
-  def editable?
-    !synchronized
   end
 
   def self.last_update_from_cms_at

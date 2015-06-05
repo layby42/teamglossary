@@ -2,8 +2,12 @@
   %tbody
     %tr
       %th.col-xs-4 Translation
-      %td
+      %td.col-xs-8
         = link_to translation.term, language_general_menu_path(language, item), remote: request.xhr?
+    %tr
+      %th.col-xs-4 New Site Translation
+      %td.col-xs-8
+        = translation.new_name.presence || translation.name
     %tr
       %th CMS
       %td

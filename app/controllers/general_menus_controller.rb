@@ -1,7 +1,7 @@
 class GeneralMenusController < LanguagesController
   before_filter :find_language
   before_action :require_admin, only: [:destroy]
-  before_filter :find_general_menu, only: [:show, :changes, :open, :destroy]
+  before_filter :find_general_menu, only: [:show, :edit, :update, :changes, :open, :destroy]
 
   before_filter :require_xhr, :only => [:changes]
 
@@ -13,6 +13,19 @@ class GeneralMenusController < LanguagesController
     end
 
     @data = @general_menu.children(@language)
+  end
+
+  def edit
+  end
+
+  def update
+    if @general_menu.update_attributes!(general_menu_params)
+      flash_to notice: 'Changes saved!'
+    else
+      flash_to error: @general_menu.errors.full_messages.first
+    end
+  ensure
+    redirect_to language_general_menu_path(@language, @general_menu)
   end
 
   def changes
@@ -51,6 +64,12 @@ class GeneralMenusController < LanguagesController
   rescue
     flash_to error: 'Sorry, general menu item not found'
     redirect_to root_path
+  end
+
+  def general_menu_params
+    params.require(:general_menu).permit(
+      :new_name
+      )
   end
 
   def require_xhr

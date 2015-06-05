@@ -14,10 +14,11 @@
 #  cms_updated         :date
 #  synchronized        :boolean          default(FALSE), not null
 #  updated_from_cms_at :datetime
+#  new_name            :string(1000)
 #
 
 class GeneralMenuTranslation < ActiveRecord::Base
-  strip_attributes :only => [:name, :notes, :additional_text]
+  strip_attributes :only => [:name, :notes, :additional_text, :new_name]
   has_paper_trail :ignore => [:created_at, :updated_at, :updated_from_cms_at]
 
   belongs_to :language
@@ -31,10 +32,6 @@ class GeneralMenuTranslation < ActiveRecord::Base
 
   def term
     name
-  end
-
-  def editable?
-    !synchronized
   end
 
   def self.new_with_defaults

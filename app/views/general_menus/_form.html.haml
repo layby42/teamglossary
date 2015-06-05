@@ -1,0 +1,52 @@
+= form_for [language, general_menu], html: {class: 'form-horizontal well'} do |f|
+  .form-group
+    %h4
+      TERM
+      %small.text-primary (#{general_menu.language.english_name})
+    %label.col-sm-3.control-label Title
+    .col-sm-9
+      %p.form-control-static= general_menu.name
+    %label.col-sm-3.control-label New Site Title
+    .col-sm-9
+      = f.text_area :new_name, row: 3, class: 'form-control', autocomplete: 'off', placeholder: 'New Site Title'
+    %label.col-sm-3.control-label Type
+    .col-sm-9
+      %p.form-control-static= general_menu.item_type_name
+
+    - if general_menu.length_type.present?
+      %label.col-sm-3.control-label Length
+      .col-sm-9
+        %p.form-control-static= general_menu.length_type
+
+    - if general_menu.additional_text.present?
+      %label.col-sm-3.control-label Additional text
+      .col-sm-9
+        %p.form-control-static= general_menu.additional_text
+
+
+    %label.col-sm-3.control-label CMS
+    .col-sm-9
+      - if general_menu.synchronized?
+        %p.form-control-static.small (synchronized)
+
+      %p.form-control-static.small
+        = (general_menu.full_cms_path.presence || general_menu.cms_name).gsub('/', '/ ')
+
+      - if general_menu.cms_updated.present?
+        %p.form-control-static.small
+          last update: #{general_menu.cms_updated}
+
+    - if general_menu.online.present?
+      %label.col-sm-3.control-label Online
+      .col-sm-9
+        %p.form-control-static= general_menu.online
+
+    - if general_menu.wiki_qa.present?
+      %label.col-sm-3.control-label Wiki Q&A
+      .col-sm-9
+        %p.form-control-static= general_menu.wiki_qa
+  .form-group
+    .col-sm-12.text-right
+      = link_to_empty 'Cancel', {class: 'btn btn-default', id: :cancel_term_edit}
+      = f.submit 'Save Changes', class: 'btn btn-primary'
+

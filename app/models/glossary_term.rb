@@ -78,10 +78,6 @@ class GlossaryTerm < ActiveRecord::Base
     is_private == false
   end
 
-  def editable?
-    true
-  end
-
   def self.search(language, query, options={})
     columns = (options[:columns].presence || SEARCH_COLUMNS).map(&:to_sym)
     columns = SEARCH_COLUMNS if columns.empty?

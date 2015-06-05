@@ -52,10 +52,6 @@ class GlossaryName < ActiveRecord::Base
     is_private == false
   end
 
-  def editable?
-    true
-  end
-
   def self.search(language, query, options={})
     columns = options[:columns].presence || SEARCH_COLUMNS
     columns = SEARCH_COLUMNS if columns.empty?

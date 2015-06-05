@@ -2,7 +2,7 @@
   .form-group
     %h4
       TERM
-      %small.text-primary (#{language.english_name})
+      %small.text-primary (#{glossary_term.language.english_name})
     .col-sm-9.col-sm-offset-3
       = f.text_field :term, class: 'form-control', autocomplete: 'off', required: true
       - unless glossary_term.has_translations?

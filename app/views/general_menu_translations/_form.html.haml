@@ -4,6 +4,9 @@
     %label.col-sm-3.control-label Title
     .col-sm-9
       = f.text_area :name, row: 3, class: 'form-control', autocomplete: 'off', placeholder: 'Translation', disabled: general_menu_translation.synchronized?
+    %label.col-sm-3.control-label New Site Title
+    .col-sm-9
+      = f.text_area :new_name, row: 3, class: 'form-control', autocomplete: 'off', placeholder: 'New Site Title Translation'
     %label.col-sm-3.control-label Additional text
     .col-sm-9
       = f.text_area :additional_text, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Additional text Translation', disabled: general_menu_translation.synchronized?

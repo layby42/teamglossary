@@ -1,4 +1,4 @@
-- can_edit = item.editable? && manager_or_editor_language_ids.include?(item.language_id)
+- can_edit = !item.new_record? && manager_or_editor_language_ids.include?(item.language_id)
 - if can_edit
   - if request.xhr?
     = link_to edit_glossary_term_url_helper(language, item), class: 'pull-right btn btn-primary btn-xs', title: "Edit term" do
@@ -8,13 +8,12 @@
     .pull-left
       = render 'shared/changes_url', url: changes_glossary_term_url_helper(language, item)
 
-    - unless item.is_a?(GeneralMenu)
-      = link_to edit_glossary_term_url_helper(language, item), class: 'pull-right btn btn-primary btn-xs', id: :edit_term_button, remote: true, title: "Edit term" do
-        %i.fa.fa-edit
-        Edit
-      = link_to 'javascript:void(0);', {class: 'pull-right btn btn-default btn-xs', id: :cancel_term_button, style: 'display: none;'} do
-        %i.fa.fa-times
-        Cancel
+    = link_to edit_glossary_term_url_helper(language, item), class: 'pull-right btn btn-primary btn-xs', id: :edit_term_button, remote: true, title: "Edit term" do
+      %i.fa.fa-edit
+      Edit
+    = link_to 'javascript:void(0);', {class: 'pull-right btn btn-default btn-xs', id: :cancel_term_button, style: 'display: none;'} do
+      %i.fa.fa-times
+      Cancel
 
 %h4{class: (!request.xhr? && can_edit ? 'term_title' : 'title')}
   = "#{title_helper(item)} DETAILS"
