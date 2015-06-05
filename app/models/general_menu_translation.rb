@@ -19,7 +19,7 @@
 
 class GeneralMenuTranslation < ActiveRecord::Base
   strip_attributes :only => [:name, :notes, :additional_text, :new_name]
-  has_paper_trail :ignore => [:created_at, :updated_at, :updated_from_cms_at]
+  has_paper_trail :ignore => [:created_at, :updated_at, :updated_from_cms_at, :cms_updated]
 
   belongs_to :language
   belongs_to :general_menu

@@ -13,7 +13,7 @@ module Admin::ChangesHelper
 
   def formatted_change_title(change)
     event = (change.event + 'd').capitalize
-    object = change.item_type.capitalize
+    object = change.item_type.to_s.underscore.humanize.capitalize
     "#{event} #{object}"
   end
 
