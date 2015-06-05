@@ -87,7 +87,8 @@ class GeneralMenuActionsController < GeneralMenusController
       :start_date,
       :end_date,
       :user_id,
-      :name
+      :name,
+      :description
       )
   end
 

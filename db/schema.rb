@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150509155051) do
+ActiveRecord::Schema.define(version: 20150605213256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20150509155051) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.integer  "task_id",         null: false
+    t.text     "description"
   end
 
   add_index "general_menu_actions", ["general_menu_id", "language_id", "action"], name: "general_menu_actions_menu_language_action", using: :btree

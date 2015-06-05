@@ -13,6 +13,7 @@
 #  updated_at      :datetime
 #  user_id         :integer
 #  task_id         :integer          not null
+#  description     :text
 #
 
 class GeneralMenuAction < ActiveRecord::Base

@@ -17,7 +17,7 @@
         %td Who
         %td Started
         %td Finished
-        %td What
+        %td.col-xs-5 What
         - if !request.xhr? && manager
           %th.text-center{width: 30}
     %tbody
@@ -39,6 +39,10 @@
               %small.pull-right
                 = link_to language_general_menu_general_menu_action_path(language, item, task), method: :delete, class: 'text-muted delete_link', remote: true, data: {confirm: 'Are you sure?'} do
                   %i.fa.fa-times-circle
+
+            - if task.description.present?
+              %br/
+              %small= task.description
 
           - if !request.xhr? && manager
             %td

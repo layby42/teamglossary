@@ -19,7 +19,7 @@
           .form-group.row
             .col-sm-4
               %label.control-label Task
-              = f.select :task_id, tasks_options_helper(@general_menu.item_type_name, @general_menu_action.task_id), {}, {class: 'form-control', style: 'width:100%', autocomplete: 'off', required: true}
+              = f.select :task_id, tasks_options_helper(@general_menu.item_type_name, @general_menu_action.task_id), {include_blank: 'Choose from the list'}, {class: 'form-control', style: 'width:100%', autocomplete: 'off', required: true}
             .col-sm-4
               %label.control-label Started
               = f.text_field :start_date, class: 'form-control edit_date', autocomplete: 'off', placeholder: 'YYYY-MM-DD', data: {:'date-format' => "yyyy-mm-dd"}, required: true
@@ -34,6 +34,11 @@
               = f.select :user_id, user_options_helper(@language, @general_menu_action.user_id), {include_blank: 'Choose from the list'}, {class: 'form-control', style: 'width:100%', autocomplete: 'off'}
             .col-sm-6
               = f.text_field :name, class: 'form-control', autocomplete: 'off', placeholder: 'or Enter Name if not found in the list', style: 'width:100%', autocomplete: 'off'
+
+          .form-group.row
+            .col-sm-12
+              %label.control-label Description (optional)
+              = f.text_area :description, class: 'form-control', rows: 3, autocomplete: 'off', placeholder: 'Add description here'
 
           .form-group.row
             .col-sm-12.text-right

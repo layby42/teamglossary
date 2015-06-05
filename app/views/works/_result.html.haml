@@ -40,10 +40,10 @@
             %td{style: bottom_link_style_helper(bottom_link)}
               - item[1].each do |general_menu_action|
                 - if period.cover?(general_menu_action.end_date)
-                  #{general_menu_action.end_date}: #{work_in_progress_user_name_helper(general_menu_action)} finished #{general_menu_action.task.title.downcase}
+                  #{general_menu_action.end_date}: #{work_in_progress_user_name_helper(general_menu_action)} finished #{work_in_progress_action_helper(general_menu_action, bottom_link)}
                   %br/
                 - if period.cover?(general_menu_action.start_date)
-                  #{general_menu_action.start_date}: #{work_in_progress_user_name_helper(general_menu_action)} started #{general_menu_action.task.title.downcase}
+                  #{general_menu_action.start_date}: #{work_in_progress_user_name_helper(general_menu_action)} started #{work_in_progress_action_helper(general_menu_action, bottom_link)}
                   %br/
               - if bottom_link
                 = render 'shared/term_add_task', language: @language, term: item[0]
