@@ -1,17 +1,25 @@
-%ul.list-group
-  %li.list-group-item
-    STEP 1: Please review terms that you would like to import into Team Glossary.
-    %br/
-    %br/
-    %ul
-      %li Does your Excel (or CSV) file contain ONLY same type of terms: only technicals terms, only proper names or only text titles?
-      %li Does your Excel (or CSV) file contain ONLY terms and translations in Singular form? Example: "karmic actions" - incorrect; "karmic action" - correct.
-    %br/
-    If the answer is 'Yes' to both questions, proceed to STEP 2. Otherwise please fix terms in your file.
+.row
+  .col-xs-12
+    %h4
+      .pull-right.inline
+        = render 'shared/add_new_button', url: new_admin_import_path, remote: false, title: 'Start new import'
+      HISTORY OF GLOSSARY IMPORTS
+    %table.table.table-striped.table-bordered
+      %thead
+        %tr
+          %th Glossary Type
+          %th Language
+          %th Created By
+          %th Committed By
+      %tbody
+        - Import.where(language_id: current_user.manager_language_ids).list_order.includes([:language, :glossary_type, :user, :committer]).each do |import|
+          %tr
+            %td= import.glossary_type.name
+            %td= import.language.english_name
+            %td
+              = import.user.name
+              .small= date_and_time_format(import.created_at)
+            %td
+              = import.committer.try(:name)
+              .small= date_and_time_format(import.committed_at)
 
-  %li.list-group-item
-    STEP 2: Please convert your Excel file into CSV format: columns in CSV file hould be separated with comma (,) or semicolon (;).
-  %li.list-group-item
-    STEP 3: You are ready to start
-    -# = link_to 'New Import', new_admin_import_path, class: 'btn btn-primary btn-xs'
-    = link_to 'New Import - coming soon', '#', class: 'btn btn-primary btn-xs'

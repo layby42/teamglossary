@@ -24,4 +24,11 @@
 #
 
 class Import < ActiveRecord::Base
+  belongs_to :language
+  belongs_to :glossary_type
+  belongs_to :user
+  belongs_to :committer, class_name: 'User', foreign_key: :committer_id
+
+  scope :list_order, -> {order('imports.created_at DESC')}
+
 end

@@ -1,5 +1,5 @@
 .row
-  .col-xs-12.text-center
+  .col-xs-12
     %span.badge STEP 1
     %br/
     %br/
@@ -7,7 +7,7 @@
     %br/
     %br/
 .row
-  .col-xs-12.text-center
+  .col-xs-12
     %span.badge STEP 2
     %br/
     %br/
@@ -15,14 +15,14 @@
     %br/
     %br/
     = form_tag hopkins_admin_imports_path, method: :post, :multipart => true, id: 'import-hopkins-form' do
-      %fieldset.col-sm-8.col-sm-offset-2.col-xs-12
+      %fieldset
         .form-group.text-left
-          %label.control-label.text-center hopkins.csv file:
+          %label.control-label hopkins.csv file:
           = file_field_tag :file_small, :accept => 'text/csv', required: true, autocomplete: 'off'
           %p.help-block Comma separated, with two columns "Tibetan" and "JH-ENG"
 
         .form-group.text-left
-          %label.control-label.text-center hopkins-terms.csv file:
+          %label.control-label hopkins-terms.csv file:
           = file_field_tag :file_large, :accept => 'text/csv', required: true, autocomplete: 'off'
           %p.help-block Comma separated, with tree columns "TIBETAN", "ENGLISH" and "SANSKRIT"
 

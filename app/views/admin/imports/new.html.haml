@@ -1,12 +1,18 @@
-%h3
-  = link_to admin_imports_path do
-    %i.fa.fa-angle-left
-    Import Glossary
+- content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to 'Import', admin_imports_path
+    %li= link_to 'New Glossary Import', new_admin_import_path
+
+%h3 Import Glossary (Does not work - under construction)
 
 .panel.panel-default
   .panel-body.special-border
     .row
-      .col-sm-6.col-xs-12
-        = render 'form', import: @import
-      .col-sm-6.col-xs-12
-        IMPORT SETTINGS: TODO
+      .col-xs-12
+        Prepare Excel (or CSV) file with terms to be imported into Glossary:
+        %ul
+          %li make sure it contains only technical terms, only proper names or only text titles;
+          %li make sure all terms and translactions are in Singular form (example: "karmic action" is OK, "karmic actions" is not OK);
+          %li export your Excel file into CSV format.
+    .row
+      = render 'form', import: @import

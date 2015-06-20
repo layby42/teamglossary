@@ -1,30 +1,142 @@
-= form_for [:admin, import], html: {class: 'form-horizontal well'} do |f|
-  .form-group
-    %label.control-label.col-sm-4 Glossary Type
-    .col-sm-8
-      = f.select :glossary_type_id, glossary_type_except_menu_options(import.glossary_type_id), {}, {class: 'form-control', autocomplete: 'off', required: true}
-  .form-group
-    %h4 CSV
-    %label.control-label.col-sm-4 Choose File
-    .col-sm-8
-      = f.file_field :file, :accept => 'csv', required: true, autocomplete: 'off', class: 'form-control'
-  .form-group
-    %label.control-label.col-sm-4 Skip first
-    .col-sm-8
-      .input-group
-        = f.number_field :skip_rows, min: 0, class: 'form-control', autocomplete: 'off'
-        .input-group-addon rows
+= form_for [:admin, import], html: {class: 'form-horizontal'} do |f|
+  .col-sm-6.col-xs-12
+    %h5 GENERAL SETTINGS
+    .well
+      .form-group
+        %label.control-label.col-sm-4 Glossary Type
+        .col-sm-8
+          = f.select :glossary_type_id, glossary_type_except_menu_options(import.glossary_type_id), {}, {class: 'form-control', autocomplete: 'off', required: true}
+      .form-group
+        %label.control-label.col-sm-4 Language
+        .col-sm-8
+          = f.select :language_id, active_user_language_options(import.language_id), {}, {class: 'form-control', autocomplete: 'off', required: true}
+      .form-group
+        %h4.col-sm-4.text-right CSV
 
-  .form-group
-    %label.control-label.col-sm-4 Encoding
-    .col-sm-8
-      = f.text_field :encoding, class: 'form-control', autocomplete: 'off'
-  .form-group
-    %label.control-label.col-sm-4 Columns separator
-    .col-sm-8
-      = f.select :cols_separator, imports_csv_column_separator_options(import.cols_separator), {}, {class: 'form-control', autocomplete: 'off'}
-  .form-group
-    %label.control-label.col-sm-4 Date format
-    .col-sm-8
-      = f.text_field :date_format, class: 'form-control', autocomplete: 'off'
-      TODO: check old webglossary code
+      .form-group
+        %label.control-label.col-sm-4 Choose File
+        .col-sm-8
+          = f.file_field :file, :accept => 'csv', required: true, autocomplete: 'off', class: 'form-control'
+
+      .form-group
+        %label.control-label.col-sm-4 Skip first
+        .col-sm-8
+          .input-group
+            = f.number_field :skip_rows, min: 0, class: 'form-control', autocomplete: 'off'
+            .input-group-addon rows
+          %p.help-block number of first CSV rows that contain data which should not be imported, for example columns headers
+
+      .form-group
+        %label.control-label.col-sm-4 Encoding
+        .col-sm-8
+          = f.text_field :encoding, class: 'form-control', autocomplete: 'off'
+      .form-group
+        %label.control-label.col-sm-4 Columns separator
+        .col-sm-8
+          = f.select :cols_separator, imports_csv_column_separator_options(import.cols_separator), {}, {class: 'form-control', autocomplete: 'off'}
+      -# .form-group
+      -#   %label.control-label.col-sm-4 Date format
+      -#   .col-sm-8
+      -#     = f.select :date_format, imports_csv_date_options(import.date_format), {}, {class: 'form-control', autocomplete: 'off'}
+
+  .col-sm-6.col-xs-12
+    %h5 GLOSSARY FIELDS AND CSV COLUMNS
+    .well
+      Specify which CSV column contains which data.
+      %br/
+      %br/
+      %small Example: your CSV file has two columns "term" and "term definition". Please enter 1 into input field next to Term and 2 into input field next to Definition. Leave other inputs empty.
+
+      #tht-columns-container{style: 'display: none'}
+        - GlossaryTerm::SEARCH_COLUMNS.each do |column|
+          .form-group
+            %label.control-label.col-sm-6= column.to_s.humanize
+            .col-sm-6
+              .input-group
+                = number_field_tag "import[columns][term][#{column}]", nil, min: 0, class: 'form-control', autocomplete: 'off'
+                .input-group-addon CSV column #
+
+        .form-group.import-translation-columns
+          %label.control-label.col-sm-6.text-right TRANSLATION
+        - GlossaryTerm::SEARCH_TRANSLATION_COLUMNS.each do |column|
+          .form-group.import-translation-columns
+            %label.control-label.col-sm-6= column.to_s.humanize
+            .col-sm-6
+              .input-group
+                = number_field_tag "import[columns][translation][#{column}]", nil, min: 0, class: 'form-control', autocomplete: 'off'
+                .input-group-addon CSV column #
+
+      #ppn-columns-container{style: 'display: none'}
+        - GlossaryName::SEARCH_COLUMNS.each do |column|
+          .form-group
+            %label.control-label.col-sm-6= column.to_s.humanize
+            .col-sm-6
+              .input-group
+                = number_field_tag "import[columns][term][#{column}]", nil, min: 0, class: 'form-control', autocomplete: 'off'
+                .input-group-addon CSV column #
+
+        .form-group.import-translation-columns
+          %label.control-label.col-sm-6.text-right TRANSLATION
+        - GlossaryName::SEARCH_TRANSLATION_COLUMNS.each do |column|
+          .form-group.import-translation-columns
+            %label.control-label.col-sm-6= column.to_s.humanize
+            .col-sm-6
+              .input-group
+                = number_field_tag "import[columns][translation][#{column}]", nil, min: 0, class: 'form-control', autocomplete: 'off'
+                .input-group-addon CSV column #
+
+      #txt-columns-container{style: 'display: none'}
+        - GlossaryTitle::SEARCH_COLUMNS.each do |column|
+          .form-group
+            %label.control-label.col-sm-6= column.to_s.humanize
+            .col-sm-6
+              .input-group
+                = number_field_tag "import[columns][term][#{column}]", nil, min: 0, class: 'form-control', autocomplete: 'off'
+                .input-group-addon CSV column #
+
+        .form-group.import-translation-columns
+          %label.control-label.col-sm-6.text-right TRANSLATION
+        - GlossaryTitle::SEARCH_TRANSLATION_COLUMNS.each do |column|
+          .form-group.import-translation-columns
+            %label.control-label.col-sm-6= column.to_s.humanize
+            .col-sm-6
+              .input-group
+                = number_field_tag "import[columns][translation][#{column}]", nil, min: 0, class: 'form-control', autocomplete: 'off'
+                .input-group-addon CSV column #
+
+  .col-sm-12
+    .form-group
+      .col-sm-12.text-right
+        = link_to 'Cancel', admin_imports_path(tab: :glossary), class: 'btn btn-default'
+        = f.submit 'Import', class: 'btn btn-primary', disabled: true
+
+:javascript
+  $(function() {
+
+    $('#import_glossary_type_id, #import_language_id').on('change', function(){
+      var code = $('#import_glossary_type_id').find('option:selected').data('code');
+      var base = $('#import_language_id').find('option:selected').data('base');
+
+      $('div[id$="-columns-container"]').hide();
+      $('.import-translation-columns').hide();
+      $('#import_columns_term_term').prop('required', false);
+      $('#import_columns_translation_term').prop('required', false);
+
+      if (code.length > 0){
+        $('#' + code + '-columns-container').show();
+        $('#' + code + '-columns-container').find('#import_columns_term_term').prop('required', true);
+        if (base != true){
+          $('.import-translation-columns').show();
+          $('#' + code + '-columns-container').find('#import_columns_translation_term').prop('required', true);
+        }
+      }
+    });
+
+    $('input[type="number"]').on('change', function(){
+      if ($(this).val() == "0"){
+        $(this).val("");
+      }
+    })
+
+    $('#import_glossary_type_id').change();
+  });

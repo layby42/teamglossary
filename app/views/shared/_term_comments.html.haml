@@ -21,7 +21,7 @@
       - comments.each_with_index do |comment, idx|
         %tr
           %td.col-xs-2
-            %small= comment.created_at.strftime('%b %d, %Y %H:%M')
+            %small= date_and_time_format(comment.created_at)
           %td
             = comment.text
           %td.col-xs-2

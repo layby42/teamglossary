@@ -32,9 +32,9 @@
             %td
               %small
                 - if current_user.admin?
-                  = link_to comment.created_at.strftime('%b %d, %Y %H:%M'), edit_language_comment_path(comment.language_id, comment, show_comments: false), remote: true
+                  = link_to date_and_time_format(comment.created_at), edit_language_comment_path(comment.language_id, comment, show_comments: false), remote: true
                 - else
-                  = comment.created_at.strftime('%b %d, %Y %H:%M')
+                  = date_and_time_format(comment.created_at)
             %td= comment.user.name
             %td{style: bottom_link_style_helper(item_language_team)}
               = comment.text

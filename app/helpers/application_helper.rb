@@ -14,8 +14,13 @@ module ApplicationHelper
     options_for_select(opts, selected)
   end
 
+  def active_user_language_options(selected=nil)
+    opts = Language.where(id: current_user.manager_language_ids).active.list_order.map{|l| [l.full_name, l.id, {data: {base: l.is_base_language}}]}
+    options_for_select(opts, selected)
+  end
+
   def glossary_type_except_menu_options(selected=nil)
-    opts = GlossaryType.except_menu.list_order.map{|l| [l.name, l.id]}
+    opts = GlossaryType.except_menu.list_order.map{|l| [l.name, l.id, {data: {code: l.code.downcase}}]}
     options_for_select(opts, selected)
   end
 
@@ -47,6 +52,11 @@ module ApplicationHelper
   def time_ago(datetime)
     return '' unless datetime.present?
     "#{time_ago_in_words(datetime)} ago"
+  end
+
+  def date_and_time_format(datetime)
+    return '' unless datetime.present?
+    datetime.strftime('%b %d, %Y %H:%M')
   end
 
   def gender_helper(gender_abbreviation)
