@@ -58,6 +58,10 @@ class GeneralMenu < ActiveRecord::Base
     name
   end
 
+  def display_name
+    new_name.presence || name
+  end
+
   def is_private?
     false
   end

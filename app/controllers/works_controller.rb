@@ -9,13 +9,15 @@ class WorksController < ApplicationController
 
   def email
     @data = {}
-    GeneralMenuAction.simple_search(@language, @from_date, @to_date).each do |general_menu, general_menu_actions|
+    actions = GeneralMenuAction.simple_search(@language, @from_date, @to_date)
+    actions.keys.sort{|x, y| (x.sequence <=> y.sequence) && (x.general_menu_id <=> y.general_menu_id)}.each do |general_menu|
+      general_menu_actions = actions[general_menu]
       @data[general_menu.id] ||= {}
       parent = general_menu.general_menu
-      if parent && parent.multipart? && (parent.name.downcase != general_menu.name.downcase)
-        @data[general_menu.id][:name] = [parent.name, general_menu.name].join(': ')
+      if parent && parent.multipart? && (parent.display_name.downcase != general_menu.display_name.downcase)
+        @data[general_menu.id][:name] = [parent.display_name, general_menu.display_name].join(': ')
       else
-        @data[general_menu.id][:name] = general_menu.name
+        @data[general_menu.id][:name] = general_menu.display_name
       end
       @data[general_menu.id][:work_done] = general_menu_actions.inject([]) do |result, action|
         name = action.user.try(:name).presence || action.name
