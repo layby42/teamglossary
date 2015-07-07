@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   match 'download' => 'home#download', :via => [:get]
   get 'help' => 'help/articles#index', :via => [:get]
 
+  get 'ba' => 'home#export'
+
   resources :password_resets, :only => [:new, :create, :edit, :update]
 
   namespace :help do |admin|

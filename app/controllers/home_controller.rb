@@ -51,6 +51,50 @@ class HomeController < ApplicationController
     redirect_to action: :index
   end
 
+  def export
+    data = []
+    language = Language.where(iso_code: (params[:code].presence || 'en').upcase).first
+    if language
+      if language.is_base_language?
+        data = GlossaryTerm.where(language_id: language.id, is_private: false, deleted: false).list_order.collect do |term|
+          {
+            term: term.term.to_s,
+            tibetan: term.tibetan.to_s,
+            sanskrit: term.sanskrit.to_s,
+            pali: term.pali.to_s,
+            alternative_tibetan: term.alternative_tibetan.to_s,
+            alternative_sanskrit: term.alternative_sanskrit.to_s,
+            definition: (term.is_definition_private? ? nil : term.definition).to_s
+          }
+        end
+      else
+        data = GlossaryTermTranslation.where(language_id: language.id).includes([:glossary_term]).collect do |term_transaltion|
+          term = term_transaltion.glossary_term
+          next if term.is_private? || term.deleted?
+          {
+            term: term.term.to_s,
+            tibetan: term.tibetan.to_s,
+            sanskrit: term.sanskrit.to_s,
+            pali: term.pali.to_s,
+            alternative_tibetan: term.alternative_tibetan.to_s,
+            alternative_sanskrit: term.alternative_sanskrit.to_s,
+            definition: (term.is_definition_private? ? nil : term.definition).to_s,
+            translation: {
+              term: term_transaltion.term.to_s,
+              alt_term1: term_transaltion.alt_term1.to_s,
+              alt_term2: term_transaltion.alt_term2.to_s,
+              alt_term3: term_transaltion.alt_term3.to_s,
+              definition: term_transaltion.definition.to_s
+            }
+          }
+        end.compact.sort_by{|x| x[:term].downcase}
+      end
+
+    end
+  ensure
+    render :json => data.to_json
+  end
+
   private
 
   def find_language
