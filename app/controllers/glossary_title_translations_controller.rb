@@ -82,4 +82,15 @@ class GlossaryTitleTranslationsController < GlossaryTitlesController
       )
   end
 
+  def require_xhr
+    unless request.xhr?
+      redirect_to language_glossary_title_path(@language, @glossary_title)
+    end
+  end
+
+  def require_language_manager_or_editor
+    unless current_user.manager_or_editor?(@language.id)
+      redirect_to language_glossary_title_path(@language, @glossary_title)
+    end
+  end
 end
