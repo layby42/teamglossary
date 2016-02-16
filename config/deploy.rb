@@ -1,7 +1,7 @@
-lock '3.3.5'
+lock '3.4.0'
 
 set :repo_url, 'git@bitbucket.org:ogoutnik/teamglossary.git'
-set :rvm_ruby_version, '2.1.3'
+set :rvm_ruby_version, '2.2.4'
 
 # namespace :deploy do
 
