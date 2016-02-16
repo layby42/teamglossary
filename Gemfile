@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-ruby '2.1.3'
-gem 'rails', '4.1.6'
+ruby '2.2.4'
+gem 'rails', '4.1.14.1'
 
 gem 'haml'
 gem 'pg'
@@ -16,8 +16,8 @@ gem 'exception_notification'
 gem 'ckeditor'
 
 group :assets do
-  gem 'sass-rails', '~> 4.0.3'
-  gem 'uglifier', '>= 1.3.0'
+  gem 'sass-rails'
+  gem 'uglifier'
 end
 
 group :development, :test do
@@ -25,16 +25,16 @@ group :development, :test do
   gem 'spring'
   gem 'annotate'
   gem 'quiet_assets'
-  gem 'capistrano', '~> 3.0'
+  gem 'capistrano'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'capistrano-rvm'
 end
 
-group :heroku do
-  gem 'rails_12factor'
-end
+# group :heroku do
+#   gem 'rails_12factor'
+# end
 
 
 # Use ActiveModel has_secure_password
