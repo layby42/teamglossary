@@ -3,13 +3,31 @@
     %h4 TRANSLATION
     %label.col-sm-3.control-label Title
     .col-sm-9
-      = f.text_area :name, row: 3, class: 'form-control', autocomplete: 'off', placeholder: 'Translation', disabled: general_menu_translation.synchronized?
+      - if general_menu_translation.synchronized?
+        = f.text_area :name, row: 3, class: 'form-control', autocomplete: 'off', placeholder: 'Translation', disabled: general_menu_translation.synchronized?
+      - else
+        .input-group
+          = f.text_area :name, row: 3, class: 'form-control', autocomplete: 'off', placeholder: 'Translation', disabled: general_menu_translation.synchronized?
+          .input-group-btn
+            .button.btn.btn-default.btn-xs.rtl RTL
+
     %label.col-sm-3.control-label New Site Title
     .col-sm-9
-      = f.text_area :new_name, row: 3, class: 'form-control', autocomplete: 'off', placeholder: 'New Site Title Translation'
+      .input-group
+        = f.text_area :new_name, row: 3, class: 'form-control', autocomplete: 'off', placeholder: 'New Site Title Translation'
+        .input-group-btn
+          .button.btn.btn-default.btn-xs.rtl RTL
+
     %label.col-sm-3.control-label Additional text
     .col-sm-9
-      = f.text_area :additional_text, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Additional text Translation', disabled: general_menu_translation.synchronized?
+      - if general_menu_translation.synchronized?
+        = f.text_area :additional_text, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Additional text Translation', disabled: general_menu_translation.synchronized?
+      - else
+        .input-group
+          = f.text_area :additional_text, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Additional text Translation', disabled: general_menu_translation.synchronized?
+          .input-group-btn
+            .button.btn.btn-default.btn-xs.rtl RTL
+
     %label.col-sm-3.control-label Online
     .col-sm-9
       = f.text_field :online, class: 'form-control edit_date', autocomplete: 'off', placeholder: 'YYYY-MM-DD', disabled: general_menu_translation.synchronized?, data: {:'date-format' => "yyyy-mm-dd"}
@@ -20,7 +38,11 @@
   .form-group
     %h4 NOTES
     .col-sm-12
-      = f.text_area :notes, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Notes'
+      .input-group
+        = f.text_area :notes, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Notes'
+        .input-group-btn
+          .button.btn.btn-default.btn-xs.rtl RTL
+
   .form-group
     .col-sm-12.text-right
       - if general_menu_translation.new_record?

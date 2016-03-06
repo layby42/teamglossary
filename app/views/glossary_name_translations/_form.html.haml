@@ -2,22 +2,39 @@
   .form-group
     %h4 TERM TRANSLATION
     .col-sm-9.col-sm-offset-3
-      = f.text_field :term, class: 'form-control', autocomplete: 'off', placeholder: 'Term Translation'
+      .input-group
+        = f.text_field :term, class: 'form-control', autocomplete: 'off', placeholder: 'Term Translation'
+        .input-group-btn
+          .button.btn.btn-default.btn-xs.rtl RTL
+
     %label.col-sm-3.control-label Alternative
     .col-sm-9
-      = f.text_field :alt_term1, class: 'form-control', autocomplete: 'off', placeholder: 'Alternative Translation'
+      .input-group
+        = f.text_field :alt_term1, class: 'form-control', autocomplete: 'off', placeholder: 'Alternative Translation'
+        .input-group-btn
+          .button.btn.btn-default.btn-xs.rtl RTL
+
     %label.col-sm-3.control-label Alternative
     .col-sm-9
-      = f.text_field :alt_term2, class: 'form-control', autocomplete: 'off', placeholder: 'Alternative Translation'
+      .input-group
+        = f.text_field :alt_term2, class: 'form-control', autocomplete: 'off', placeholder: 'Alternative Translation'
+        .input-group-btn
+          .button.btn.btn-default.btn-xs.rtl RTL
+
     %label.col-sm-3.control-label Alternative
     .col-sm-9
-      = f.text_field :alt_term3, class: 'form-control', autocomplete: 'off', placeholder: 'Alternative Translation'
+      .input-group
+        = f.text_field :alt_term3, class: 'form-control', autocomplete: 'off', placeholder: 'Alternative Translation'
+        .input-group-btn
+          .button.btn.btn-default.btn-xs.rtl RTL
 
   .form-group
     %h4 NOTES
     .col-sm-12
-      = f.text_area :notes, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Notes'
-
+      .input-group
+        = f.text_area :notes, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Notes'
+        .input-group-btn
+          .button.btn.btn-default.btn-xs.rtl RTL
 
   .form-group
     %h4 STATUS

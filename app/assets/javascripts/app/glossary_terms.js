@@ -18,4 +18,26 @@ $(function(){
       $('#glossary_name_dates').prop('disabled', true);
     }
   });
+
+  $(document).on("click", ".button.rtl", function(){
+    var $this = $(this);
+    $this.parents('.input-group').find('.form-control').each(function(){
+      $(this).attr("dir", "rtl");
+
+      $this.html("LTR");
+      $this.removeClass("rtl");
+      $this.addClass("ltr");
+    });
+  });
+
+  $(document).on("click", ".button.ltr", function(){
+    var $this = $(this);
+    $this.parents('.input-group').find('.form-control').each(function(){
+      $(this).attr("dir", "ltr");
+
+      $this.html("RTL");
+      $this.removeClass("ltr");
+      $this.addClass("rtl");
+    });
+  });
 });
