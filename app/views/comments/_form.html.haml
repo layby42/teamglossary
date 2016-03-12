@@ -31,7 +31,14 @@
               - else
                 Please write in #{base_language.english_name} or in #{@language.english_name}, so #{@language.english_name} Team can understand you
             .col-sm-12
-              = f.text_area :text, class: 'form-control', rows: 3, autocomplete: 'off', placeholder: 'Add your comment here', required: true, disabled: !@comment.new_record?
+              - if @comment.new_record?
+                .input-group
+                  = f.text_area :text, class: 'form-control', rows: 3, autocomplete: 'off', placeholder: 'Add your comment here', required: true, disabled: false
+                  .input-group-btn
+                    .button.btn.btn-default.btn-xs.rtl RTL
+              - else
+                = f.text_area :text, class: 'form-control', rows: 3, autocomplete: 'off', placeholder: 'Add your comment here', required: true, disabled: true
+
 
           .form-group.row
             .col-sm-12.text-right

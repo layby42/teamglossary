@@ -4,10 +4,10 @@
     %label.col-sm-3.control-label Title
     .col-sm-9
       - if general_menu_translation.synchronized?
-        = f.text_area :name, row: 3, class: 'form-control', autocomplete: 'off', placeholder: 'Translation', disabled: general_menu_translation.synchronized?
+        = f.text_area :name, row: 3, class: 'form-control', autocomplete: 'off', placeholder: 'Translation', disabled: true
       - else
         .input-group
-          = f.text_area :name, row: 3, class: 'form-control', autocomplete: 'off', placeholder: 'Translation', disabled: general_menu_translation.synchronized?
+          = f.text_area :name, row: 3, class: 'form-control', autocomplete: 'off', placeholder: 'Translation', disabled: false
           .input-group-btn
             .button.btn.btn-default.btn-xs.rtl RTL
 
@@ -21,10 +21,10 @@
     %label.col-sm-3.control-label Additional text
     .col-sm-9
       - if general_menu_translation.synchronized?
-        = f.text_area :additional_text, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Additional text Translation', disabled: general_menu_translation.synchronized?
+        = f.text_area :additional_text, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Additional text Translation', disabled: true
       - else
         .input-group
-          = f.text_area :additional_text, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Additional text Translation', disabled: general_menu_translation.synchronized?
+          = f.text_area :additional_text, class: 'form-control', rows: 5, autocomplete: 'off', placeholder: 'Additional text Translation', disabled: false
           .input-group-btn
             .button.btn.btn-default.btn-xs.rtl RTL
 
