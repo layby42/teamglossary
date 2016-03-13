@@ -62,9 +62,9 @@
         %th Explanation
         %td
           - if request.xhr?
-            = truncate(item.additional_explanation, length: 250, omission: ' ... (more)')
+            %bdi= truncate(item.additional_explanation, length: 250, omission: ' ... (more)')
           - else
-            = item.additional_explanation
+            %bdi= item.additional_explanation
 
 - if can_edit_language_glossary
   %h4.title STATUS

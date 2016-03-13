@@ -25,16 +25,16 @@
         %th Additional text
         %td
           - if request.xhr?
-            = truncate(translation.additional_text, length: 250, omission: ' ... (more)')
+            %bdi= truncate(translation.additional_text, length: 250, omission: ' ... (more)')
           - else
-            = translation.additional_text
+            %bdi= translation.additional_text
     %tr
       %th Notes
       %td
         - if request.xhr?
-          = truncate(translation.notes, length: 250, omission: ' ... (more)')
+          %bdi= truncate(translation.notes, length: 250, omission: ' ... (more)')
         - else
-          = translation.notes
+          %bdi= translation.notes
     %tr
       %th Online
       %td= translation.online

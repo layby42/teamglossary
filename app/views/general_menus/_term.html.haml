@@ -21,9 +21,9 @@
         %th Additional text
         %td
           - if request.xhr?
-            = truncate(item.additional_text, length: 250, omission: ' ... (more)')
+            %bdi= truncate(item.additional_text, length: 250, omission: ' ... (more)')
           - else
-            = item.additional_text
+            %bdi= item.additional_text
 
     %tr
       %th CMS

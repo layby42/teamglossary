@@ -23,7 +23,8 @@
     - if current_user
       %tr
         %th Notes
-        %td= translation.notes
+        %td
+          %bdi= translation.notes
 
 - if can_edit_language_glossary
   %h4.term STATUS
