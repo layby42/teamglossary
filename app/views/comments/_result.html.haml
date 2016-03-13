@@ -37,7 +37,7 @@
                   = date_and_time_format(comment.created_at)
             %td= comment.user.name
             %td{style: bottom_link_style_helper(item_language_team)}
-              = comment.text
+              %bdi= comment.text
               - if item_language_team
                 .div{style: 'position: absolute; bottom: 0; right: 8px;'}
                   = link_to new_language_comment_path(@language, commentable_type: item.class.to_s, commentable_id: item.id), class: 'text-muted', remote: true do

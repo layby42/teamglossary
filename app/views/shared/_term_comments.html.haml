@@ -23,7 +23,7 @@
           %td.col-xs-2
             %small= date_and_time_format(comment.created_at)
           %td
-            = comment.text
+            %bdi= comment.text
           %td.col-xs-2
             = comment.user.name
             - if can_edit_language || (idx == 0 && comment.user_id == current_user.try(:id))
