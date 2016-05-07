@@ -1,6 +1,6 @@
 - can_edit_language_glossary = manager_or_editor_language_ids.include?(item.language_id)
 - has_delete_link = !request.xhr? && can_edit_language_glossary && item.has_no_transaltion?
-%table.table.table-striped.table-bordered
+%table.table.table-striped.table-bordered{style: "table-layout:fixed;width:100%;"}
   %tbody
     %tr
       %th.col-xs-4
@@ -60,11 +60,11 @@
     - if current_user
       %tr
         %th Explanation
-        %td
+        %td{style: 'overflow:hidden;'}
           - if request.xhr?
             %bdi= truncate(item.additional_explanation, length: 250, omission: ' ... (more)')
           - else
-            %bdi= item.additional_explanation
+            %bdi= simple_format(item.additional_explanation, {}, sanitize: true)
 
 - if can_edit_language_glossary
   %h4.title STATUS
